@@ -1,0 +1,17 @@
+[INFO ] 2019-08-06 07:33:05.623 [main] TP_Final_SDyPP.Peer.Cliente - Cliente 190.244.150.103:2000 iniciado
+[INFO ] 2019-08-06 07:33:10.175 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Llamada subir archivo
+[INFO ] 2019-08-06 07:33:14.624 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Enviando JSON a Tracker...
+[INFO ] 2019-08-06 07:33:15.824 [Thread-11] TP_Final_SDyPP.Peer.Cliente - JSON enviado al Tracker.
+[INFO ] 2019-08-06 07:35:11.849 [Thread-10] TP_Final_SDyPP.Peer.Cliente - Conexión establecida con cliente: (190.244.150.103:62614)
+[INFO ] 2019-08-06 07:35:11.853 [Thread-10] TP_Final_SDyPP.Peer.Cliente - Conexión establecida con cliente: (190.244.150.103:62616)
+[INFO ] 2019-08-06 07:35:12.020 [Thread-10] TP_Final_SDyPP.Peer.Cliente - Conexión establecida con cliente: (190.244.150.103:62619)
+[INFO ] 2019-08-06 07:35:23.970 [Thread-10] TP_Final_SDyPP.Peer.Cliente - Conexión establecida con cliente: (190.244.150.103:62648)
+[INFO ] 2019-08-06 07:35:24.584 [Thread-10] TP_Final_SDyPP.Peer.Cliente - Conexión establecida con cliente: (190.244.150.103:62661)
+[INFO ] 2019-08-06 07:35:35.892 [Thread-10] TP_Final_SDyPP.Peer.Cliente - Conexión establecida con cliente: (190.244.150.103:62680)
+[INFO ] 2019-08-06 07:35:42.997 [Thread-10] TP_Final_SDyPP.Peer.Cliente - Conexión establecida con cliente: (190.244.150.103:62690)
+[INFO ] 2019-08-06 07:35:43.123 [Thread-10] TP_Final_SDyPP.Peer.Cliente - Conexión establecida con cliente: (190.244.150.103:62692)
+[INFO ] 2019-08-06 07:35:43.262 [Thread-10] TP_Final_SDyPP.Peer.Cliente - Conexión establecida con cliente: (190.244.150.103:62694)
+[INFO ] 2019-08-06 07:35:43.392 [Thread-10] TP_Final_SDyPP.Peer.Cliente - Conexión establecida con cliente: (190.244.150.103:62700)
+[INFO ] 2019-08-06 07:36:47.108 [Thread-10] TP_Final_SDyPP.Peer.Cliente - Conexión establecida con cliente: (190.244.150.103:62829)
+[INFO ] 2019-08-06 07:36:47.109 [Thread-10] TP_Final_SDyPP.Peer.Cliente - Conexión establecida con cliente: (190.244.150.103:62831)
+[INFO ] 2019-08-06 07:36:47.353 [Thread-10] TP_Final_SDyPP.Peer.Cliente - Conexión establecida con cliente: (190.244.150.103:62834)

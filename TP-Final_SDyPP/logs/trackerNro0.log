@@ -1,0 +1,24 @@
+[INFO ] 2019-08-06 07:32:26.590 [main] TP_Final_SDyPP.Tracker.Tracker - Tracker 0 iniciado
+[INFO ] 2019-08-06 07:32:26.591 [main] TP_Final_SDyPP.Tracker.Tracker - Path donde se guardarán los META-Archivos: C:\Users\Mariano Zabala\workspace\TP-Final_SDyPP\JSONs\TRACKER 0
+[INFO ] 2019-08-06 07:32:27.616 [main] TP_Final_SDyPP.Tracker.Tracker - Mi ID es: 0
+Mi IP es: localhost
+Mi PUERTO es: 7000
+Mi Tracker Primario es: 0, (localhost:7000)
+[INFO ] 2019-08-06 07:32:27.616 [main] TP_Final_SDyPP.Tracker.Tracker - Mi lista de trackers es: 
+- 0, (localhost:7000)
+[INFO ] 2019-08-06 07:33:14.643 [main] TP_Final_SDyPP.Tracker.Tracker - Conexión establecida con: (127.0.0.1:33454)
+[INFO ] 2019-08-06 07:33:15.713 [main] TP_Final_SDyPP.Tracker.Tracker - Conexión establecida con: (127.0.0.1:33455)
+[INFO ] 2019-08-06 07:33:16.479 [Thread-2] TP_Final_SDyPP.DB4O.Database - Nuevo archivo: p.pdf
+[INFO ] 2019-08-06 07:33:16.711 [Thread-2] TP_Final_SDyPP.DB4O.Database - Nuevo Seed: (190.244.150.103:2000)
+[INFO ] 2019-08-06 07:34:29.402 [main] TP_Final_SDyPP.Tracker.Tracker - Conexión establecida con: (127.0.0.1:33470)
+[INFO ] 2019-08-06 07:34:30.255 [Thread-3] TP_Final_SDyPP.DB4O.Database - Consulta archivos por nombre
+[INFO ] 2019-08-06 07:34:46.466 [main] TP_Final_SDyPP.Tracker.Tracker - Conexión establecida con: (127.0.0.1:33472)
+[INFO ] 2019-08-06 07:34:46.673 [Thread-4] TP_Final_SDyPP.DB4O.Database - Consulta archivos por nombre
+[INFO ] 2019-08-06 07:35:10.689 [main] TP_Final_SDyPP.Tracker.Tracker - Conexión establecida con: (127.0.0.1:33476)
+[INFO ] 2019-08-06 07:35:11.275 [Thread-5] TP_Final_SDyPP.DB4O.Database - Nuevo Leecher: (190.244.150.103:2001)
+[INFO ] 2019-08-06 07:35:11.801 [Thread-5] TP_Final_SDyPP.DB4O.Database - Consulta por Swarm
+[INFO ] 2019-08-06 07:35:49.333 [main] TP_Final_SDyPP.Tracker.Tracker - Conexión establecida con: (127.0.0.1:33499)
+[INFO ] 2019-08-06 07:35:49.580 [Thread-6] TP_Final_SDyPP.DB4O.Database - Nuevo Seed: (190.244.150.103:2001)
+[INFO ] 2019-08-06 07:36:46.559 [main] TP_Final_SDyPP.Tracker.Tracker - Conexión establecida con: (127.0.0.1:33511)
+[INFO ] 2019-08-06 07:36:46.803 [Thread-7] TP_Final_SDyPP.DB4O.Database - Nuevo Leecher: (190.244.150.103:2001)
+[INFO ] 2019-08-06 07:36:46.958 [Thread-7] TP_Final_SDyPP.DB4O.Database - Consulta por Swarm
