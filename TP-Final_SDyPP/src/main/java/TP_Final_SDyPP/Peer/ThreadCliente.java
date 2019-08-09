@@ -32,49 +32,33 @@ import TP_Final_SDyPP.Peer.ParteArchivo.Estado;
 
 public class ThreadCliente implements Runnable {
 
-	private ArrayList<DescargaPendiente> listaDescargasPendientes;
+	private Cliente cliente;
 	private ArrayList<SeedTable> swarm = new ArrayList<SeedTable>();
 	private ArrayList<SeedTable> peersDisponibles = new ArrayList<SeedTable>();
 	private String pathPartes;//Path donde almaceno partes descargadas y JSONPartes
 	private ArrayList<ParteArchivo> partesArchivo = new ArrayList<ParteArchivo>();
 	private String name;//del archivo a descargar
 	private int cantPartes;
-	private Servidor servidor;
 	private String hash;
-	private String ipExterna;
-	private int portExterno;
 	private KeysGenerator kg;
 	private boolean stop;
-	private boolean pausado;
 	public Logger logger;
 	
 	//Getters & Setters//
+	public Cliente getCliente() {
+		return cliente;
+	}
+	
+	public void setStop(boolean stop) {
+		this.stop = stop;
+	}
+	
 	public boolean getStop() {
 		return this.stop;
 	}
 	
-	public String getIpExterna() {
-		return ipExterna;
-	}
-
-	public void setIpExterna(String ipExterna) {
-		this.ipExterna = ipExterna;
-	}
-
-	public int getPortExterno() {
-		return portExterno;
-	}
-
-	public void setPortExterno(int portExterno) {
-		this.portExterno = portExterno;
-	}
-	
 	public String getHash() {
 		return hash;
-	}
-	
-	public Servidor getServidor() {
-		return servidor;
 	}
 	
 	public int getCantPartes() {
@@ -139,20 +123,16 @@ public class ThreadCliente implements Runnable {
 	}
 	
 	//Constructor//
-	public ThreadCliente(ArrayList<SeedTable> swarm, String path, String name, int cantPartes, Servidor s, String hash, String ip, int port, ArrayList<DescargaPendiente> listaDescargasPendientes) {
-		this.listaDescargasPendientes = listaDescargasPendientes;
+	public ThreadCliente(ArrayList<SeedTable> swarm, String path, String name, int cantPartes, String hash, Cliente cliente) {
+		this.cliente = cliente;
 		this.swarm = swarm;
 		this.setPeersDisponibles(swarm);
 		this.pathPartes = path;
 		this.name = name;
 		this.cantPartes = cantPartes;
-		this.servidor = s;
 		this.hash = hash;
-		this.ipExterna = ip;
-		this.portExterno = port;
 		this.kg = new KeysGenerator();
 		this.stop = false;
-		this.pausado = false;
 		
 		String filename = "logDescarga-"+name;
 		System.setProperty("logFilename", filename);
@@ -199,7 +179,7 @@ public class ThreadCliente implements Runnable {
 			logger.info("Descarga iniciada.");
 			ArrayList<Thread> threads = new ArrayList<Thread>();
 			
-			for(int i=0; i<10; i++)	
+			for(int i=0; i<2; i++)	
 			{
 				try {
 					ThreadLeecher tl = new ThreadLeecher(this);
@@ -222,6 +202,7 @@ public class ThreadCliente implements Runnable {
 			for (int i=0; i<threads.size(); i++) {
 			    try {
 					threads.get(i).join();
+					logger.info("ThreadCliente - thread "+i+" finalizo.");
 				} catch (InterruptedException e) {
 					logger.error("ThreadCliente: Fallo en join de leecher.");
 					e.printStackTrace();
@@ -240,9 +221,10 @@ public class ThreadCliente implements Runnable {
 				//Soy seed
 				ConexionTCP c = null;
 				try {
-					c = this.servidor.getTracker();
+					c = this.cliente.getServidor().getTracker();
+					
 					if(c!=null) {
-						Mensaje m = new Mensaje(Mensaje.Tipo.NEW_SEED, this.ipExterna, this.portExterno, hash);
+						Mensaje m = new Mensaje(Mensaje.Tipo.NEW_SEED, this.cliente.getIp(), this.cliente.getPort(), hash);
 						//encripto mensaje con la clave simetrica
 						byte[] datosAEncriptar = c.convertToBytes(m);
 						byte[] mensajeEncriptado = kg.encriptarSimetrico(c.getKey(), datosAEncriptar);
@@ -267,16 +249,22 @@ public class ThreadCliente implements Runnable {
 				file.delete();
 				//Retiro a Descarga pendiente de array
 				int i=0;
-				synchronized(this.listaDescargasPendientes) {
-					while(i<this.listaDescargasPendientes.size()){
-						if(this.listaDescargasPendientes.get(i).getName().equals(name)) {
-							this.listaDescargasPendientes.remove(i);
+				synchronized(this.cliente.getListaDescargasPendientes()) {
+					while(i<this.cliente.getListaDescargasPendientes().size()){
+						if(this.cliente.getListaDescargasPendientes().get(i).getName().equals(name)) {
+							this.cliente.eliminarDescargaPendiente(i);
 						}
 						i++;
 					}	
 				}	
-			}else {
-				this.pausado = true;
+			}else { 
+				for(DescargaPendiente dp : this.cliente.getListaDescargasPendientes()) {
+					if(dp.getHash().equals(this.hash))
+						dp.setActivo(false);
+				}
+				logger.info("Descarga "+this.name+" pausada");
+				//Saco a threadCliente del array
+				this.cliente.eliminarThreadCliente(this);
 			}
 		}
 	}
@@ -306,13 +294,13 @@ public class ThreadCliente implements Runnable {
 	
 	public boolean getSecretKey(ConexionTCP conexTCP, boolean mantenerConexion) throws Exception {//Compruebo que el nodo destino   
         try {										   					//este disponible y le envío mi Clave Pública
-        	Mensaje msg = new Mensaje(Mensaje.Tipo.CHECK_AVAILABLE, this.getServidor().getKpub(), mantenerConexion);
+        	Mensaje msg = new Mensaje(Mensaje.Tipo.CHECK_AVAILABLE, this.cliente.getServidor().getKpub(), mantenerConexion);
         	conexTCP.getOutObj().writeObject(msg);
         	
         	Mensaje response = (Mensaje) conexTCP.getInObj().readObject();
 	    	if (response.tipo == Mensaje.Tipo.ACK) {
 	    		//desencripto con la clave privada la clave simetrica
-		        byte[] msgDesencriptado = this.servidor.getKG().desencriptarAsimetrico(response.keyEncriptada, this.servidor.getKpriv());
+		        byte[] msgDesencriptado = this.cliente.getServidor().getKG().desencriptarAsimetrico(response.keyEncriptada, this.cliente.getServidor().getKpriv());
 		        SecretKey key = (SecretKey) conexTCP.convertFromBytes(msgDesencriptado);
 		        conexTCP.setKey(key);
 		        return true;
@@ -358,10 +346,5 @@ public class ThreadCliente implements Runnable {
 		for(File f : files) {
 			f.delete();
 		}
-	}
-
-	public void stop() {
-		this.stop = true;
-		while(!this.pausado) {}//Espero a que finalice el run correctamente, en caso que stop sea llamado durante el cierre de la app.
 	}
 }

@@ -17,8 +17,8 @@ public class PeerMain {
 
 	public static void main(String[] args) throws Exception {
 //		UPnP.closePortTCP(2000);//BORRAR
-		UPnP.closePortTCP(2001);//BORRAR
-//		UPnP.closePortTCP(2002);//BORRAR
+//		UPnP.closePortTCP(2001);//BORRAR
+		UPnP.closePortTCP(2002);//BORRAR
 		Scanner scanner = new Scanner(System.in);
 		
 		//Port UPnP

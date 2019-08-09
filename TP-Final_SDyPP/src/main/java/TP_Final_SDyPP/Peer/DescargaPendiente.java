@@ -1,14 +1,24 @@
 package TP_Final_SDyPP.Peer;
 
 public class DescargaPendiente {
+	private String hash;
 	private String name;
 	private boolean activo;
 	
-	public DescargaPendiente(String name) {
+	public DescargaPendiente(String name, String hash) {
+		this.hash = hash;
 		this.name = name;
 		this.activo = false;
 	}
 
+	public String getHash() {
+		return hash;
+	}
+
+	public void setHash(String hash) {
+		this.hash = hash;
+	}
+	
 	public String getName() {
 		return name;
 	}

@@ -75,7 +75,7 @@ public class ThreadPartesDisponibles implements Runnable {
 						
 						//encripto mensaje con la clave simetrica
 						byte[] datosAEncriptar = conexTCP.convertToBytes(m);
-						byte[] mensajeEncriptado = this.threadCliente.getServidor().getKG().encriptarSimetrico(conexTCP.getKey(), datosAEncriptar);
+						byte[] mensajeEncriptado = this.threadCliente.getCliente().getServidor().getKG().encriptarSimetrico(conexTCP.getKey(), datosAEncriptar);
 						conexTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
 						conexTCP.getOutBuff().flush();
 						
@@ -140,10 +140,10 @@ public class ThreadPartesDisponibles implements Runnable {
 					
 					try {
 						//Consigo tracker
-						conexTCP = this.threadCliente.getServidor().getTracker();
+						conexTCP = this.threadCliente.getCliente().getServidor().getTracker();
 						if(conexTCP!=null) {
 							//Pido nuevo swarm a tracker
-							Mensaje msg = new Mensaje(Mensaje.Tipo.SWARM, this.threadCliente.getIpExterna(), this.threadCliente.getPortExterno(), this.threadCliente.getHash());
+							Mensaje msg = new Mensaje(Mensaje.Tipo.SWARM, this.threadCliente.getCliente().getIp(), this.threadCliente.getCliente().getPort(), this.threadCliente.getHash());
 							//encripto mensaje con la clave simetrica
 							byte[] datosAEncriptar = conexTCP.convertToBytes(msg);
 							byte[] mensajeEncriptado = kg.encriptarSimetrico(conexTCP.getKey(), datosAEncriptar);

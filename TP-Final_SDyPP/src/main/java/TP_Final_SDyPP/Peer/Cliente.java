@@ -14,8 +14,6 @@ import java.net.UnknownHostException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -53,6 +51,40 @@ public class Cliente implements Runnable {
 	private ArrayList<DescargaPendiente> listaDescargasPendientes;
 	public Logger logger;
 	
+	public int getPort() {
+		return portExterno;
+	}
+	
+	public String getIp() {
+		return ipExterna;
+	}
+	
+	public Servidor getServidor() {
+		return servidor;
+	}
+	
+	public ArrayList<ThreadCliente> getListaThreadsClientes() {
+		synchronized(this) {
+			return listaThreadsClientes;
+		}
+	}
+
+	public ArrayList<DescargaPendiente> getListaDescargasPendientes() {
+		return listaDescargasPendientes;
+	}
+	
+	public void eliminarDescargaPendiente(int i) {
+		synchronized(this) {
+			this.listaDescargasPendientes.remove(i);
+		}
+	}
+	
+	public void eliminarThreadCliente(ThreadCliente tc) {
+		synchronized(this) {
+			this.listaDescargasPendientes.remove(tc);
+		}
+	}
+
 	//Constructor//
 	public Cliente(String path, int port, int portExterno, String ipExterna, UPnPAdmin admin, Servidor s, Logger logger) throws IOException {
 		this.setListaDescargasPendientes();
@@ -71,9 +103,18 @@ public class Cliente implements Runnable {
 		File pathDescargasPendientes = new File("Descargas pendientes/");
 		for (File file : pathDescargasPendientes.listFiles()) {
 			if (file.isFile()) {
-				String name = file.getName().substring(0, file.getName().lastIndexOf('.'));//remove .json
-				DescargaPendiente dp = new DescargaPendiente(name);
-				listaDescargasPendientes.add(dp);
+				Object obj;
+				try {
+					obj = new JSONParser().parse(new FileReader("Descargas pendientes/"+file.getName()));
+					JSONObject jo = (JSONObject) obj; 
+			        String name = (String) jo.get("name");
+			        String hash = (String) jo.get("hash");
+			         
+					DescargaPendiente dp = new DescargaPendiente(name,hash);
+					listaDescargasPendientes.add(dp);
+				} catch (IOException | ParseException e) {
+					e.printStackTrace();
+				}
 		    }
 		}
 	}
@@ -112,11 +153,11 @@ public class Cliente implements Runnable {
 					descargasPendientes();
 					break;
 				case "6":
-					this.logger.info("Llamda actualizar trackers");
+					this.logger.info("Llamada actualizar trackers");
 					actualizarTrackers();
 					break;
 				case "7":
-					this.logger.info("Llamda archivos ofrecidos");
+					this.logger.info("Llamada archivos ofrecidos");
 					archivosOfrecidos();
 					break;
 				case "8":
@@ -732,22 +773,7 @@ public class Cliente implements Runnable {
 	
 	    try {	    	
 	    	//Creo archivo con nombre no utilizado
-			String pathJSON = "";
-			boolean yaExiste = false;
-			int index = 1;
-			do {
-				File f = null;
-				if(index == 1) {
-					pathJSON = this.pathJSONs + "/" + name +".json";
-					f = new File(pathJSON);
-					index++;
-				}else {//Ya fallo el primer nombre. Pongo un numero entre parentesis desde ahora
-					pathJSON = this.pathJSONs + "/" + name +" ("+ index +").json";
-					f = new File(pathJSON);
-					index++;
-				}	
-				yaExiste = f.exists();
-			}while(yaExiste);//Mientras que el nombre exista no sale del loop
+			String pathJSON = this.getNameUnico(name,this.pathJSONs);
 	    	
 	        File archivo = new File(pathJSON);//Al JSON le pongo como nombre su ID para evitar repetidos
 	        archivo.createNewFile();//Almaceno JSON en una carpeta del cliente donde van todos los JSON
@@ -774,6 +800,26 @@ public class Cliente implements Runnable {
 	    }	
 	}
 	
+	private String getNameUnico(String name, String ubicacion) {
+		String path = "";
+		boolean yaExiste = false;
+		int index = 1;
+		do {
+			File f = null;
+			if(index == 1) {
+				path = ubicacion + "/" + name +".json";
+				f = new File(path);
+				index++;
+			}else {//Ya fallo el primer nombre. Pongo un numero entre parentesis desde ahora
+				path = ubicacion + "/" + name +" ("+ index +").json";
+				f = new File(path);
+				index++;
+			}	
+			yaExiste = f.exists();
+		}while(yaExiste);//Mientras que el nombre exista no sale del loop
+		return path;
+	}
+
 	//Descargar archivo//
 	private void descargarArchivo() {
 		System.out.println("Elija el META-Archivo del archivo que desea descargar, indicando su path:");
@@ -834,7 +880,9 @@ public class Cliente implements Runnable {
 	        	datosDescarga.put("cantPartes", cantPartesS);
 	        	
 	        	try {
-	        		File file = new File("Descargas pendientes/"+name+".json");
+	        		//Creo archivo con nombre no utilizado
+	    			pathJSON = this.getNameUnico(name,"Descargas pendientes");
+	        		File file = new File(pathJSON);
 	        		file.createNewFile();
 	    			FileWriter fileW = new FileWriter(file);
 	    			fileW.write(datosDescarga.toJSONString());
@@ -845,7 +893,7 @@ public class Cliente implements Runnable {
 	    		}
 	        	
 	        	//Agrego a lista DescargasPendientes
-	        	DescargaPendiente dp = new DescargaPendiente(name);
+	        	DescargaPendiente dp = new DescargaPendiente(name,hash);
 	        	dp.setActivo(true);
 	        	this.listaDescargasPendientes.add(dp);
 	        	
@@ -872,7 +920,7 @@ public class Cliente implements Runnable {
 	    		        
 	    				if(response.tipo == Mensaje.Tipo.SWARM) {
 	    					ArrayList<SeedTable> swarm = (ArrayList<SeedTable>) response.lista;
-	    					ThreadCliente tc = new ThreadCliente(swarm, pathArchivo+"/"+nameSinExtension, name, cantPartes, this.servidor, hash, this.ipExterna, this.portExterno, this.listaDescargasPendientes);
+	    					ThreadCliente tc = new ThreadCliente(swarm, pathArchivo+"/"+nameSinExtension, name, cantPartes, hash, this);
 	    					listaThreadsClientes.add(tc);
 	    					Thread t = new Thread(tc);
 	    					t.start();
@@ -989,7 +1037,7 @@ public class Cliente implements Runnable {
 			        
 					if(response.tipo == Mensaje.Tipo.SWARM) {
 						ArrayList<SeedTable> swarm = (ArrayList<SeedTable>) response.lista;
-						ThreadCliente tc = new ThreadCliente(swarm, path, name, cantPartes, this.servidor, hash, ip, port, this.listaDescargasPendientes);
+						ThreadCliente tc = new ThreadCliente(swarm, path, name, cantPartes, hash, this);
 						listaThreadsClientes.add(tc);
 						Thread t = new Thread(tc);
 						t.start();
@@ -1012,18 +1060,13 @@ public class Cliente implements Runnable {
 		//Busco ThreadCliente en lista según nombre
 		int threadCliente = 0;
 		ThreadCliente tc = null;
-		String name = this.listaDescargasPendientes.get(pos).getName();
+		String hash = this.listaDescargasPendientes.get(pos).getHash();
 		for(int i=0; i<this.listaThreadsClientes.size(); i++) {
-			if(name.equals(this.listaThreadsClientes.get(i).getName()))
+			if(hash.equals(this.listaThreadsClientes.get(i).getHash()))
 				tc = this.listaThreadsClientes.get(i);
 		}
-		
 		logger.info("Pausando descarga "+tc.getName());
-		tc.stop();
-		this.listaDescargasPendientes.get(pos).setActivo(false);
-		logger.info("Descarga "+tc.getName()+" pausada");
-		//Saco a threadCliente del array
-		this.listaThreadsClientes.remove(threadCliente);
+		tc.setStop(true);
 	}
 
 	//Descargar Archivo--> Elige carpeta donde almacenar el archivo a descargar//

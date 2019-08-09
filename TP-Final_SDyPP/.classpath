@@ -23,6 +23,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Mariano Zabala/workspace/TP-Final_SDyPP/db4o-8.0.249.16098-all-java5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Mariano Zabala/workspace/SD-PP-Final/TP-Final_SDyPP/db4o-8.0.249.16098-all-java5.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

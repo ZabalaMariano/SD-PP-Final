@@ -194,7 +194,7 @@ public class ThreadLeecher implements Runnable {
 							}else {
 								//No pude recuperar parte. Ante la posibilidad de que haya eliminado las partes dejo de buscar en este peer
 								//el peer se elimina del swarm.
-								System.err.println("Falló al recuperar parte de peer servidor.");
+								this.threadCliente.logger.error("Falló al recuperar parte de peer "+ip+":"+port);
 								conexTCP.getSocket().close();
 								encontre = false;//Dejar de buscar en este peer.
 								fallo = true;
@@ -214,7 +214,7 @@ public class ThreadLeecher implements Runnable {
 								}
 							}
 						} catch (Exception e) {
-							this.threadCliente.logger.error("ThreadLeecher - Falló al crear conexión contra peer servidor para recibir parte de archivo.");
+							this.threadCliente.logger.error("ThreadLeecher - Falló al crear conexión contra peer servidor para recibir parte "+nroParte);
 							e.printStackTrace();
 							fallo = true;
 							//vuelve estado de parte descargada en array "partesArchivo" a pendiente
@@ -237,6 +237,7 @@ public class ThreadLeecher implements Runnable {
 				//Al salir del while le digo al peer servidor que disminuya conexiones salientes.
 				if(!fallo) {					
 					try {
+						this.threadCliente.logger.info("ThreadLeecher - LOADDOWN peer "+ip+":"+port);
 						Mensaje msg = new Mensaje(Mensaje.Tipo.LOADDOWN);
 						//encripto mensaje con la clave simetrica
 						byte[] datosAEncriptar = conexTCP.convertToBytes(msg);

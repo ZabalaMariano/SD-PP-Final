@@ -1,0 +1,282 @@
+[INFO ] 2019-08-06 18:58:15.978 [main] TP_Final_SDyPP.Peer.Cliente - Cliente 190.244.150.103:2002 iniciado
+[INFO ] 2019-08-06 18:58:18.838 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Llamada descargar meta archivo
+[INFO ] 2019-08-06 18:58:24.288 [Thread-11] TP_Final_SDyPP.Peer.Cliente - JSON descargado exitosamente.
+[INFO ] 2019-08-06 18:58:30.409 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Llamada descargar archivo
+[INFO ] 2019-08-06 18:59:14.871 [Thread-11] TP_Final_SDyPP.Peer.Cliente - ThreadCliente, para descargar archivo p.pdf, iniciado
+[INFO ] 2019-08-06 18:59:14.984 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - Descarga iniciada.
+[INFO ] 2019-08-06 18:59:14.999 [Thread-23] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Consulta partes pendientes a descargar
+[INFO ] 2019-08-06 18:59:15.159 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-06 18:59:15.159 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-06 18:59:15.159 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 2 de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 18:59:15.190 [Thread-23] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - El swarm posee un 100.0% del total del archivo a descargar.
+[INFO ] 2019-08-06 18:59:15.190 [Thread-23] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Del 100.0% disponible en el swarm, descargó 0.0%
+[INFO ] 2019-08-06 18:59:15.415 [Thread-21] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2001) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-06 18:59:15.415 [Thread-21] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2001) de peers disponibles
+[INFO ] 2019-08-06 18:59:15.415 [Thread-21] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 0 de peer 190.244.150.103:2001
+[INFO ] 2019-08-06 18:59:15.415 [Thread-22] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Actualización de peers disponibles con swarm
+[INFO ] 2019-08-06 18:59:16.696 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 2 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 18:59:16.711 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 33.0% Descargado
+[INFO ] 2019-08-06 18:59:16.711 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 1 de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 18:59:17.400 [Thread-20] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-06 18:59:17.400 [Thread-20] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-06 18:59:20.427 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 1 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 18:59:20.434 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 66.0% Descargado
+[INFO ] 2019-08-06 18:59:24.170 [Thread-21] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 0 descargada de peer 190.244.150.103:2001
+[INFO ] 2019-08-06 18:59:24.184 [Thread-21] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 100.0% Descargado
+[INFO ] 2019-08-06 18:59:24.248 [Thread-19] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2001) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-06 18:59:24.248 [Thread-19] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2001) de peers disponibles
+[INFO ] 2019-08-06 18:59:24.248 [Thread-17] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Actualización de peers disponibles con swarm
+[INFO ] 2019-08-06 18:59:24.398 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-06 18:59:24.398 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-06 18:59:24.548 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2001) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-06 18:59:24.548 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2001) de peers disponibles
+[INFO ] 2019-08-06 18:59:24.548 [Thread-16] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Actualización de peers disponibles con swarm
+[INFO ] 2019-08-06 18:59:24.766 [Thread-18] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-06 18:59:24.766 [Thread-18] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-06 18:59:24.938 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2001) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-06 18:59:24.938 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2001) de peers disponibles
+[INFO ] 2019-08-06 18:59:24.938 [Thread-20] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Actualización de peers disponibles con swarm
+[INFO ] 2019-08-06 18:59:25.079 [Thread-22] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-06 18:59:25.079 [Thread-22] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-06 18:59:25.224 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - Descarga finalizada.
+[INFO ] 2019-08-06 21:05:02.840 [main] TP_Final_SDyPP.Peer.Cliente - Cliente 190.244.150.103:2002 iniciado
+[INFO ] 2019-08-06 21:05:13.279 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Llamada descargas pendientes
+[INFO ] 2019-08-06 21:06:17.328 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Llamada descargar archivo
+[INFO ] 2019-08-06 21:06:36.809 [Thread-11] TP_Final_SDyPP.Peer.Cliente - ThreadCliente, para descargar archivo p.pdf, iniciado
+[INFO ] 2019-08-06 21:06:36.838 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - Descarga iniciada.
+[INFO ] 2019-08-06 21:06:36.985 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Consulta partes pendientes a descargar
+[INFO ] 2019-08-06 21:06:37.091 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-06 21:06:37.091 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-06 21:06:37.091 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 1 de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 21:06:37.091 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Actualización de peers disponibles con swarm
+[INFO ] 2019-08-06 21:06:37.307 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - El swarm posee un 100.0% del total del archivo a descargar.
+[INFO ] 2019-08-06 21:06:37.307 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Del 100.0% disponible en el swarm, descargó 0.0%
+[INFO ] 2019-08-06 21:06:43.915 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 1 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 21:06:43.918 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 33.0% Descargado
+[INFO ] 2019-08-06 21:06:43.919 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 2 de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 21:06:44.324 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-06 21:06:44.324 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-06 21:06:44.324 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 0 de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 21:06:46.082 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 2 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 21:06:46.085 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 66.0% Descargado
+[INFO ] 2019-08-06 21:06:46.085 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - LOADDOWN peer 190.244.150.103:2000
+[INFO ] 2019-08-06 21:06:46.086 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Actualización de peers disponibles con swarm
+[INFO ] 2019-08-06 21:06:47.308 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Consulta partes pendientes a descargar
+[INFO ] 2019-08-06 21:06:48.328 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - El swarm posee un 100.0% del total del archivo a descargar.
+[INFO ] 2019-08-06 21:06:48.328 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Del 100.0% disponible en el swarm, descargó 66.0%
+[INFO ] 2019-08-06 21:06:58.328 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Consulta partes pendientes a descargar
+[INFO ] 2019-08-06 21:07:01.182 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - El swarm posee un 100.0% del total del archivo a descargar.
+[INFO ] 2019-08-06 21:07:01.183 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Del 100.0% disponible en el swarm, descargó 66.0%
+[INFO ] 2019-08-06 21:07:01.579 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 0 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 21:07:01.580 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 100.0% Descargado
+[INFO ] 2019-08-06 21:07:01.580 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - LOADDOWN peer 190.244.150.103:2000
+[INFO ] 2019-08-06 21:07:01.581 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 0 termino.
+[INFO ] 2019-08-06 21:07:01.602 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-06 21:07:01.602 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-06 21:07:01.602 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - LOADDOWN peer 190.244.150.103:2000
+[INFO ] 2019-08-06 21:07:01.603 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 1 termino.
+[INFO ] 2019-08-06 21:07:11.184 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 2 termino.
+[INFO ] 2019-08-06 21:07:11.213 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - Descarga finalizada.
+[INFO ] 2019-08-06 21:08:23.342 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Llamada descargar archivo
+[INFO ] 2019-08-06 21:09:00.844 [Thread-11] TP_Final_SDyPP.Peer.Cliente - ThreadCliente, para descargar archivo p.pdf, iniciado
+[INFO ] 2019-08-06 21:09:00.846 [Thread-16] TP_Final_SDyPP.Peer.ThreadCliente - Descarga iniciada.
+[INFO ] 2019-08-06 21:09:00.848 [Thread-19] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Consulta partes pendientes a descargar
+[INFO ] 2019-08-06 21:09:01.198 [Thread-17] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-06 21:09:01.198 [Thread-17] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-06 21:09:01.198 [Thread-17] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 2 de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 21:09:01.199 [Thread-18] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Actualización de peers disponibles con swarm
+[INFO ] 2019-08-06 21:09:01.310 [Thread-19] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - El swarm posee un 100.0% del total del archivo a descargar.
+[INFO ] 2019-08-06 21:09:01.310 [Thread-19] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Del 100.0% disponible en el swarm, descargó 0.0%
+[INFO ] 2019-08-06 21:09:02.115 [Thread-17] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 2 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 21:09:02.116 [Thread-17] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 33.0% Descargado
+[INFO ] 2019-08-06 21:09:02.117 [Thread-17] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 0 de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 21:09:03.038 [Thread-18] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-06 21:09:03.038 [Thread-18] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-06 21:09:03.038 [Thread-18] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 1 de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 21:09:03.374 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Llamada descargas pendientes
+[INFO ] 2019-08-06 21:09:03.610 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Pausando descarga p.pdf
+[INFO ] 2019-08-06 21:09:06.143 [Thread-17] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 0 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 21:09:06.174 [Thread-17] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 66.0% Descargado
+[INFO ] 2019-08-06 21:09:06.174 [Thread-17] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - LOADDOWN peer 190.244.150.103:2000
+[INFO ] 2019-08-06 21:09:06.176 [Thread-16] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 0 termino.
+[INFO ] 2019-08-06 21:09:12.947 [Thread-18] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 1 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 21:09:12.950 [Thread-18] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 100.0% Descargado
+[INFO ] 2019-08-06 21:09:12.950 [Thread-18] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - LOADDOWN peer 190.244.150.103:2000
+[INFO ] 2019-08-06 21:09:12.951 [Thread-16] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 1 termino.
+[INFO ] 2019-08-06 21:09:12.951 [Thread-16] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 2 termino.
+[INFO ] 2019-08-06 22:04:07.891 [main] TP_Final_SDyPP.Peer.Cliente - Cliente 190.244.150.103:2002 iniciado
+[INFO ] 2019-08-06 22:04:56.917 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Llamada descargar archivo
+[INFO ] 2019-08-06 22:05:05.445 [Thread-11] TP_Final_SDyPP.Peer.Cliente - ThreadCliente, para descargar archivo p.pdf, iniciado
+[INFO ] 2019-08-06 22:05:05.448 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - Descarga iniciada.
+[INFO ] 2019-08-06 22:05:05.455 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Consulta partes pendientes a descargar
+[INFO ] 2019-08-06 22:05:05.606 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-06 22:05:05.607 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-06 22:05:05.607 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 2 de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:05:05.608 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Actualización de peers disponibles con swarm
+[INFO ] 2019-08-06 22:05:05.664 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - El swarm posee un 100.0% del total del archivo a descargar.
+[INFO ] 2019-08-06 22:05:05.664 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Del 100.0% disponible en el swarm, descargó 0.0%
+[INFO ] 2019-08-06 22:05:06.127 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 2 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:05:06.128 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 33.0% Descargado
+[INFO ] 2019-08-06 22:05:06.129 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 0 de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:05:06.644 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-06 22:05:06.644 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-06 22:05:06.644 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 1 de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:05:08.073 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 0 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:05:08.075 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 66.0% Descargado
+[INFO ] 2019-08-06 22:05:08.075 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - LOADDOWN peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:05:08.076 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Actualización de peers disponibles con swarm
+[INFO ] 2019-08-06 22:05:10.591 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 1 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:05:10.593 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 100.0% Descargado
+[INFO ] 2019-08-06 22:05:10.593 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - LOADDOWN peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:05:10.622 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-06 22:05:10.622 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-06 22:05:10.622 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - LOADDOWN peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:05:10.625 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 0 termino.
+[INFO ] 2019-08-06 22:05:10.626 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 1 termino.
+[INFO ] 2019-08-06 22:05:15.664 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 2 termino.
+[INFO ] 2019-08-06 22:05:15.700 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - Descarga finalizada.
+[INFO ] 2019-08-06 22:05:50.523 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Llamada descargar archivo
+[INFO ] 2019-08-06 22:08:59.269 [Thread-11] TP_Final_SDyPP.Peer.Cliente - ThreadCliente, para descargar archivo p.pdf, iniciado
+[INFO ] 2019-08-06 22:08:59.271 [Thread-16] TP_Final_SDyPP.Peer.ThreadCliente - Descarga iniciada.
+[INFO ] 2019-08-06 22:08:59.273 [Thread-19] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Consulta partes pendientes a descargar
+[INFO ] 2019-08-06 22:08:59.396 [Thread-17] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-06 22:08:59.396 [Thread-17] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-06 22:08:59.397 [Thread-17] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 0 de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:08:59.399 [Thread-18] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Actualización de peers disponibles con swarm
+[INFO ] 2019-08-06 22:08:59.491 [Thread-19] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - El swarm posee un 100.0% del total del archivo a descargar.
+[INFO ] 2019-08-06 22:08:59.491 [Thread-19] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Del 100.0% disponible en el swarm, descargó 0.0%
+[INFO ] 2019-08-06 22:09:00.786 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Llamada descargas pendientes
+[INFO ] 2019-08-06 22:09:02.083 [Thread-18] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-06 22:09:02.083 [Thread-18] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-06 22:09:02.083 [Thread-18] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 1 de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:09:02.089 [Thread-17] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 0 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:09:02.090 [Thread-17] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 33.0% Descargado
+[INFO ] 2019-08-06 22:09:02.091 [Thread-17] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 2 de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:09:02.842 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Pausando descarga p.pdf
+[INFO ] 2019-08-06 22:09:05.489 [Thread-18] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 1 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:09:05.504 [Thread-18] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 66.0% Descargado
+[INFO ] 2019-08-06 22:09:05.504 [Thread-18] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - LOADDOWN peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:09:06.410 [Thread-17] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 2 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:09:06.440 [Thread-17] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 100.0% Descargado
+[INFO ] 2019-08-06 22:09:06.440 [Thread-17] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - LOADDOWN peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:09:06.441 [Thread-16] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 0 termino.
+[INFO ] 2019-08-06 22:09:06.441 [Thread-16] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 1 termino.
+[INFO ] 2019-08-06 22:09:09.491 [Thread-16] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 2 termino.
+[INFO ] 2019-08-06 22:44:39.622 [main] TP_Final_SDyPP.Peer.Cliente - Cliente 190.244.150.103:2002 iniciado
+[INFO ] 2019-08-06 22:46:51.299 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Llamada descargar archivo
+[INFO ] 2019-08-06 22:47:13.554 [Thread-11] TP_Final_SDyPP.Peer.Cliente - ThreadCliente, para descargar archivo p.pdf, iniciado
+[INFO ] 2019-08-06 22:47:13.559 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - Descarga iniciada.
+[INFO ] 2019-08-06 22:47:13.559 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Consulta partes pendientes a descargar
+[INFO ] 2019-08-06 22:47:13.745 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-06 22:47:13.761 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-06 22:47:13.761 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 1 de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:47:13.761 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Actualización de peers disponibles con swarm
+[INFO ] 2019-08-06 22:47:13.979 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - El swarm posee un 100.0% del total del archivo a descargar.
+[INFO ] 2019-08-06 22:47:13.979 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Del 100.0% disponible en el swarm, descargó 0.0%
+[INFO ] 2019-08-06 22:47:23.980 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Consulta partes pendientes a descargar
+[INFO ] 2019-08-06 22:47:25.623 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Llamada descargas pendientes
+[INFO ] 2019-08-06 22:47:27.390 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-06 22:47:27.390 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-06 22:47:27.390 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 0 de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:47:27.567 [Thread-11] TP_Final_SDyPP.Peer.Cliente - ThreadCliente, para descargar archivo p.pdf, iniciado
+[INFO ] 2019-08-06 22:47:27.583 [Thread-16] TP_Final_SDyPP.Peer.ThreadCliente - Descarga iniciada.
+[INFO ] 2019-08-06 22:47:27.583 [Thread-19] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Consulta partes pendientes a descargar
+[INFO ] 2019-08-06 22:47:28.662 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 1 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:47:28.663 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 33.0% Descargado
+[INFO ] 2019-08-06 22:47:28.663 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 2 de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:47:28.948 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - El swarm posee un 100.0% del total del archivo a descargar.
+[INFO ] 2019-08-06 22:47:28.948 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Del 100.0% disponible en el swarm, descargó 0.0%
+[INFO ] 2019-08-06 22:47:29.229 [Thread-19] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - El swarm posee un 100.0% del total del archivo a descargar.
+[INFO ] 2019-08-06 22:47:29.229 [Thread-19] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Del 100.0% disponible en el swarm, descargó 0.0%
+[INFO ] 2019-08-06 22:47:30.975 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Llamada descargas pendientes
+[INFO ] 2019-08-06 22:47:32.298 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Pausando descarga p.pdf
+[INFO ] 2019-08-06 22:47:38.958 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Consulta partes pendientes a descargar
+[INFO ] 2019-08-06 22:47:40.555 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 0 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:47:40.560 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 66.0% Descargado
+[INFO ] 2019-08-06 22:47:40.560 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - LOADDOWN peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:47:40.560 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Actualización de peers disponibles con swarm
+[INFO ] 2019-08-06 22:47:43.201 [Thread-17] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-06 22:47:43.201 [Thread-17] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-06 22:47:43.208 [Thread-17] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - LOADDOWN peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:47:43.209 [Thread-18] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Actualización de peers disponibles con swarm
+[INFO ] 2019-08-06 22:47:43.209 [Thread-16] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 0 termino.
+[INFO ] 2019-08-06 22:47:43.210 [Thread-16] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 1 termino.
+[INFO ] 2019-08-06 22:47:43.210 [Thread-16] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 2 termino.
+[INFO ] 2019-08-06 22:47:44.560 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 2 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:47:44.563 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 100.0% Descargado
+[INFO ] 2019-08-06 22:47:44.563 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - LOADDOWN peer 190.244.150.103:2000
+[INFO ] 2019-08-06 22:47:44.563 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 0 termino.
+[INFO ] 2019-08-06 22:47:44.657 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - El swarm posee un 100.0% del total del archivo a descargar.
+[INFO ] 2019-08-06 22:47:44.657 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Del 100.0% disponible en el swarm, descargó 33.0%
+[INFO ] 2019-08-07 02:43:42.335 [main] TP_Final_SDyPP.Peer.Cliente - Cliente 190.244.150.103:2002 iniciado
+[INFO ] 2019-08-07 03:10:05.738 [main] TP_Final_SDyPP.Peer.Cliente - Cliente 190.244.150.103:2002 iniciado
+[INFO ] 2019-08-07 03:10:17.930 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Llamada descargar archivo
+[INFO ] 2019-08-07 03:10:30.479 [Thread-11] TP_Final_SDyPP.Peer.Cliente - ThreadCliente, para descargar archivo p.pdf, iniciado
+[INFO ] 2019-08-07 03:10:30.483 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - Descarga iniciada.
+[INFO ] 2019-08-07 03:10:30.488 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Consulta partes pendientes a descargar
+[INFO ] 2019-08-07 03:10:30.692 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-07 03:10:30.692 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-07 03:10:30.693 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 1 de peer 190.244.150.103:2000
+[INFO ] 2019-08-07 03:10:30.694 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Actualización de peers disponibles con swarm
+[INFO ] 2019-08-07 03:10:30.734 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - El swarm posee un 100.0% del total del archivo a descargar.
+[INFO ] 2019-08-07 03:10:30.735 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Del 100.0% disponible en el swarm, descargó 0.0%
+[INFO ] 2019-08-07 03:10:34.253 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 1 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-07 03:10:34.254 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 33.0% Descargado
+[INFO ] 2019-08-07 03:10:34.254 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 2 de peer 190.244.150.103:2000
+[INFO ] 2019-08-07 03:10:34.283 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-07 03:10:34.283 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-07 03:10:34.284 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 0 de peer 190.244.150.103:2000
+[INFO ] 2019-08-07 03:10:36.534 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 2 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-07 03:10:36.536 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 66.0% Descargado
+[INFO ] 2019-08-07 03:10:36.536 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - LOADDOWN peer 190.244.150.103:2000
+[INFO ] 2019-08-07 03:10:36.537 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Actualización de peers disponibles con swarm
+[INFO ] 2019-08-07 03:10:40.737 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Consulta partes pendientes a descargar
+[INFO ] 2019-08-07 03:10:42.752 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - El swarm posee un 100.0% del total del archivo a descargar.
+[INFO ] 2019-08-07 03:10:42.752 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Del 100.0% disponible en el swarm, descargó 66.0%
+[INFO ] 2019-08-07 03:10:48.541 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 0 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-07 03:10:48.543 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 100.0% Descargado
+[INFO ] 2019-08-07 03:10:48.543 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - LOADDOWN peer 190.244.150.103:2000
+[INFO ] 2019-08-07 03:10:48.549 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-07 03:10:48.549 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-07 03:10:48.549 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - LOADDOWN peer 190.244.150.103:2000
+[INFO ] 2019-08-07 03:10:48.550 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 0 termino.
+[INFO ] 2019-08-07 03:10:48.550 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 1 termino.
+[INFO ] 2019-08-07 03:10:52.753 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 2 termino.
+[INFO ] 2019-08-07 03:10:52.849 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - Descarga finalizada.
+[INFO ] 2019-08-07 03:14:49.259 [main] TP_Final_SDyPP.Peer.Cliente - Cliente 190.244.150.103:2002 iniciado
+[INFO ] 2019-08-07 03:14:59.802 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Llamada descargas pendientes
+[INFO ] 2019-08-07 03:28:17.171 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Llamada descargar archivo
+[INFO ] 2019-08-07 03:28:30.229 [Thread-11] TP_Final_SDyPP.Peer.Cliente - ThreadCliente, para descargar archivo p.pdf, iniciado
+[INFO ] 2019-08-07 03:28:30.233 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - Descarga iniciada.
+[INFO ] 2019-08-07 03:28:30.242 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Consulta partes pendientes a descargar
+[INFO ] 2019-08-07 03:28:30.528 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-07 03:28:30.528 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-07 03:28:30.529 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 2 de peer 190.244.150.103:2000
+[INFO ] 2019-08-07 03:28:30.532 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Actualización de peers disponibles con swarm
+[INFO ] 2019-08-07 03:28:30.592 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - El swarm posee un 100.0% del total del archivo a descargar.
+[INFO ] 2019-08-07 03:28:30.592 [Thread-15] TP_Final_SDyPP.Peer.ThreadCliente - ThreadPartesDisponibles - Del 100.0% disponible en el swarm, descargó 0.0%
+[INFO ] 2019-08-07 03:28:31.424 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 2 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-07 03:28:31.425 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 33.0% Descargado
+[INFO ] 2019-08-07 03:28:31.425 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 1 de peer 190.244.150.103:2000
+[INFO ] 2019-08-07 03:28:31.430 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Llamada descargas pendientes
+[INFO ] 2019-08-07 03:28:32.314 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Conexión con peer disponible (190.244.150.103:2000) y obtención de archivo de partes descargadas
+[INFO ] 2019-08-07 03:28:32.314 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Retirar al peer (190.244.150.103:2000) de peers disponibles
+[INFO ] 2019-08-07 03:28:32.314 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Descargando parte número 0 de peer 190.244.150.103:2000
+[INFO ] 2019-08-07 03:28:34.362 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Pausando descarga p.pdf
+[INFO ] 2019-08-07 03:28:37.347 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 1 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-07 03:28:37.349 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 66.0% Descargado
+[INFO ] 2019-08-07 03:28:37.349 [Thread-13] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - LOADDOWN peer 190.244.150.103:2000
+[INFO ] 2019-08-07 03:28:37.351 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 0 termino.
+[INFO ] 2019-08-07 03:28:52.526 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - Parte número 0 descargada de peer 190.244.150.103:2000
+[INFO ] 2019-08-07 03:28:52.529 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - 100.0% Descargado
+[INFO ] 2019-08-07 03:28:52.529 [Thread-14] TP_Final_SDyPP.Peer.ThreadCliente - ThreadLeecher - LOADDOWN peer 190.244.150.103:2000
+[INFO ] 2019-08-07 03:28:52.530 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 1 termino.
+[INFO ] 2019-08-07 03:28:52.530 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 2 termino.
+[INFO ] 2019-08-07 03:28:52.530 [Thread-12] TP_Final_SDyPP.Peer.ThreadCliente - Descarga p.pdf pausada
+[INFO ] 2019-08-07 03:29:24.529 [Thread-11] TP_Final_SDyPP.Peer.Cliente - Llamada descargas pendientes
+[INFO ] 2019-08-07 03:29:27.176 [Thread-11] TP_Final_SDyPP.Peer.Cliente - ThreadCliente, para descargar archivo p.pdf, iniciado
+[INFO ] 2019-08-07 03:29:27.178 [Thread-16] TP_Final_SDyPP.Peer.ThreadCliente - Descarga iniciada.
+[INFO ] 2019-08-07 03:29:27.179 [Thread-16] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 0 termino.
+[INFO ] 2019-08-07 03:29:27.179 [Thread-16] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 1 termino.
+[INFO ] 2019-08-07 03:29:27.180 [Thread-16] TP_Final_SDyPP.Peer.ThreadCliente - ThreadCliente: leecher 2 termino.
+[INFO ] 2019-08-07 03:29:27.208 [Thread-16] TP_Final_SDyPP.Peer.ThreadCliente - Descarga finalizada.
