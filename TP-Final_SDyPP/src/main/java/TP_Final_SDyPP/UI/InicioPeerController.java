@@ -1,7 +1,6 @@
 package TP_Final_SDyPP.UI;
 
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,11 +11,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.ModuleLayer.Controller;
 
 import TP_Final_SDyPP.Observable.Observer;
 import TP_Final_SDyPP.Peer.PeerMain;
