@@ -1,0 +1,8 @@
+#msg{
+	-fx-opacity: 0.8;
+	-fx-background-color: #e71919;
+}
+
+Button:hover{
+	-fx-cursor: hand;
+}

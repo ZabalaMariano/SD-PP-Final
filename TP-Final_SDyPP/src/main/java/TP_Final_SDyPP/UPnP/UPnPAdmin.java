@@ -1,38 +1,28 @@
 package TP_Final_SDyPP.UPnP;
 
-import java.net.ServerSocket;
-import java.net.Socket;
-
 public class UPnPAdmin {
     
     public UPnPAdmin() {}
 
-    public boolean setPortForwarding(int port) {
-   
-    	System.out.println("CONFIGURACIÓN UPnP - Port Forwarding");           
-        
-        if (UPnP.isUPnPAvailable()) { //UPnP disponible?
+    public String setPortForwarding(int port) {
+    	String msg = "";
+    	if (UPnP.isUPnPAvailable()) { //UPnP disponible?
             if (UPnP.isMappedTCP(port)) { //el puerto ya está mapeado?
-                System.out.print("No se puedo configurar UPnP port forwarding: el puerto ya está mapeado. Intente con otro: ");
-                return false;
+                msg = "-No se puedo configurar UPnP port forwarding:\nel puerto ya está mapeado.";
             } else if (UPnP.openPortTCP(port)) { //intenta mapear port
-                System.out.println("UPnP port forwarding habilitado");
+            	msg = "ok";
             } else {
-                System.err.print("Fallo al intentar mapear el puerto. Intente nuevamente:");
-                return false;
+            	msg = "-Fallo al intentar mapear el puerto.";
             }
         } else {
-            System.err.print("UPnP no está disponible. Aseguresé que este disponible en su equipo y router. Intente de nuevo:");
-            return false;
+        	msg = "-UPnP no está disponible. Aseguresé que esté\ndisponible en su equipo (activar detección de redes) y router.";
         }
 
-        return true;
+        return msg;
     }
     
-    public void closePort(int port) {
-    	System.out.println("Cerrando el puerto en uso por UPnP...");
-        UPnP.closePortTCP(port);
-        System.out.println("Puerto cerrado.");
+    public boolean closePort(int port) {
+        return UPnP.closePortTCP(port);
     }
     
     public String getPortRouter(int puertoEscucha) throws Exception {

@@ -1,27 +1,26 @@
 package TP_Final_SDyPP.Tracker;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import TP_Final_SDyPP.Otros.ConexionTCP;
+import TP_Final_SDyPP.Otros.KeysGenerator;
 import TP_Final_SDyPP.Otros.Mensaje;
+import TP_Final_SDyPP.Otros.TrackerManager;
 
 public class ThreadTrackerUpdate implements Runnable{
 
 	private ArrayList<String> hashes = new ArrayList<String>();
 	private Tracker tracker;
+	private KeysGenerator kg;
+	private TrackerManager tm;
+	private String ipPrimarioActual;
+	private int portPrimarioActual;
 	
-	public ThreadTrackerUpdate(ArrayList<String> hashes, Tracker tracker) {
+	public ThreadTrackerUpdate(ArrayList<String> hashes, Tracker tracker, String ipPrimarioActual, int portPrimarioActual) {
+		this.tm = new TrackerManager();
+		this.kg = new KeysGenerator();
+		this.ipPrimarioActual = ipPrimarioActual;
+		this.portPrimarioActual = portPrimarioActual;
 		this.setHashes(hashes);
 		this.setTracker(tracker);
 	}
@@ -52,28 +51,19 @@ public class ThreadTrackerUpdate implements Runnable{
 		ConexionTCP conexionTCP = null;
 		try {
 			
-			conexionTCP = new ConexionTCP(this.getTracker().getTrackerPrimario().getIp(), this.getTracker().getTrackerPrimario().getPort());
-			this.tracker.getSecretKey(conexionTCP);
+			conexionTCP = new ConexionTCP(this.ipPrimarioActual, this.portPrimarioActual);
+			tm.getSecretKey(conexionTCP, true, this.tracker.getkPub(), this.tracker.getkPriv(), kg, this.tracker.logger);//Obtengo clave simetrica
 			Mensaje m = null;
-			
+			this.tracker.logger.info("ThreadTrackerUpdate conexion con primario");
 			//Recibo archivos que me falten
 			int i = 0;
 			while(!hashes.isEmpty()) {
+				this.tracker.logger.info("Cantidad jsons por recuperar: "+hashes.size());
 				String hash = hashes.get(i);
 				m = new Mensaje(Mensaje.Tipo.GET_FILE, hash); 
 				try {				
-					//encripto mensaje con la clave simetrica
-					byte[] datosAEncriptar = conexionTCP.convertToBytes(m);
-					byte[] mensajeEncriptado = this.tracker.getKG().encriptarSimetrico(conexionTCP.getKey(), datosAEncriptar);
-					conexionTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-					conexionTCP.getOutBuff().flush();
-					
-					int msgSize = 1024*1024;//1MB
-			        byte[] buffer = new byte[msgSize];
-			        int byteread = conexionTCP.getInBuff().read(buffer, 0, msgSize);
-			        //desencripto con la clave simetrica
-			        byte[] datosEncriptados = Arrays.copyOfRange(buffer, 0, byteread);
-			        byte[] msgDesencriptado = this.tracker.getKG().desencriptarSimetrico(conexionTCP.getKey(), datosEncriptados);
+					m.enviarMensaje(conexionTCP, m, kg);
+			        byte[] msgDesencriptado = m.recibirMensaje(conexionTCP, kg);
 			        Mensaje response = (Mensaje) conexionTCP.convertFromBytes(msgDesencriptado);
 					
 					if(response.tipo == Mensaje.Tipo.ACK) {
@@ -83,32 +73,23 @@ public class ThreadTrackerUpdate implements Runnable{
 					}
 				} catch (Exception e) {
 					fallo = true;
-					this.tracker.logger.error("Falló recuperación de jsons de primario.");
+					this.tracker.logger.error("ThreadTrackerUpdate - Falló recuperación de json de primario.");
 					e.printStackTrace();
 				}
 			}
-			
+			this.tracker.logger.error("ThreadTrackerUpdate - Sale del while despues de fallo recuperacion de json?.");
 			if(!fallo) {
 				//Obtengo tuplas de seedTable faltantes
 				m = new Mensaje(Mensaje.Tipo.GET_DB);
-				//encripto mensaje con la clave simetrica
-				byte[] datosAEncriptar = conexionTCP.convertToBytes(m);
-				byte[] mensajeEncriptado = this.tracker.getKG().encriptarSimetrico(conexionTCP.getKey(), datosAEncriptar);
-				conexionTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-				conexionTCP.getOutBuff().flush();
+				m.enviarMensaje(conexionTCP, m, kg);
 				
 	        	String path = "database"+this.tracker.getId()+".db4o";
 				this.getTracker().guardarArchivoBuffer(conexionTCP, path);
-				
 			}
 			
 			//Enviar EXIT para cerrar conexión
 			m = new Mensaje(Mensaje.Tipo.EXIT); 				
-			//encripto mensaje con la clave simetrica
-			byte[] datosAEncriptar = conexionTCP.convertToBytes(m);
-			byte[] mensajeEncriptado = this.tracker.getKG().encriptarSimetrico(conexionTCP.getKey(), datosAEncriptar);
-			conexionTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-			conexionTCP.getOutBuff().flush();
+			m.enviarMensaje(conexionTCP, m, kg);
 			conexionTCP.getSocket().close();
 			
 		} catch (Exception e1) {

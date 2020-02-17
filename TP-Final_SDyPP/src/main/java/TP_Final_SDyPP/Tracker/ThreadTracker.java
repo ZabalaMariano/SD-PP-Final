@@ -1,21 +1,15 @@
 package TP_Final_SDyPP.Tracker;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 import javax.crypto.BadPaddingException;
@@ -25,25 +19,28 @@ import javax.crypto.SecretKey;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import com.db4o.ObjectSet;
 
 import TP_Final_SDyPP.DB4O.FileTable;
 import TP_Final_SDyPP.DB4O.SeedTable;
 import TP_Final_SDyPP.Otros.ConexionTCP;
+import TP_Final_SDyPP.Otros.DatosArchivo;
 import TP_Final_SDyPP.Otros.KeysGenerator;
 import TP_Final_SDyPP.Otros.Mensaje;
 import TP_Final_SDyPP.Otros.TrackerInfo;
+import TP_Final_SDyPP.Otros.TrackerManager;
 
 
 public class ThreadTracker implements Runnable {
 
 	private Socket socket;
 	private Tracker tracker;
-	private ConexionTCP conexTCP;
+	private ConexionTCP conexionTCP;
+	private KeysGenerator kg;
+	private TrackerManager tm;
 	
 	public ThreadTracker (Socket socketConexion, Tracker miTracker) {
+		this.tm = new TrackerManager();
+		this.kg = new KeysGenerator();
 		this.setSocket(socketConexion); //Almaceno el socket que recibí como parámetro
 		this.setTracker(miTracker); //Almaceno la instancia de mi tracker que recibí como parámetro
 	}
@@ -67,8 +64,8 @@ public class ThreadTracker implements Runnable {
 	//Run
 	public void run() {
 		try {			
-			conexTCP = new ConexionTCP(this.getSocket()); //Inicializo los canales de lectura y escritura del socket recibido
-			Object o = conexTCP.getInObj().readObject(); //Espero por un mensaje
+			conexionTCP = new ConexionTCP(this.getSocket()); //Inicializo los canales de lectura y escritura del socket recibido
+			Object o = conexionTCP.getInObj().readObject(); //Espero por un mensaje
 			Mensaje response = null;
 			ArrayList<SeedTable> swarm = null;
 			Object obj = new Object();
@@ -78,49 +75,50 @@ public class ThreadTracker implements Runnable {
 				
 				case ALIVE:
 					response = new Mensaje(Mensaje.Tipo.ALIVE);
-					conexTCP.getOutObj().writeObject(response);
-					conexTCP.getSocket().close(); //Cierro la conexion
+					conexionTCP.getOutObj().writeObject(response);
+					conexionTCP.getSocket().close(); //Cierro la conexion
 					break;
 				
 				case CHECK_AVAILABLE: 
-					this.enviarACK(conexTCP,msg,response);
-					this.encriptados(conexTCP);
+					this.enviarACK(msg,response);
+					this.encriptados();
 					break;
 					
 				case GET_TRACKERS:
 					//genero llave simetrica
-					conexTCP.setKey(this.tracker.getKG().generarLlaveSimetrica());
+					conexionTCP.setKey(kg.generarLlaveSimetrica());
 					//encripto lista de trackers con las llave simetrica
 					ArrayList<TrackerInfo> lista = this.tracker.getListaTrackers();
-					byte[] listaAEncriptar = conexTCP.convertToBytes(lista);
-					byte[] listaEncriptada = this.tracker.getKG().encriptarSimetrico(conexTCP.getKey(),listaAEncriptar);
+					byte[] listaAEncriptar = conexionTCP.convertToBytes(lista);
+					byte[] listaEncriptada = kg.encriptarSimetrico(conexionTCP.getKey(),listaAEncriptar);
 					//encripto llave simetrica con la llave pública del peer
-					byte[] llaveAEncriptar = conexTCP.convertToBytes(conexTCP.getKey());
-					byte[] llaveEncriptada = this.tracker.getKG().encriptarAsimetrico(llaveAEncriptar,msg.kpub);
+					byte[] llaveAEncriptar = conexionTCP.convertToBytes(conexionTCP.getKey());
+					byte[] llaveEncriptada = kg.encriptarAsimetrico(llaveAEncriptar,msg.kpub);
 					//creo mensaje
 					response = new Mensaje(Mensaje.Tipo.ACK,llaveEncriptada,listaEncriptada);
 					//envío mensaje
-					conexTCP.getOutObj().writeObject(response);
-					conexTCP.getOutBuff().flush();
+					conexionTCP.getOutObj().writeObject(response);
+					conexionTCP.getOutBuff().flush();
 					
-					conexTCP.getSocket().close(); //Cierro la conexion
+					conexionTCP.getSocket().close(); //Cierro la conexion
 					break;
 					
 				default:
-					this.tracker.logger.error("MENSAJE INVALIDO!");
-					conexTCP.getSocket().close();
+					this.tracker.logger.error("Mensaje invalido!");
+					conexionTCP.getSocket().close();
 					break;
 				}	
 			}else {
-				this.tracker.logger.error("NO ES UN MENSAJE");
-				conexTCP.getSocket().close();
+				this.tracker.logger.error("No es de la clase mensaje");
+				conexionTCP.getSocket().close();
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			this.tracker.logger.error("El peer se desconecto inesperadamente.");
 		}
 	}
 	
-	public void encriptados(ConexionTCP conexTCP) {//recibo mensajes encriptados
+	public void encriptados() {//recibo mensajes encriptados
 		boolean salir = false;
 		while(!salir) {
 			try {
@@ -130,60 +128,51 @@ public class ThreadTracker implements Runnable {
 				byte[] mensajeEncriptado;
 				TrackerInfo yo;
 				
-				int msgSize = 1024*1024;//1MB
-		        byte[] buffer = new byte[msgSize];
-		        int byteread = conexTCP.getInBuff().read(buffer, 0, msgSize);
-		        //desencripto con la clave simetrica
-		        byte[] datosEncriptados = Arrays.copyOfRange(buffer, 0, byteread);
-		        byte[] msgDesencriptado = this.tracker.getKG().desencriptarSimetrico(conexTCP.getKey(), datosEncriptados);
-		        Object o = conexTCP.convertFromBytes(msgDesencriptado);
-				
+				Mensaje m = new Mensaje();
+		        byte[] msgDesencriptado = m.recibirMensaje(conexionTCP, kg);
+		        Object o = conexionTCP.convertFromBytes(msgDesencriptado);
+		        
 		        Mensaje response = null;
 				if (o instanceof Mensaje)
 				{
-					Mensaje m = (Mensaje) o;
+					m = (Mensaje) o;
 					
 					switch(m.tipo) {
 					
 						case EXIT:
-							conexTCP.getSocket().close();
+							conexionTCP.getSocket().close();
 							salir = true;
 							break;
 							
 						case GET_DB:							
 							String pathDB = "database"+this.tracker.getId()+".db4o";
-							this.enviarArchivoBuffer(conexTCP, pathDB);
+							this.enviarArchivoBuffer(pathDB);
 							break;
 							
 						case GET_FILE:
-							this.getSocketPeer(conexTCP, m.string, response);
+							this.getSocketPeer(m.string, response);
 							String pathJSON = this.getTracker().getPath() + "/" + m.string + ".json";
-							this.enviarArchivoBuffer(conexTCP, pathJSON);
+							this.enviarArchivoBuffer(pathJSON);
 							break;
 							
 						case GET_FILES_OFFERED:
 							ArrayList<FileTable> archivos = this.tracker.getArchivosOfrecidos(m.ip,m.port);
 							obj = archivos;
 							response = new Mensaje(Mensaje.Tipo.GET_FILES_OFFERED, obj);
-							
-							//encripto mensaje con la clave simetrica
-							datosAEncriptar = conexTCP.convertToBytes(response);
-							mensajeEncriptado = this.tracker.getKG().encriptarSimetrico(conexTCP.getKey(), datosAEncriptar);
-							conexTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-							conexTCP.getOutBuff().flush();
-							conexTCP.getSocket().close();
+							response.enviarMensaje(conexionTCP, response, kg);
+							conexionTCP.getSocket().close();
 							salir = true;
 							break;		
 					
 						case GET_PRIMARIO:
-							this.getTracker().devolverPrimario(conexTCP);
-							conexTCP.getSocket().close(); //Cierro la conexion
+							this.getTracker().devolverPrimario(conexionTCP);
+							conexionTCP.getSocket().close(); //Cierro la conexion
 							salir = true;
 							break;
 							
 						case SET_PRIMARY:
-							this.definirNuevoPrimario(conexTCP, m);
-							conexTCP.getSocket().close(); //Cierro la conexion
+							this.definirNuevoPrimario(m);
+							conexionTCP.getSocket().close(); //Cierro la conexion
 							salir = true;
 							break;
 							
@@ -199,13 +188,13 @@ public class ThreadTracker implements Runnable {
 									this.getTracker().replicar(m.tracker); //replico mi información en todos los trackers activos excepto el que me eligió como primario	
 								}
 							}
-							conexTCP.getSocket().close(); //Cierro la conexion
+							conexionTCP.getSocket().close(); //Cierro la conexion
 							salir = true;
 							break;
 							
 						case TRACKER_UPDATE: 	
-							this.actualizarme(conexTCP, m);
-							conexTCP.getSocket().close(); //Cierro la conexion
+							this.actualizarme(m);
+							conexionTCP.getSocket().close(); //Cierro la conexion
 							salir = true;
 							break;
 							
@@ -215,22 +204,28 @@ public class ThreadTracker implements Runnable {
 							//exactamente que jsons le hacen falta. Luego, el tracker abre de inmediato un socket para escuchar replicas del primario
 							//por nuevos json que lleguen de peers.
 							synchronized(this.getTracker().getLock()) {
-								this.registrarTracker (conexTCP, m, response);
+								this.registrarTracker (m, response);
 							}
-							conexTCP.getSocket().close(); //Cierro la conexion
+							conexionTCP.getSocket().close(); //Cierro la conexion
 							salir = true;
 							break;
 							
 						case SEND_FILE://Solo llega al primario
+							
+							//Envío ACK
+							response = new Mensaje(Mensaje.Tipo.ACK);
+							response.enviarMensaje(conexionTCP, response, kg);
+							this.tracker.logger.info("Envié ACK desde tracker para indicar que está listo para recibir el json del cliente");
+							
 							synchronized(this.getTracker().getLock()) {
-								this.guardarArchivo(conexTCP, m);
+								this.guardarArchivo(m);
 							}
 							salir = true;
 							break;
 							
 						case FIND_FILE:
-							this.buscarArchivo(conexTCP, m);//busca archivos con nombre similar al buscado
-							conexTCP.getSocket().close(); //Cierro la conexion
+							this.buscarArchivo(m);//busca archivos con nombre similar al buscado
+							conexionTCP.getSocket().close(); //Cierro la conexion
 							salir = true;
 							break;
 							
@@ -242,36 +237,26 @@ public class ThreadTracker implements Runnable {
 							swarm = this.getTracker().getSwarm(m.hash,m.ip, m.port);
 							obj = swarm; 
 							response = new Mensaje(Mensaje.Tipo.SWARM, obj);
-							
-							//encripto mensaje con la clave simetrica
-							datosAEncriptar = conexTCP.convertToBytes(response);
-							mensajeEncriptado = this.tracker.getKG().encriptarSimetrico(conexTCP.getKey(), datosAEncriptar);
-							conexTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-							conexTCP.getOutBuff().flush();
-							conexTCP.getSocket().close();
+							response.enviarMensaje(conexionTCP, response, kg);
+							conexionTCP.getSocket().close();
 							
 							if(this.getTracker().getTrackerPrimario().getId() == this.getTracker().getId())
 								this.getTracker().replicarSeed(m, "replicar");
 							else {
 								//envio seed a primario
 								yo = new TrackerInfo(this.getTracker().getId(),this.getTracker().getIp(),this.getTracker().getPort()); 
-								conexTCP = new ConexionTCP(this.getTracker().getTrackerPrimario().getIp(), this.getTracker().getTrackerPrimario().getPort());
-								this.tracker.getSecretKey(conexTCP);
+								conexionTCP = new ConexionTCP(this.getTracker().getTrackerPrimario().getIp(), this.getTracker().getTrackerPrimario().getPort());
+								tm.getSecretKey(conexionTCP, true, this.tracker.getkPub(), this.tracker.getkPriv(), kg, this.tracker.logger);//Obtengo clave simetrica
 								response = new Mensaje(Mensaje.Tipo.SEND_SEED, m.hash, m.path, m.ip, m.port, yo);
-								
-								//encripto mensaje con la clave simetrica
-								datosAEncriptar = conexTCP.convertToBytes(response);
-								mensajeEncriptado = this.tracker.getKG().encriptarSimetrico(conexTCP.getKey(), datosAEncriptar);
-								conexTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-								conexTCP.getOutBuff().flush();							
-								conexTCP.getSocket().close();	
+								response.enviarMensaje(conexionTCP, response, kg);							
+								conexionTCP.getSocket().close();	
 							}
 							
 							salir = true;
 							break;
 							
 						case SEND_SEED:
-							conexTCP.getSocket().close();
+							conexionTCP.getSocket().close();
 							
 							//Almaceno el nuevo seed
 							this.getTracker().almacenarSeed(m.hash, false, m.path, m.ip, m.port);
@@ -283,42 +268,41 @@ public class ThreadTracker implements Runnable {
 							break;
 							
 						case REPLICATE_FILE:
+							//Envío ACK
+							response = new Mensaje(Mensaje.Tipo.ACK);
+							response.enviarMensaje(conexionTCP, response, kg);
+							this.tracker.logger.info("Envie ACK desde tracker secundario");
+							
 							//Guardo json en tracker
 							String path = this.getTracker().getPath()+ "/" + m.string +".json"; //msg.string = nombreJSON (hash).
-							boolean exito = this.getTracker().guardarArchivoBuffer(conexTCP, path);
+							boolean exito = this.getTracker().guardarArchivoBuffer(conexionTCP,path);
 							
 							if(exito) {					    	
 								//Guardo datos json en base de datos del tracker
 								this.getTracker().almacenarEnBD(path, m.ip, m.port);
 							}
-							
-							conexTCP.getSocket().close(); //Cierro la conexion
+							this.tracker.logger.info("Cierro socket desde secundario");
+							conexionTCP.getSocket().close(); //Cierro la conexion
 							salir = true;
 							break;
 					
 						case QUIT_SWARM:
 							//elimino seed
 							this.getTracker().eliminarSeed(m.string, m.ip, m.port);
-							conexTCP.getSocket().close();
+							conexionTCP.getSocket().close();
 							
 							if(this.getTracker().getTrackerPrimario().getId() == this.getTracker().getId())
 								this.getTracker().replicarSeed(m, "replicarDelete");
 							else {
 								//Pido a primario secret key
-								conexTCP = new ConexionTCP(this.getTracker().getTrackerPrimario().getIp(), this.getTracker().getTrackerPrimario().getPort());
-								this.tracker.getSecretKey(conexTCP);
+								conexionTCP = new ConexionTCP(this.getTracker().getTrackerPrimario().getIp(), this.getTracker().getTrackerPrimario().getPort());
+								tm.getSecretKey(conexionTCP, true, this.tracker.getkPub(), this.tracker.getkPriv(), kg, this.tracker.logger);//Obtengo clave simetrica
 								
-								//envio seed que debemos quitar a primario
+								//envio al primario el seed que debemos quitar
 								yo = new TrackerInfo(this.getTracker().getId(),this.getTracker().getIp(),this.getTracker().getPort()); 
 								response = new Mensaje(Mensaje.Tipo.SEND_QUIT_SWARM, m.ip, m.port, m.hash, yo);
-				
-								//encripto mensaje con la clave simetrica
-								datosAEncriptar = conexTCP.convertToBytes(response);
-								mensajeEncriptado = this.tracker.getKG().encriptarSimetrico(conexTCP.getKey(), datosAEncriptar);
-								conexTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-								conexTCP.getOutBuff().flush();
-								
-								conexTCP.getSocket().close();	
+								response.enviarMensaje(conexionTCP, response, kg);
+								conexionTCP.getSocket().close();	
 							}
 							salir = true;
 						
@@ -331,7 +315,7 @@ public class ThreadTracker implements Runnable {
 							if(this.getTracker().getTrackerPrimario().getId() == this.getTracker().getId())
 								this.getTracker().replicarSeed(m, "replicarDelete");
 							
-							conexTCP.getSocket().close();
+							conexionTCP.getSocket().close();
 							salir = true;
 							break;
 							
@@ -340,40 +324,29 @@ public class ThreadTracker implements Runnable {
 							swarm = this.getTracker().getSwarm(m.string,m.ip,m.port);
 							obj = swarm; 
 							response = new Mensaje(Mensaje.Tipo.SWARM, obj);
-							//encripto mensaje con la clave simetrica
-							datosAEncriptar = conexTCP.convertToBytes(response);
-							mensajeEncriptado = this.tracker.getKG().encriptarSimetrico(conexTCP.getKey(), datosAEncriptar);
-							conexTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-							conexTCP.getOutBuff().flush();
-							
-							conexTCP.getSocket().close();
+							response.enviarMensaje(conexionTCP, response, kg);
+							conexionTCP.getSocket().close();
 							salir = true;
 							break;
 							
 						case COMPLETE:
 							//hacer no disponible al peer
 							this.getTracker().deshabilitarSeed(m.ip,m.port);
-							conexTCP.getSocket().close();
+							conexionTCP.getSocket().close();
 							
 							if(this.getTracker().getTrackerPrimario().getId() == this.getTracker().getId())
 								this.getTracker().replicarSeed(m, "replicarDeshabilitar");
 							else {
 								//Indicar a primario que deshabilite peer.
 								//Pido a primario secret key
-								conexTCP = new ConexionTCP(this.getTracker().getTrackerPrimario().getIp(), this.getTracker().getTrackerPrimario().getPort());
-								this.tracker.getSecretKey(conexTCP);
+								conexionTCP = new ConexionTCP(this.getTracker().getTrackerPrimario().getIp(), this.getTracker().getTrackerPrimario().getPort());
+								tm.getSecretKey(conexionTCP, true, this.tracker.getkPub(), this.tracker.getkPriv(), kg, this.tracker.logger);//Obtengo clave simetrica
 								
 								//envio seed que debemos quitar a primario
 								yo = new TrackerInfo(this.getTracker().getId(),this.getTracker().getIp(),this.getTracker().getPort()); 
 								response = new Mensaje(Mensaje.Tipo.SEND_COMPLETE, m.ip, m.port, yo);
-				
-								//encripto mensaje con la clave simetrica
-								datosAEncriptar = conexTCP.convertToBytes(response);
-								mensajeEncriptado = this.tracker.getKG().encriptarSimetrico(conexTCP.getKey(), datosAEncriptar);
-								conexTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-								conexTCP.getOutBuff().flush();
-								
-								conexTCP.getSocket().close();	
+								response.enviarMensaje(conexionTCP, response, kg);
+								conexionTCP.getSocket().close();	
 							}
 							salir = true;
 			
@@ -386,14 +359,14 @@ public class ThreadTracker implements Runnable {
 							if(this.getTracker().getTrackerPrimario().getId() == this.getTracker().getId())
 								this.getTracker().replicarSeed(m, "replicarDeshabilitar");
 							
-							conexTCP.getSocket().close();
+							conexionTCP.getSocket().close();
 							salir = true;
 							break;
 						
 						case FREE:
 							//hacer disponible al peer
 							this.getTracker().habilitarSeed(m.ip,m.port);
-							conexTCP.getSocket().close();
+							conexionTCP.getSocket().close();
 							
 							//Replico el peer disponible al resto, si soy el primario
 							if(this.getTracker().getTrackerPrimario().getId() == this.getTracker().getId())
@@ -401,20 +374,14 @@ public class ThreadTracker implements Runnable {
 							else {
 								//Indicar a primario que habilite peer.
 								//Pido a primario secret key
-								conexTCP = new ConexionTCP(this.getTracker().getTrackerPrimario().getIp(), this.getTracker().getTrackerPrimario().getPort());
-								this.tracker.getSecretKey(conexTCP);
+								conexionTCP = new ConexionTCP(this.getTracker().getTrackerPrimario().getIp(), this.getTracker().getTrackerPrimario().getPort());
+								tm.getSecretKey(conexionTCP, true, this.tracker.getkPub(), this.tracker.getkPriv(), kg, this.tracker.logger);//Obtengo clave simetrica
 								
 								//envio seed que debemos quitar a primario
 								yo = new TrackerInfo(this.getTracker().getId(),this.getTracker().getIp(),this.getTracker().getPort()); 
 								response = new Mensaje(Mensaje.Tipo.SEND_FREE, m.ip, m.port, yo);
-				
-								//encripto mensaje con la clave simetrica
-								datosAEncriptar = conexTCP.convertToBytes(response);
-								mensajeEncriptado = this.tracker.getKG().encriptarSimetrico(conexTCP.getKey(), datosAEncriptar);
-								conexTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-								conexTCP.getOutBuff().flush();
-								
-								conexTCP.getSocket().close();
+								response.enviarMensaje(conexionTCP, response, kg);
+								conexionTCP.getSocket().close();
 							}
 							salir = true;
 							break;
@@ -426,14 +393,14 @@ public class ThreadTracker implements Runnable {
 							if(this.getTracker().getTrackerPrimario().getId() == this.getTracker().getId())
 								this.getTracker().replicarSeed(m, "replicarHabilitar");
 							
-							conexTCP.getSocket().close();
+							conexionTCP.getSocket().close();
 							salir = true;
 							break;
 							
 						case NEW_SEED:
 							//hacer seed al peer para el hash dado
 							this.getTracker().nuevoSeed(m.ip,m.port,m.string);//string = hash
-							conexTCP.getSocket().close();
+							conexionTCP.getSocket().close();
 							
 							//Replico el nuevo seed al resto, si soy el primario
 							if(this.getTracker().getTrackerPrimario().getId() == this.getTracker().getId())
@@ -441,19 +408,14 @@ public class ThreadTracker implements Runnable {
 							else {
 								//Indicar a primario que habilite peer como seed.
 								//Pido a primario secret key
-								conexTCP = new ConexionTCP(this.getTracker().getTrackerPrimario().getIp(), this.getTracker().getTrackerPrimario().getPort());
-								this.tracker.getSecretKey(conexTCP);
+								conexionTCP = new ConexionTCP(this.getTracker().getTrackerPrimario().getIp(), this.getTracker().getTrackerPrimario().getPort());
+								tm.getSecretKey(conexionTCP, true, this.tracker.getkPub(), this.tracker.getkPriv(), kg, this.tracker.logger);//Obtengo clave simetrica
 								
 								//envio peer que debemos establece como seed a primario
 								yo = new TrackerInfo(this.getTracker().getId(),this.getTracker().getIp(),this.getTracker().getPort()); 
 								response = new Mensaje(Mensaje.Tipo.SEND_NEW_SEED, m.ip, m.port, m.string, yo);
-				
-								//encripto mensaje con la clave simetrica
-								datosAEncriptar = conexTCP.convertToBytes(response);
-								mensajeEncriptado = this.tracker.getKG().encriptarSimetrico(conexTCP.getKey(), datosAEncriptar);
-								conexTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-								conexTCP.getOutBuff().flush();	
-								conexTCP.getSocket().close();
+								response.enviarMensaje(conexionTCP, response, kg);
+								conexionTCP.getSocket().close();
 							}
 							
 							salir = true;
@@ -463,7 +425,7 @@ public class ThreadTracker implements Runnable {
 						case SEND_NEW_SEED:
 							//cambio estado de peer a seed para el hash dado
 							this.getTracker().nuevoSeed(m.ip, m.port, m.hash);
-							conexTCP.getSocket().close();
+							conexionTCP.getSocket().close();
 							//Replico el nuevo seed al resto, si soy el primario
 							if(this.getTracker().getTrackerPrimario().getId() == this.getTracker().getId())
 								this.getTracker().replicarSeed(m, "replicarNuevo");
@@ -471,47 +433,55 @@ public class ThreadTracker implements Runnable {
 							salir = true;
 							
 							break;
+							
+						case REQUEST:
+							//El peer envío el hash del archivo JSON que desea descargar
+							String hash = m.string; //hash
+							pathJSON = this.getTracker().getPath()+ "/" + hash + ".json";
+							this.enviarArchivoBuffer(pathJSON);
+							
+							salir = true;
+							
+							break;
 					}					
-				}		
+	
+		        }
+		        		
 			} catch (Exception e) {
 				System.err.println("Fallo en ThreadTracker.");
+				salir = true;
 				e.printStackTrace();
 			}
 		}	
 	}
 
-	private void getSocketPeer(ConexionTCP conexTCP, String hash, Mensaje resp) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+	private void getSocketPeer(String hash, Mensaje response) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
 		SeedTable st = this.getTracker().getSocketPeer(hash);
-		resp = new Mensaje (Mensaje.Tipo.ACK, st.getIpPeer(), st.getPortPeer());
-		
-		//encripto mensaje con la clave simetrica
-		byte[] datosAEncriptar = conexTCP.convertToBytes(resp);
-		byte[] mensajeEncriptado = this.tracker.getKG().encriptarSimetrico(conexTCP.getKey(), datosAEncriptar);
-		conexTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-		conexTCP.getOutBuff().flush();
+		response = new Mensaje (Mensaje.Tipo.ACK, st.getIpPeer(), st.getPortPeer());
+		response.enviarMensaje(conexionTCP, response, kg);
 	}
 
 	//Método que envía un ACK para confirma que está activo
-	private void enviarACK (ConexionTCP ctcp, Mensaje msg, Mensaje response) throws Exception  {
+	private void enviarACK (Mensaje msg, Mensaje response) throws Exception  {
 		
-		SecretKey key = this.tracker.getKG().generarLlaveSimetrica();
-		ctcp.setKey(key);
+		SecretKey key = kg.generarLlaveSimetrica();
+		conexionTCP.setKey(key);
 		//encripto mensaje con la clave pública del peer cliente
-		byte[] datosAEncriptar = ctcp.convertToBytes(ctcp.getKey());
-		byte[] mensajeEncriptado = this.tracker.getKG().encriptarAsimetrico(datosAEncriptar, msg.kpub);
+		byte[] datosAEncriptar = conexionTCP.convertToBytes(conexionTCP.getKey());
+		byte[] mensajeEncriptado = kg.encriptarAsimetrico(datosAEncriptar, msg.kpub);
 		//Agrego key al mensaje
 		response = new Mensaje(Mensaje.Tipo.ACK, mensajeEncriptado);
 				
-		ctcp.getOutObj().writeObject(response);
+		conexionTCP.getOutObj().writeObject(response);
 	}
 	
 	//Método que permite registrar a un tracker secundario (le llega solo al primario)
-	private void registrarTracker (ConexionTCP ctcp, Mensaje msg, Mensaje resp) throws Exception {
+	private void registrarTracker (Mensaje msg, Mensaje resp) throws Exception {
 		TrackerInfo tracker = msg.tracker;
 		this.getTracker().pingTrackers(tracker); //Compruebo cuales son los trackers activos en este momento. Si alguno no responde, lo elimino de la lista
 
 		synchronized(this.getTracker().getListaTrackers()) {
-			this.getTracker().getListaTrackers().remove(tracker);//Elimino los datos de tracker si ya existia
+			this.getTracker().removeTracker(tracker.getId());//Elimino los datos de tracker si ya existia
 			this.getTracker().getListaTrackers().add(tracker); //Agrego el nuevo tracker a mi lista de trackers	
 		}		
 		
@@ -529,15 +499,15 @@ public class ThreadTracker implements Runnable {
 		//Comparar con mis archivos cuales le faltan al nuevo tracker
 		ArrayList<String> hashesFaltantes = this.getTracker().compareHashes(msg.hashes);
 		if(hashesFaltantes.size()>0)
-			this.getTracker().actualizarTracker(ctcp, lisTrackers, hashesFaltantes); //Actualizo el tracker agregado recientemente
+			this.getTracker().actualizarTracker(conexionTCP, lisTrackers, hashesFaltantes); //Actualizo el tracker agregado recientemente
 		else
-			this.getTracker().actualizarTracker(ctcp, lisTrackers, null); //Actualizo el tracker agregado recientemente
+			this.getTracker().actualizarTracker(conexionTCP, lisTrackers, null); //Actualizo el tracker agregado recientemente
 		
 		this.getTracker().replicar(msg.tracker); //Realizo la replica en todos los trackers (excepto en el tracker agregado recientemente)
 	}
 	
 	//Permite actualizarme con los datos enviados por el tracker primario
-	private void actualizarme (ConexionTCP ctcp, Mensaje msg) throws Exception {
+	private void actualizarme (Mensaje msg) throws Exception {
 		this.getTracker().setListaTrackers(msg.listaTrackers); //Actualizo mi lista de trackers
 		
 		//Actualizo JSON de trackers
@@ -553,14 +523,14 @@ public class ThreadTracker implements Runnable {
 	}
 	
 	//Permite definir mi nuevo tracker primario
-	private void definirNuevoPrimario(ConexionTCP ctcp, Mensaje msg) throws Exception {
+	private void definirNuevoPrimario(Mensaje msg) throws Exception {
 		this.getTracker().setTrackerPrimario(msg.tracker); //Seteo mi primario con el tracker que recibí por parámetro en el mensaje
 		this.tracker.logger.info("Mi nuevo Tracker Primario es: TRACKER N°"+this.getTracker().getTrackerPrimario().getId());
 	}
 	
-	//Si soy el primario me llega JSON de los peers (todos).
+	//Si soy el primario me llega JSON de los peers
 	//Permite que un peer envíe un archivo JSON de un archivo a compartir
-	private void guardarArchivo(ConexionTCP ctcp, Mensaje msg) //msg.string = hashJSON
+	private void guardarArchivo(Mensaje msg) //msg.string = hashJSON
 	{	
 		String ipPeer = msg.ip; 
 		int portPeer = msg.port;
@@ -572,12 +542,14 @@ public class ThreadTracker implements Runnable {
 		//Leo archivo JSON en nueva conexión
 		boolean exito;
 		try {
-			exito = this.getTracker().guardarArchivoBuffer(ctcp, pathJSON);
-			ctcp.getSocket().close();
+			exito = this.getTracker().guardarArchivoBuffer(conexionTCP, pathJSON);
+			conexionTCP.getSocket().close();
 			
 			if(exito) {
 				//agrego al json el ID    	
-		    	Object obj = new JSONParser().parse(new FileReader(pathJSON));
+				FileReader fileReader = new FileReader(pathJSON);
+				Object obj = new JSONParser().parse(fileReader);
+				fileReader.close();
 		    	JSONObject json = (JSONObject) obj;
 		    	json.put("ID", hash);
 		    	try {
@@ -587,14 +559,14 @@ public class ThreadTracker implements Runnable {
 					fileW.flush();
 					fileW.close();
 				} catch (IOException e) {
-					this.tracker.logger.error("Fallo al agregar ID a JSON.");
+					this.tracker.logger.error("Falló al agregar ID a JSON.");
 				}
 				
 				this.getTracker().almacenarEnBD(pathJSON, ipPeer, portPeer);	
-				this.replicarFile(ipPeer, portPeer, pathJSON, hash); //Replico el nuevo JSON, enviandolo al resto de trackers. Path = path donde se creo el nuevo JSON
+				this.replicarFile(ipPeer, portPeer, pathJSON, hash); //Replico el nuevo JSON, enviandolo al resto de trackers.
 			}
 		} catch (Exception e1) {
-			//intento borrar al archivo si llego a guardarse
+			//intento borrar archivo si llegó a guardarse
 			File file = new File(pathJSON);
 			file.delete();
 			this.tracker.logger.error("Falló al guardar archivo.");
@@ -603,9 +575,8 @@ public class ThreadTracker implements Runnable {
 		
 	}
 	
-	//Permite decidir como realizar la replicación en base a si soy el tracker primario o no
-	private void replicarFile(String ipPeer, int portPeer, String pathJSON, String hashFinal) throws Exception {
-		this.getTracker().pingTrackers(null); //Compruebo cuales son los trackers vivos en este momento. Si alguno no responde, lo elimino de la lista
+	private void replicarFile(String ipPeer, int portPeer, String pathJSON, String hash) throws Exception {
+		this.getTracker().pingTrackers(null); //Compruebo cuales son los trackers activos en este momento. Si alguno no responde, lo elimino de la lista
 		ArrayList<TrackerInfo> lisTrackers = this.getTracker().getListaTrackers();
 		
 		//Ordeno por ID de menor a mayor a la lista de trackers. De esta forma, si se cae el primario mientras está replicando
@@ -614,56 +585,79 @@ public class ThreadTracker implements Runnable {
 		
 		if (lisTrackers.size()>1) { //Si hay más de un tracker en la lista (Alguien además de mí) , les replico la información			
 			for (int i=0; i<lisTrackers.size(); i++) {
+				this.tracker.logger.info("ReplicarFile - ID tracker a replicar: "+lisTrackers.get(i).getId());
 				if (lisTrackers.get(i).getId()!=this.getTracker().getId()) { //Debo replicar a todos menos a mi (primario)
 					String ip = lisTrackers.get(i).getIp();
 					int port = lisTrackers.get(i).getPort();
 					
-					ConexionTCP conexTCP = new ConexionTCP(ip,port); //Abro una conexion contra el tracker
-					this.tracker.getSecretKey(conexTCP);
+					conexionTCP = new ConexionTCP(ip,port); //Abro una conexion contra el tracker
+					tm.getSecretKey(conexionTCP, true, this.tracker.getkPub(), this.tracker.getkPriv(), kg, this.tracker.logger);//Obtengo clave simetrica
 					
-					Mensaje m = new Mensaje(Mensaje.Tipo.REPLICATE_FILE, ipPeer, portPeer, hashFinal);
-					//encripto mensaje con la clave simetrica
-					byte[] datosAEncriptar = conexTCP.convertToBytes(m);
-					byte[] mensajeEncriptado = this.tracker.getKG().encriptarSimetrico(conexTCP.getKey(), datosAEncriptar);
-					conexTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-					conexTCP.getOutBuff().flush();
+					Mensaje m = new Mensaje(Mensaje.Tipo.REPLICATE_FILE, ipPeer, portPeer, hash);
+					m.enviarMensaje(conexionTCP, m, kg);
 					
-					//Envío nuevo json
-					this.enviarArchivoBuffer(conexTCP, pathJSON);//Le paso el path del JSON para que pueda encontrarlo y enviarlo
-					conexTCP.getSocket().close();
-					this.tracker.logger.info("JSON enviado al Tracker "+ lisTrackers.get(i).getId() +" ("+ ip +":"+ port +") desde Tracker Primario.");
+					//Recibo ACK
+			        byte[] msgDesencriptado = m.recibirMensaje(conexionTCP, kg);
+			        Mensaje response = (Mensaje) conexionTCP.convertFromBytes(msgDesencriptado);			        
+			        if(response.tipo == Mensaje.Tipo.ACK) {
+			        	this.tracker.logger.info("RECIBI ACK");
+						//Envío nuevo json
+						this.enviarArchivoBuffer(pathJSON);//Le paso el path del JSON para que pueda encontrarlo y enviarlo
+						this.tracker.logger.info("Cierro socket desde primario despues de enviar json");
+						conexionTCP.getSocket().close();
+						this.tracker.logger.info("JSON enviado al Tracker "+ lisTrackers.get(i).getId() +" ("+ ip +":"+ port +") desde Tracker Primario.");
+			        }
 				}
 			}
 		}
 	}
 	
-	private void enviarArchivoBuffer(ConexionTCP conexTCP, String pathFile) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException 
+	private void enviarArchivoBuffer(String pathFile) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException 
 	{
-	    try {
-			File archivo = new File(pathFile);
-			   
-			byte[] buffer = new byte[(int) archivo.length()];
-			   
-	        FileInputStream fis = new FileInputStream(archivo);
-	        BufferedInputStream in = new BufferedInputStream(fis);
-	        in.read(buffer,0,buffer.length);
-	        
-	        //encripto archivo con la clave simetrica
-			byte[] mensajeEncriptado = this.tracker.getKG().encriptarSimetrico(conexTCP.getKey(), buffer);
-	        conexTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-	        conexTCP.getOutBuff().flush();
-	        
-	        in.close();//Cierro el buffer de lectura del JSON
-	     
-	    }catch (IOException e) {
-	    	this.tracker.logger.error("Fallo durante envío del JSON.");
-	    }
+		try {
+			Thread.sleep(100);//Necesario en pruebas locales
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		
+		this.tracker.logger.info("enviarArchivoBuffer desde primario");
+		boolean fallo;
+		int intentos = 0;
+		do {
+		    try {
+				File archivo = new File(pathFile);
+				byte[] buffer = new byte[(int) archivo.length()];
+				   
+		        FileInputStream fis = new FileInputStream(archivo);
+		        BufferedInputStream in = new BufferedInputStream(fis);
+		        in.read(buffer,0,buffer.length);
+		        
+		        //encripto archivo con la clave simetrica
+				byte[] mensajeEncriptado = kg.encriptarSimetrico(conexionTCP.getKey(), buffer);
+		        conexionTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
+		        conexionTCP.getOutBuff().flush();
+		        
+		        in.close();//Cierro el buffer de lectura del JSON
+		        fallo = false;
+		    }catch (IOException e) {
+		    	fallo = true;
+		    	this.tracker.logger.error("Fallo durante envío del JSON. Intento: "+intentos);
+		    	e.printStackTrace();
+		    	
+		    	try {
+					Thread.sleep(1000);//Si falló es porque otro proceso tiene bloqueado el archivo. Espero 1 seg
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+		    }
+		    intentos++;
+		}while(fallo && intentos<3);
 	}
 	
 	//Busca archivos con nombre similar a  msg.string
-	private void buscarArchivo(ConexionTCP conexTCP, Mensaje msg) throws Exception {
+	private void buscarArchivo(Mensaje msg) throws Exception {
 		String nombreBuscado = msg.string.toLowerCase(); //Obtengo el nombre de archivo a buscar
-		ArrayList<FileTable> archivosDisponibles = new ArrayList<FileTable>(); //lista que contendrá los nombres de archivos que coincidan con la busqueda
+		ArrayList<DatosArchivo> archivosDisponibles = new ArrayList<DatosArchivo>(); //lista que contendrá los nombres de archivos que coincidan con la busqueda
 		
 		//Busco en mi BD en la tabla File_table si contiene archivos con el nombre solicitado y devuelvo una lista de los
 		archivosDisponibles = this.getTracker().getFilesByName(nombreBuscado);
@@ -672,39 +666,13 @@ public class ThreadTracker implements Runnable {
 		
 		if (archivosDisponibles.isEmpty()) { //Si no se encontraron archivos con el nombre solicitado, devuelvo error
 			response = new Mensaje(Mensaje.Tipo.ERROR, "No se encontró un archivo con el nombre solicitado");
-			
-			//encripto mensaje con la clave simetrica
-			byte[] datosAEncriptar = conexTCP.convertToBytes(response);
-			byte[] mensajeEncriptado = this.tracker.getKG().encriptarSimetrico(conexTCP.getKey(), datosAEncriptar);
-			conexTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-			conexTCP.getOutBuff().flush();
-		
+			response.enviarMensaje(conexionTCP, response, kg);
 		}else { //Si hay archivos que coinciden con el nombre buscado
 			Object obj = new Object();
 			obj = archivosDisponibles;
 			response = new Mensaje(Mensaje.Tipo.FILES_AVAILABLE, obj);
 			//Envío una lista de nombres de archivos relacionados con la búsqueda
-			//encripto mensaje con la clave simetrica
-			byte[] datosAEncriptar = conexTCP.convertToBytes(response);
-			byte[] mensajeEncriptado = this.tracker.getKG().encriptarSimetrico(conexTCP.getKey(), datosAEncriptar);
-			conexTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-			conexTCP.getOutBuff().flush();
-			
-			//Aguardo respuesta del peer (hash de archivo a descargar)
-			int msgSize = 1024*1024;//1MB
-	        byte[] buffer = new byte[msgSize];
-	        int byteread = conexTCP.getInBuff().read(buffer, 0, msgSize);
-	        //desencripto con la clave simetrica
-	        byte[] datosEncriptados = Arrays.copyOfRange(buffer, 0, byteread);
-	        byte[] msgDesencriptado = this.tracker.getKG().desencriptarSimetrico(conexTCP.getKey(), datosEncriptados);
-	        response = (Mensaje) conexTCP.convertFromBytes(msgDesencriptado);
-	        
-			if (response.tipo == Mensaje.Tipo.REQUEST) { //Si el peer envío el hash del archivo
-				String hash = response.string; //hash
-				String pathJSON = this.getTracker().getPath()+ "/" + hash + ".json";
-				
-				this.enviarArchivoBuffer(conexTCP, pathJSON);
-			}
+			response.enviarMensaje(conexionTCP, response, kg);
 		}
 	}
 

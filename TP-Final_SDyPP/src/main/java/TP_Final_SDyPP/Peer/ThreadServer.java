@@ -1,16 +1,12 @@
 package TP_Final_SDyPP.Peer;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -25,22 +21,27 @@ import org.json.simple.parser.ParseException;
 import TP_Final_SDyPP.Otros.ConexionTCP;
 import TP_Final_SDyPP.Otros.KeysGenerator;
 import TP_Final_SDyPP.Otros.Mensaje;
+import TP_Final_SDyPP.Otros.TrackerManager;
+import javafx.application.Platform;
 
 
 public class ThreadServer implements Runnable {
-	private ConexionTCP conexTCP;
+	private ConexionTCP conexionTCP;
 	private Servidor servidor;
+	private TrackerManager tm;
 	private KeysGenerator kg;
+	private String log;
 	
 	public ThreadServer(ConexionTCP c, Servidor servidor) {
-		this.conexTCP = c;	
+		this.conexionTCP = c;	
 		this.servidor = servidor;
+		this.tm = new TrackerManager();
 		this.kg = new KeysGenerator();
 	}
 
 	public void run() {
 		try {
-			Object o = conexTCP.getInObj().readObject();//Recibo mensaje de peer cliente o Tracker
+			Object o = conexionTCP.getInObj().readObject();//Recibo mensaje de peer cliente o Tracker
 			Mensaje response = null;
 			if (o instanceof Mensaje)
 			{
@@ -48,7 +49,10 @@ public class ThreadServer implements Runnable {
 				
 				switch(m.tipo) {
 					case CHECK_AVAILABLE: 
-						if(!this.enviarACK(conexTCP, m, response))
+						log = "Recibi mensaje CHECK AVAILABLE";
+						this.servidor.logger.info(log);
+						System.err.println(log);
+						if(!this.enviarACK(m, response))
 							this.encriptados();
 						break;
 				}					
@@ -67,70 +71,224 @@ public class ThreadServer implements Runnable {
 		while(!salir) {
 			try {
 				
-				int msgSize = 1024*1024;//1MB
-		        byte[] buffer = new byte[msgSize];
-		        int byteread = conexTCP.getInBuff().read(buffer, 0, msgSize);
-		        //desencripto con la clave simetrica
-		        byte[] datosEncriptados = Arrays.copyOfRange(buffer, 0, byteread);
-		        byte[] msgDesencriptado = kg.desencriptarSimetrico(conexTCP.getKey(), datosEncriptados);
-		        Object o = conexTCP.convertFromBytes(msgDesencriptado);
+				Mensaje m = new Mensaje();
+				byte[] msgDesencriptado = m.recibirMensaje(conexionTCP, kg);
+		        Object o = conexionTCP.convertFromBytes(msgDesencriptado);
 				
 		        Mensaje response = null;
 				if (o instanceof Mensaje)
 				{
-					Mensaje m = (Mensaje) o;
+					m = (Mensaje) o;
 					
 					switch(m.tipo) {
 					
 						case PIECES_AVAILABLE_CLOSE:
-							if(!this.getPiecesAvailable(conexTCP, m, response)) 
-								conexTCP.getSocket().close();
+							log = "Recibi mensaje PIECES_AVAILABLE_CLOSE";
+							this.servidor.logger.info(log);
+							System.err.println(log);
+							
+							this.getPiecesAvailable(conexionTCP, m, response); 
+							conexionTCP.getSocket().close();
 							salir = true;
 							break;
 					
 						case PIECES_AVAILABLE:
-							if(this.getPiecesAvailable(conexTCP, m, response)) {
+							log = "Recibi mensaje PIECES_AVAILABLE";
+							this.servidor.logger.info(log);
+							System.err.println(log);
+							
+							switch(this.getPiecesAvailable(conexionTCP, m, response)) {
+							case 1://Todo ok
+								break;
+								
+							case 2://No posee archivo, se retira del swarm al peer
 								this.servidor.decrementarConexiones();
-								conexTCP.getSocket().close();
+								conexionTCP.getSocket().close();
+								
+								log = "Fallo al obtener archivo con piezas disponibles.";
+								this.servidor.logger.error(log);
+								System.err.println(log);
+								
 								this.retirarmeDeSwarm(m.hash, response);//no posee el archivo con las partes disponibles. No debo pertenecer más al swarm.
 								salir = true;
+								break;
+								
+							case 3://Error. No se retira del swarm al peer
+								this.servidor.decrementarConexiones();
+								conexionTCP.getSocket().close();
+								
+								log = "Fallo al obtener archivo con piezas disponibles.";
+								this.servidor.logger.error(log);
+								System.err.println(log);
+								
+								salir = true;
+								break;
 							}
 							break;
 							
 						case GET_PIECE:
-							if(this.getPiece(conexTCP, m, response)) {
+							log = "Recibi mensaje GET_PIECE";
+							this.servidor.logger.info(log);
+							
+							switch(this.getPiece(conexionTCP, m)) {
+							case 1://Todo ok
+								break;
+								
+							case 2://No posee archivo, se retira del swarm al peer
 								this.servidor.decrementarConexiones();
-								conexTCP.getSocket().close();
-								this.retirarmeDeSwarm(m.hash, response);//no posee la parte que decía tener. No debo pertenecer más al swarm.
+								conexionTCP.getSocket().close();
+								
+								log = "No posee el archivo con la pieza.";
+								this.servidor.logger.error(log);
+								System.err.println(log);
+								
+								this.retirarmeDeSwarm(m.hash, response);//no posee el archivo con las partes disponibles. No debo pertenecer más al swarm.
 								salir = true;
+								break;
+								
+							case 3://Error. No se retira del swarm al peer
+								this.servidor.decrementarConexiones();
+								conexionTCP.getSocket().close();
+								
+								log = "Fallo al obtener pieza.";
+								this.servidor.logger.error(log);
+								System.err.println(log);
+								
+								salir = true;
+								break;
 							}
 							break;
 							
 						case LOADDOWN:
+							log = "Recibi mensaje LOADDOWN";
+							this.servidor.logger.info(log);
+							System.err.println(log);
+							
 							this.servidor.decrementarConexiones();
-							conexTCP.getSocket().close(); //Cierro la conexion
+							conexionTCP.getSocket().close(); //Cierro la conexion
 							salir = true;
 							break;
 					}					
 				}		
 			} catch (IOException e) {
-				e.printStackTrace();
+				salir = true;
+				this.exception(e);
 			} catch (ClassNotFoundException e){
-				e.printStackTrace();
+				salir = true;
+				this.exception(e);
 			} catch (Exception e) {
-				e.printStackTrace();
+				salir = true;
+				this.exception(e);
 			}	
 		}	
 	}
 	
-	private boolean getPiece(ConexionTCP cliente, Mensaje m, Mensaje response) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InterruptedException {				
-		return (this.servidor.enviarArchivoBuffer(m, cliente));		
+	private void exception(Exception e) {
+		e.printStackTrace();
+		this.servidor.decrementarConexiones();
+		
+		try {
+			conexionTCP.getSocket().close();
+		} catch (IOException e1) {
+			log = "Fallo por intentar cerrar socket";
+			this.servidor.logger.error(log);
+			System.err.println(log);
+		}		
 	}
 
-	private boolean getPiecesAvailable(ConexionTCP cliente, Mensaje msg, Mensaje response) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+	private int getPiece(ConexionTCP cliente, Mensaje m) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InterruptedException, ClassNotFoundException, IOException {	
+		try {
+			Thread.sleep(100);//Necesario en pruebas locales
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+			
+	    try {
+	    	log = "m.pathAParte: nombre del archivo buscado en peer servidor:"+m.pathAParte;
+	    	this.servidor.logger.info(log);
+			File archivo = new File(m.pathAParte);//Busca la parte del archivo (si no es seed) o el archivo completo (si es seed)
+			
+			if(!archivo.exists()) {
+				if(m.seed) {//Si soy seed y no encuentro el file significa que el peer servidor borró o movió el file. Dejara de ser seed
+					return 2;
+				} else {//Si no soy seed y no encuentra la parte que decía tener: puede ser porque este peer "no seed" terminó la
+						//descarga del file, eliminando las partes y formando un file único. 
+						//Pregunto si tiene el file
+					String path = m.pathAParte.substring(0, m.pathAParte.lastIndexOf('.'));
+					archivo = new File(m.pathAParte);
+					if(!archivo.exists()) {
+						return 2;
+					}
+					//Ahora es seed
+					m.seed = true;
+				}
+			} 
+			
+			int pieceSize = 1024*1024;
+			byte[] piece = new byte[pieceSize];
+			int tamañoParteBuscada = m.sizeParte;//1MB, menos la última parte.
+			int bytesread;
+			
+	        FileInputStream fis = new FileInputStream(archivo);
+	        BufferedInputStream in = new BufferedInputStream(fis);
+	        
+	        if(m.seed) {
+	        	int parte = m.nroParte;
+	            while (parte>0 && (bytesread = in.read(piece,0,pieceSize)) != -1) {	    
+	            	parte--;
+	            }
+				byte[] buffer = new byte[1024];
+				int count;
+				boolean continuar = true;
+				while(tamañoParteBuscada>=1024 && continuar) {
+					if((count = in.read(buffer)) > 0) {
+						cliente.getOutBuff().write(buffer,0,count);
+						tamañoParteBuscada-=count;	
+					}else {
+						continuar = false;
+					}
+				}
+				count = in.read(buffer,0,tamañoParteBuscada);//Leo el resto que me falta
+				cliente.getOutBuff().write(buffer,0,count);
+	        }
+	        else {
+				byte[] buffer = new byte[1024];
+				int count;
+				while ((count = in.read(buffer)) > 0)
+				{
+					cliente.getOutBuff().write(buffer,0,count);
+				}
+	        }
+			
+	        cliente.getOutBuff().flush();
+	        
+	        in.close();//Cierro el buffer de lectura del JSON
+	        fis.close();
+	        
+	        return 1;
+	    }catch (IOException e) {
+	    	return 3;
+	    }
+	}
+
+	private int getPiecesAvailable(ConexionTCP cliente, Mensaje msg, Mensaje response) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
 		Object obj;
 		try {
-			obj = new JSONParser().parse(new FileReader(msg.string));
+			log = "Nombre del archivo buscado en peer servidor:"+msg.string;
+			this.servidor.logger.info(log);
+			System.err.println(log);
+			
+			File file = new File(msg.string);
+			if(!file.exists()) {
+				response = new Mensaje(Mensaje.Tipo.FILE_UNAVAILABLE);
+		    	response.enviarMensaje(cliente, response, kg);
+				
+				return 2;
+			}
+			
+			FileReader fileReader = new FileReader(msg.string);
+			obj = new JSONParser().parse(fileReader);
+			fileReader.close();
 			
 			JSONArray ja = (JSONArray) obj;
 			
@@ -143,33 +301,26 @@ public class ThreadServer implements Runnable {
 	    	
 	    	obj = misPartes;
 	    	response = new Mensaje(Mensaje.Tipo.PIECES_AVAILABLE, obj);
-	    	
-	    	//encripto mensaje con la clave simetrica
-			byte[] datosAEncriptar = cliente.convertToBytes(response);
-			byte[] mensajeEncriptado = kg.encriptarSimetrico(cliente.getKey(), datosAEncriptar);
-			cliente.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-			cliente.getOutBuff().flush();
-	    	
-	    	return false;
+	    	response.enviarMensaje(cliente, response, kg);
+	    	return 1;
 			
 		} catch (IOException | ParseException e1) {
-			this.servidor.logger.error("Falló al leer json con partes archivo en servidor.");
+			log = "Fallo al leer json con partes archivo en servidor.";
+			this.servidor.logger.error(log);
+			System.err.println(log);
 			e1.printStackTrace();
+			
 			response = new Mensaje(Mensaje.Tipo.ERROR);
 	    	try {
-	    		//encripto mensaje con la clave simetrica
-				byte[] datosAEncriptar = cliente.convertToBytes(response);
-				byte[] mensajeEncriptado = kg.encriptarSimetrico(cliente.getKey(), datosAEncriptar);
-				cliente.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-				cliente.getOutBuff().flush();
-				
-				cliente.getSocket().close();
+	    		response.enviarMensaje(cliente, response, kg);
 			} catch (IOException e) {
-				this.servidor.logger.error("Falló enviar error desde peer servidor.");
+				log = "Fallo enviar error desde peer servidor.";
+				this.servidor.logger.error(log);
+				System.err.println(log);
 				e.printStackTrace();
 			}
-	 
-	    	return true;
+			
+	    	return 3;
 		}
 	}
 
@@ -177,60 +328,65 @@ public class ThreadServer implements Runnable {
 		//Obtener tracker
 		try {
 			//obtengo trakcer
-			conexTCP = this.servidor.getTracker();
+			conexionTCP = tm.getTracker(kg, this.servidor.getKpub(), this.servidor.getKpriv());
     		
-    		if(conexTCP!=null) {
+    		if(conexionTCP!=null) {
 				//enviar mi peer socket y hash del archivo
 				response = new Mensaje(Mensaje.Tipo.QUIT_SWARM, this.servidor.getIpExterna(), this.servidor.getPortExterno(), hash);
-				//encripto mensaje con la clave simetrica
-				byte[] datosAEncriptar = conexTCP.convertToBytes(response);
-				byte[] mensajeEncriptado = kg.encriptarSimetrico(conexTCP.getKey(), datosAEncriptar);
-				conexTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-				conexTCP.getOutBuff().flush();
-				conexTCP.getSocket().close();	
+				response.enviarMensaje(conexionTCP, response, kg);
+				conexionTCP.getSocket().close();
+				
+				log = "Peer servidor eliminado del swarm.";
+				this.servidor.logger.error(log);
+				System.err.println(log);
 			}
 			
 		} catch (Exception e) {
-			this.servidor.logger.error("Fallo al  obtener tracker por peer servidor al intentar retirarme del swarm.");
+			log = "Fallo al obtener tracker por peer servidor al intentar retirarme del swarm.";
+			this.servidor.logger.error(log);
+			System.err.println(log);
 			e.printStackTrace();
 		}		
 	}
 
 	//Método que envía un ACK para confirmar que está activo
-	private boolean enviarACK (ConexionTCP ctcp, Mensaje m, Mensaje response) throws Exception  {
+	private boolean enviarACK (Mensaje m, Mensaje response) throws Exception  {
 		//Creo clave simetrica, usada para encriptar mensajes entre peer servidor y peer cliente
 		SecretKey key = kg.generarLlaveSimetrica();
-		ctcp.setKey(key);
-		if(!m.mantenerConexion) {			
-			byte[] datosAEncriptar = ctcp.convertToBytes(ctcp.getKey());
-			byte[] mensajeEncriptado = kg.encriptarAsimetrico(datosAEncriptar, m.kpub);
-			//Agrego key al mensaje
-			response = new Mensaje(Mensaje.Tipo.ACK, mensajeEncriptado);
-			
-			ctcp.getOutObj().writeObject(response);
+		conexionTCP.setKey(key);
+		if(!m.mantenerConexion) {
+			this.enviarMensaje(Mensaje.Tipo.ACK,m,response);
 			return false;
 		}else if(this.servidor.getNumConexiones() < this.servidor.getNumConexionesMaximas()) {
 			this.servidor.aumentarConexiones();//Suma en 1 conexiones salientes del peer
-			//Creo clave simetrica, usada para encriptar mensajes entre peer servidor y peer cliente
-			
-			byte[] datosAEncriptar = ctcp.convertToBytes(ctcp.getKey());
-			byte[] mensajeEncriptado = kg.encriptarAsimetrico(datosAEncriptar, m.kpub);
-			//Agrego key al mensaje
-			response = new Mensaje(Mensaje.Tipo.ACK, mensajeEncriptado);
-			
-			ctcp.getOutObj().writeObject(response);
+			this.enviarMensaje(Mensaje.Tipo.ACK,m,response);
 			return false;
 		}else {
-			response = new Mensaje(Mensaje.Tipo.ERROR);
-			
-			//encripto mensaje con la clave pública del peer cliente
-			byte[] datosAEncriptar = ctcp.convertToBytes(response);
-			byte[] mensajeEncriptado = kg.encriptarAsimetrico(datosAEncriptar, m.kpub);
-			
-			ctcp.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-			ctcp.getOutBuff().flush();
-			ctcp.getSocket().close();
+			this.enviarMensaje(Mensaje.Tipo.ERROR,m,response);
 			return true;//salir == true
 		}
 	}
+	
+	private void enviarMensaje(Mensaje.Tipo tipoMensaje, Mensaje m, Mensaje response) throws IOException {
+		switch(tipoMensaje) {
+			case ACK:				
+				byte[] datosAEncriptar = conexionTCP.convertToBytes(conexionTCP.getKey());
+				byte[] mensajeEncriptado = kg.encriptarAsimetrico(datosAEncriptar, m.kpub);
+				//Agrego key al mensaje
+				response = new Mensaje(Mensaje.Tipo.ACK, mensajeEncriptado);
+				conexionTCP.getOutObj().writeObject(response);
+				log = "Respondi a mensaje CHECK AVAILABLE con ACK";
+				this.servidor.logger.info(log);				
+				break;
+				
+			case ERROR:
+				response = new Mensaje(Mensaje.Tipo.ERROR);
+				conexionTCP.getOutObj().writeObject(response);
+				conexionTCP.getSocket().close();
+				log = "Respondio a mensaje CHECK AVAILABLE con ERROR (peer servidor supera conexiones maximas)";
+				this.servidor.logger.info(log);
+				break;
+		}
+	}
+
 }

@@ -8,6 +8,8 @@ import org.apache.logging.log4j.Logger;
 import com.db4o.*;
 import com.db4o.query.*;
 
+import TP_Final_SDyPP.Otros.DatosArchivo;
+
 public class Database {
 
 	private Logger logger;
@@ -15,10 +17,9 @@ public class Database {
 	private int id;
 	private String filename = "database";
 	
-	public Database(int id) {
+	public Database(int id, Logger logger) {
 		this.id = id;
-		System.setProperty("logFilename", filename);
-		logger = LogManager.getLogger(Database.class);
+		this.logger = logger;
 	}
 	
 	public void open() {
@@ -36,8 +37,8 @@ public class Database {
 	}
 
 	public void insertarSeed(String hash, boolean isSeed, String pathArchivo, String ipPeer, int portPeer) {
-		SeedTable seed = new SeedTable(hash, isSeed, pathArchivo, ipPeer, portPeer);
 		
+		SeedTable seed = new SeedTable(hash, isSeed, pathArchivo, ipPeer, portPeer);
 		this.open();
 		this.db.store(seed);
 		this.db.commit();
@@ -52,13 +53,15 @@ public class Database {
 		this.open();
 		SeedTable st = new SeedTable(hash, ip, port);
 		ObjectSet resultado = db.queryByExample(st);
-        st = (SeedTable) resultado.next();
-        db.delete(st);
+		if(!resultado.isEmpty()) {
+	        st = (SeedTable) resultado.next();
+	        db.delete(st);
+	        logger.info("Seed eliminado: ("+ip+":"+port+")");
+		}
 		this.db.close();
-		logger.info("Seed eliminado: ("+ip+":"+port+")");
 	}
 	
-	public ArrayList<FileTable> getFilesByName(String nombreBuscado) {
+	public ArrayList<DatosArchivo> getFilesByName(String nombreBuscado) {
 		
 		this.open();
 		Query query = this.db.query();
@@ -66,10 +69,25 @@ public class Database {
         query.descend("name").constrain(nombreBuscado).like();
         ObjectSet<FileTable> files = query.execute();
 		
-		ArrayList<FileTable> array = new ArrayList<FileTable>();
-		
+        ArrayList<DatosArchivo> array = new ArrayList<DatosArchivo>();
+		//Busco seeds y leechers de cada hash del array de filesTable
 		for(FileTable f : files) {
-			array.add((FileTable) f);
+			int cantSeeds = 0;
+			int cantLeechers = 0;
+			
+			query = this.db.query();
+	        query.constrain(SeedTable.class);
+	        query.descend("hash").constrain(f.getHash()).equal();
+	        ObjectSet<SeedTable> seeds = query.execute();
+	        for(SeedTable s : seeds) {
+	        	if(s.isSeed())
+	        		cantSeeds++;
+	        	else
+	        		cantLeechers++;
+	        }
+	        
+	        DatosArchivo da = new DatosArchivo(f.getHash(), f.getName(), f.getSize(), cantSeeds, cantLeechers);
+	        array.add(da);
 		}
 		
 		this.db.close();
@@ -118,7 +136,9 @@ public class Database {
 		this.open();
 		SeedTable st = new SeedTable(hash);//busco solo según hash
         ObjectSet resultado = this.db.queryByExample(st);
-		st = (SeedTable) resultado.next();
+        if(!resultado.isEmpty()) {
+        	st = (SeedTable) resultado.next();
+        }
 		this.db.close();
 		logger.info("Consulta PeerSocket");
 		return st;

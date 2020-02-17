@@ -3,7 +3,7 @@
   
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>P2P</groupId>
+  <groupId>TP_Final_SDyPP</groupId>
   <artifactId>Peer</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
@@ -14,6 +14,25 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+  
+  <build>
+    <plugins>
+      <plugin>
+          <groupId>org.openjfx</groupId>
+          <artifactId>javafx-maven-plugin</artifactId>
+          <version>0.0.4</version>
+          
+          <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>TP_Final_SDyPP.UI.MainPeer</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>  
+  </build>
 
   <dependencies>
     <dependency>
@@ -28,20 +47,35 @@
 	  <artifactId>json-simple</artifactId>
 	  <version>1.1.1</version>
 	</dependency>
+	
 	<dependency>
    		<groupId>org.apache.logging.log4j</groupId>
    		<artifactId>log4j-api</artifactId>
    		<version>2.5</version> 
     </dependency>
+    
     <dependency>
    		<groupId>org.apache.logging.log4j</groupId>
    		<artifactId>log4j-core</artifactId>
    		<version>2.5</version> 
      </dependency>
+     
      <dependency>
 	    <groupId>log4j</groupId>
 	    <artifactId>log4j</artifactId>
 	    <version>1.2.17</version>
+	</dependency>
+	
+	<dependency>
+    	<groupId>org.openjfx</groupId>
+    	<artifactId>javafx-controls</artifactId>
+    	<version>13</version>
+  	</dependency>
+  	
+	<dependency>
+    	<groupId>org.openjfx</groupId>
+    	<artifactId>javafx-fxml</artifactId>
+    	<version>13</version>
 	</dependency>
   </dependencies>
   

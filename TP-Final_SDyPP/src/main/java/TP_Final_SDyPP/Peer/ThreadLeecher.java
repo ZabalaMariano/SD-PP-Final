@@ -2,22 +2,12 @@ package TP_Final_SDyPP.Peer;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-
-import javax.crypto.SecretKey;
 
 import org.json.simple.parser.ParseException;
 
@@ -25,245 +15,276 @@ import TP_Final_SDyPP.DB4O.SeedTable;
 import TP_Final_SDyPP.Otros.ConexionTCP;
 import TP_Final_SDyPP.Otros.KeysGenerator;
 import TP_Final_SDyPP.Otros.Mensaje;
+import TP_Final_SDyPP.Otros.TrackerManager;
 import TP_Final_SDyPP.Peer.ParteArchivo.Estado;
+import TP_Final_SDyPP.Peer.ThreadCliente.TipoError;
 
 public class ThreadLeecher implements Runnable {
 
 	private ThreadCliente threadCliente; 
-	private ConexionTCP conexTCP = null;
+	private ConexionTCP conexionTCP = null;
 	private KeysGenerator kg;
+	private String log;
 	
-	public ThreadLeecher(ThreadCliente threadCliente) {
+	private Integer[] peerPartes;
+	private SeedTable seed;
+	
+	//Del seed
+	private String ip;
+	private int port;
+	
+	private int nroParte;
+	private int sizeParte;
+	private String hashParte;
+	private String fileName;
+	
+	public ThreadLeecher(ThreadCliente threadCliente, ConexionTCP conexionTCP, SeedTable seed, String ip, int port, Integer[] peerPartes) {
 		this.threadCliente = threadCliente;
+		this.fileName = this.threadCliente.getName();
+		this.conexionTCP = conexionTCP;
+		this.seed = seed;
+		this.ip = ip;
+		this.port = port;
+		this.peerPartes = peerPartes;
 		this.kg = new KeysGenerator();
 	}
 
 	@Override
-	public void run() {
-		//Mientras falte recuperar partes del archivo
-		while(!this.threadCliente.getStop() && this.threadCliente.getPartesArchivo().size()>0) {
-			Integer[] peerPartes = new Integer[0];
-			//Mientras no encuentre un peer disponible (conectado y que tenga el archivo)
-			boolean peerDisponible = false;
-			SeedTable seed = null;
-			String ip = "";
-			int port = -1;
+	public void run() {	
+		//Descargo las partes ofrecidas por el peer obtenido (que no posea ya)
+		boolean fallo = this.descargarPartes();
+		
+		//Al salir del while le digo al peer servidor que disminuya conexiones salientes.
+		if(!fallo) {					
+			try {
+				log = "ThreadLeecher - LOADDOWN peer "+ip+":"+port;
+				this.threadCliente.logger.info(log);
+				System.out.println(log);
+				
+				Mensaje m = new Mensaje(Mensaje.Tipo.LOADDOWN);
+				m.enviarMensaje(conexionTCP, m, kg);
+				
+				conexionTCP.getSocket().close();
+			} catch (Exception e) {
+				log = "ThreadLeecher - Fallo cerrar socket contra peer servidor";
+				this.threadCliente.logger.error(log);
+				System.out.println(log);
+				e.printStackTrace();
+			}	
+		}else {//Si falla envío de la parte no tengo que envíar loaddown
+			this.threadCliente.RemovePeerDeSwarm(seed, ip, port);
+		}
+		
+		synchronized(this.threadCliente.getCliente().getLockLeechersDisponibles()) {
+			this.threadCliente.getCliente().aumentarLeechersDisponibles();
+			this.threadCliente.decrementarCantidadLeechersUtilizados();
+		}
+	}
+		
+	private boolean descargarPartes() {
+		boolean encontre = true;//parte a descargar
+		boolean fallo = false;
+		
+		//Si no encuentro una parte que me falte descargar en el peer salgo del while para buscar otro peer
+		while(!this.threadCliente.getStop() && encontre && this.threadCliente.getPartesArchivo().size()>0
+				&& (!this.threadCliente.getThreadClienteSinLeecher() || this.threadCliente.getLeechersUtilizados()<2)) {
+			//Si no se pauso la descarga, encontre una parte que necesitaba en la última buscada en el peer,
+			//todavía necesito más partes y no existe otro threadCliente que tenga 0 leechers (yo teniendo >1) 
+			//--> busco otra parte en peer
 			
-			synchronized(this.threadCliente.getPeersDisponibles()) {
-				int index = 0;
-				while(!this.threadCliente.getStop() && !peerDisponible && index<this.threadCliente.getPeersDisponibles().size()) {
-					seed = this.threadCliente.getPeersDisponibles().get(index);
-					ip = seed.getIpPeer();
-					port = seed.getPortPeer();
-					try {
-						//Pregunto si está despierto y obtengo clave simetrica
-						conexTCP = new ConexionTCP(ip,port);
-						if(this.threadCliente.getSecretKey(conexTCP,true)) {
-							//Pregunto por su archivo con las partes que descargo
-							String path = seed.getPath() + "/"+this.threadCliente.getName()+"Partes.json";
-							Mensaje msg = new Mensaje(Mensaje.Tipo.PIECES_AVAILABLE, path, seed.getHash());
-							
-							//encripto mensaje con la clave simetrica
-							byte[] datosAEncriptar = conexTCP.convertToBytes(msg);
-							byte[] mensajeEncriptado = kg.encriptarSimetrico(conexTCP.getKey(), datosAEncriptar);
-							conexTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-							conexTCP.getOutBuff().flush();
-							
-							int msgSize = 1024*1024;//1MB
-					        byte[] buffer = new byte[msgSize];
-					        int byteread = conexTCP.getInBuff().read(buffer, 0, msgSize);
-					        //desencripto con la clave simetrica
-					        byte[] datosEncriptados = Arrays.copyOfRange(buffer, 0, byteread);
-					        byte[] msgDesencriptado = kg.desencriptarSimetrico(conexTCP.getKey(), datosEncriptados);
-					        Mensaje response = (Mensaje) conexTCP.convertFromBytes(msgDesencriptado);
-							
-							if(msg.tipo == Mensaje.Tipo.PIECES_AVAILABLE) {
-								peerPartes = (Integer[]) response.lista;
-								peerDisponible = true;
-								this.threadCliente.logger.info("ThreadLeecher - Conexión con peer disponible ("+ip+":"+port+") y obtención de archivo de partes descargadas");
-							}else {
-								this.threadCliente.logger.error("ThreadLeecher - No pudo obtener archivo de partes descargadas del peer disponible ("+ip+":"+port+")");
-								conexTCP.getSocket().close();//Llegó ERROR
-							}
-						}
-					} catch (Exception e) {
-						this.threadCliente.logger.error("ThreadLeecher - Falló conexión con peer disponible del swarm ("+ip+":"+port+")");
-					}
-					this.threadCliente.logger.info("ThreadLeecher - Retirar al peer ("+ip+":"+port+") de peers disponibles");
-					this.threadCliente.getPeersDisponibles().remove(index);//Lo saco del array, haya o no podido conectarme a él.
-					//Aunque haya podido conectarme al peer, lo saco de la lista de peers disponibles para no utilizar un único peer.
+			//Busco en el peer si tiene una parte que me falte descargar
+			encontre = this.getParteFaltante();
+			
+			if(!this.threadCliente.getStop() && encontre) {//Pido parte a peer 
+				
+				//Creo mensaje que pide parte
+				String pathAParte;
+				Mensaje m = null;
+				if(seed.isSeed()) {
+					pathAParte = seed.getPath() + "/" + this.fileName;
+					m = new Mensaje(Mensaje.Tipo.GET_PIECE, nroParte, pathAParte, true, sizeParte, seed.getHash());
+				}else {
+					pathAParte = String.format("%s.%06d", seed.getPath() + "/" + this.fileName, nroParte);
+					m = new Mensaje(Mensaje.Tipo.GET_PIECE, nroParte, pathAParte, false, sizeParte, seed.getHash());
 				}
-			}
-			
-			//Recupero partes del peer disponible
-			if(peerDisponible){
-				boolean encontre = true;//parte a descargar
-				boolean fallo = false;//Si falla envío de la parte no tengo que envíar loaddown
-				while(!this.threadCliente.getStop() && encontre && this.threadCliente.getPartesArchivo().size()>0) {//Si no encontre una parte que me falte descargar en el peer salgo del while para buscar otro peer
-					encontre = false;
-					int nroParte = 0;
-					String hashParte = "";
-					int sizeParte = 0;
-					synchronized(this.threadCliente.getPartesArchivo()) {
-						int index = 0 ;
-						
-						while(!this.threadCliente.getStop() && !encontre && index<this.threadCliente.getPartesArchivo().size()) {
-							ParteArchivo parte = this.threadCliente.getPartesArchivo().get(index);
-							if(parte.getEstado() == Estado.PENDIENTE) {//Parte que necesito y no está siendo descargada por otro threadLeecher
-								nroParte = parte.getParte();
-								if (peerPartes[nroParte] == 1) {//El peer tiene la parte que necesito
-									encontre = true;
-									hashParte = parte.getHash();
-									sizeParte = parte.getSize();
-									this.threadCliente.getPartesArchivo().get(index).setEstado(Estado.DESCARGANDO);
-									this.threadCliente.logger.info("ThreadLeecher - Descargando parte número "+nroParte+" de peer "+ip+":"+port);
-								}
-							}
-							index++;
-						}
-					}
+				
+				try {
+					//medir tiempo para descargar parte
+					long startTime = System.currentTimeMillis();
+					m.enviarMensaje(conexionTCP, m, kg);
 					
-					if(!this.threadCliente.getStop() && encontre) {//Pido parte a peer 
-						String pathAParte;
-						Mensaje msg = null;
-						if(seed.isSeed()) {
-							pathAParte = seed.getPath() + "/" + this.threadCliente.getName();
-							msg = new Mensaje(Mensaje.Tipo.GET_PIECE, nroParte, pathAParte, true, sizeParte, seed.getHash());
-						}else {
-							pathAParte = seed.getPath() + "/" + this.threadCliente.getName() + "." + nroParte;
-							msg = new Mensaje(Mensaje.Tipo.GET_PIECE, nroParte, pathAParte, false, sizeParte, seed.getHash());
-						}
-						
-						try {
-							//encripto mensaje con la clave simetrica
-							byte[] datosAEncriptar = conexTCP.convertToBytes(msg);
-							byte[] mensajeEncriptado = kg.encriptarSimetrico(conexTCP.getKey(), datosAEncriptar);
-							conexTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-							conexTCP.getOutBuff().flush();
-														
-							//Recibo y almaceno la parte del archivo
-							String pathNuevaParte = this.guardarArchivoBuffer(conexTCP, nroParte, sizeParte);
-							if(pathNuevaParte != "") {
+					//Recibo y almaceno la parte del archivo
+					String pathNuevaParte = this.guardarArchivoBuffer(conexionTCP, nroParte, sizeParte);
+					long endTime = System.currentTimeMillis();
+					long time = endTime - startTime;
+					
+					switch(pathNuevaParte) {
+						case "tiempo":
+							//No pude recuperar parte.
+							log = "ThreadLeecher - Fallo al recuperar parte de peer "+ip+":"+port+" por tiempo";
+							this.threadCliente.logger.error(log);
+							System.out.println(log);
+							//vuelve estado de parte descargada en array "partesArchivo" a pendiente
+							this.estadoPendiente(nroParte);
+							
+							//Guardar error y cuál peer es el involucrado (en archivo de carpeta Graficos)
+							this.threadCliente.almacenarErrorDescargaParte(TipoError.TIEMPO, ip, port);
+
+						break;
+							
+						case "error":
+							//No pude recuperar parte. Ante la posibilidad de que haya eliminado las partes dejo de buscar en este peer
+							//el peer se elimina del swarm.
+							log = "ThreadLeecher - Fallo al recuperar parte de peer "+ip+":"+port;
+							this.threadCliente.logger.error(log);
+							System.out.println(log);
+							conexionTCP.getSocket().close();
+							encontre = false;//Dejar de buscar en este peer.
+							fallo = true;
+							
+							//vuelve estado de parte descargada en array "partesArchivo" a pendiente
+							this.estadoPendiente(nroParte);	
+							
+							//Guardar error y cuál peer es el involucrado (en archivo de carpeta Graficos)
+							this.threadCliente.almacenarErrorDescargaParte(TipoError.CONEXION, ip, port);
+
+						break;
+							
+						default:
+							//genero hash de la nueva parte y lo comparo con el del json
+							String hash = this.hash(pathNuevaParte);
+							if(hash.equals(hashParte)) {//Descarga exitosa
+								//guardo tiempo que tomo la descarga de la parte
+								this.threadCliente.almacenarTiempoDescargaDeParte(time, nroParte);
 								
-								//genero hash de la nueva parte y lo comparo con el del json
-								String hash = this.hash(pathNuevaParte);
-								if(hash.equals(hashParte)) {
-									//Borro parte descargada del array partesArchivo
-									synchronized(this.threadCliente.getPartesArchivo()) {
-										int index = 0 ;
-										boolean encontreParte = false;
-										while(!encontreParte && index<this.threadCliente.getPartesArchivo().size()) {
-											if(this.threadCliente.getPartesArchivo().get(index).getParte() == nroParte) {
-												this.threadCliente.getPartesArchivo().remove(index);
-												encontreParte = true;
-												this.threadCliente.logger.info("ThreadLeecher - Parte número "+nroParte+" descargada de peer "+ip+":"+port);
-											}
-											index++;
-										}
-									}
-									
-									//actualizo estado de parte descargada en json "partesPendientes" a descargado
-									this.threadCliente.actualizarPartesPendientes(nroParte);
-									
-									//mensaje que indica % descargo hasta el momento
-									int faltantes = this.threadCliente.getPartesArchivo().size();
-									int descargue = this.threadCliente.getCantPartes() - faltantes;
-									float descargado = (descargue * 100) / this.threadCliente.getCantPartes();
-									
-									this.threadCliente.logger.info("ThreadLeecher - "+descargado+"% Descargado");
-									
-								}else {
-									//Borro parte descargada de la carpeta de partes
-									File nuevaParte = new File(pathNuevaParte);
-									boolean borrado = nuevaParte.delete();
-									
-									//vuelve estado de parte descargada en array "partesArchivo" a pendiente
-									synchronized(this.threadCliente.getPartesArchivo()) {
-										int index = 0 ;
-										boolean encontreParte = false;
-										while(!encontreParte && index<this.threadCliente.getPartesArchivo().size()) {
-											if(this.threadCliente.getPartesArchivo().get(index).getParte() == nroParte) {
-												this.threadCliente.getPartesArchivo().get(index).setEstado(Estado.PENDIENTE);
-												encontreParte = true;
-												this.threadCliente.logger.info("ThreadLeecher - Parte número "+nroParte+" vuelve a estado Pendiente");
-											}
-											index++;
-										}
-									}
-								}
-							}else {
-								//No pude recuperar parte. Ante la posibilidad de que haya eliminado las partes dejo de buscar en este peer
-								//el peer se elimina del swarm.
-								this.threadCliente.logger.error("Falló al recuperar parte de peer "+ip+":"+port);
-								conexTCP.getSocket().close();
-								encontre = false;//Dejar de buscar en este peer.
-								fallo = true;
-								
-								//vuelve estado de parte descargada en array "partesArchivo" a pendiente
+								//Borro parte descargada del array partesArchivo
 								synchronized(this.threadCliente.getPartesArchivo()) {
 									int index = 0 ;
 									boolean encontreParte = false;
 									while(!encontreParte && index<this.threadCliente.getPartesArchivo().size()) {
 										if(this.threadCliente.getPartesArchivo().get(index).getParte() == nroParte) {
-											this.threadCliente.getPartesArchivo().get(index).setEstado(Estado.PENDIENTE);
+											this.threadCliente.getPartesArchivo().remove(index);
 											encontreParte = true;
-											this.threadCliente.logger.info("ThreadLeecher - Parte número "+nroParte+" vuelve a estado Pendiente");
+											log = fileName +" - ThreadLeecher - Parte numero "+nroParte+" descargada de peer "+ip+":"+port;
+											this.threadCliente.logger.info(log);
 										}
 										index++;
 									}
 								}
+								
+								//actualizo estado de parte descargada en json "partesPendientes" a descargado
+								this.threadCliente.actualizarPartesPendientes(nroParte);
+								this.threadCliente.getMisPartes()[nroParte] = 1;
+								
+								//mensaje que indica % descargado hasta el momento
+								int faltantes = this.threadCliente.getPartesArchivo().size();
+								int descargue = this.threadCliente.getCantPartes() - faltantes;
+								float descargado = (float) (descargue * 100) / this.threadCliente.getCantPartes();
+								String descargadoS = String.format("%.2f", descargado);
+								
+								log = "ThreadLeecher - "+descargadoS+"% Descargado";
+								this.threadCliente.logger.info(log);
+								this.threadCliente.setDescargado(descargadoS+"%");
+								
+								//Velocidad de descarga
+								String velocidad = this.threadCliente.calcularVelocidad(time, sizeParte);
+								
+								//Guardar nroParte, tiempo y de que peer lo bajó (en archivo de carpeta Graficos)
+								this.threadCliente.almacenarVelocidadDescargaParte(time, nroParte, ip, port);
+								
+								//Actualizar descargado y vel descarga en tabla
+								String hashArchivo = this.threadCliente.getHash();//Para diferenciar row de table a actualizar
+								this.threadCliente.getCliente().notifyObserver(4, descargadoS+"%"+"-"+velocidad+"-"+hashArchivo);								
+								
+							} else {
+								log = "ThreadLeecher - Parte "+nroParte+" Hash invalido";
+								this.threadCliente.logger.info(log);
+								System.out.println(log);
+								//Borro parte descargada de la carpeta de partes
+								File nuevaParte = new File(pathNuevaParte);
+								nuevaParte.delete();
+								
+								encontre = false;//Dejar de buscar en este peer.
+								
+								//vuelve estado de parte descargada en array "partesArchivo" a pendiente
+								this.estadoPendiente(nroParte);
+								
+								//Guardar error y cuál peer es el involucrado (en archivo de carpeta Graficos)
+								this.threadCliente.almacenarErrorDescargaParte(TipoError.HASH, ip, port);
 							}
-						} catch (Exception e) {
-							this.threadCliente.logger.error("ThreadLeecher - Falló al crear conexión contra peer servidor para recibir parte "+nroParte);
-							e.printStackTrace();
-							fallo = true;
-							//vuelve estado de parte descargada en array "partesArchivo" a pendiente
-							synchronized(this.threadCliente.getPartesArchivo()) {
-								int index = 0 ;
-								boolean encontreParte = false;
-								while(!encontreParte && index<this.threadCliente.getPartesArchivo().size()) {
-									if(this.threadCliente.getPartesArchivo().get(index).getParte() == nroParte) {
-										this.threadCliente.getPartesArchivo().get(index).setEstado(Estado.PENDIENTE);
-										encontreParte = true;
-										this.threadCliente.logger.info("ThreadLeecher - Parte número "+nroParte+" vuelve a estado Pendiente");
-									}
-									index++;
-								}
-							}
-						}
+						break;
 					}
-				}
-				
-				//Al salir del while le digo al peer servidor que disminuya conexiones salientes.
-				if(!fallo) {					
+				} catch (Exception e) {
+					log = "ThreadLeecher - Fallo al crear conexion contra peer servidor para recibir parte "+nroParte;
+					this.threadCliente.logger.error(log);
+					System.out.println(log);
+					e.printStackTrace();
+					encontre = false;//Dejar de buscar en este peer.
+					fallo = true;
+					//vuelve estado de parte descargada en array "partesArchivo" a pendiente
+					this.estadoPendiente(nroParte);
+					
 					try {
-						this.threadCliente.logger.info("ThreadLeecher - LOADDOWN peer "+ip+":"+port);
-						Mensaje msg = new Mensaje(Mensaje.Tipo.LOADDOWN);
-						//encripto mensaje con la clave simetrica
-						byte[] datosAEncriptar = conexTCP.convertToBytes(msg);
-						byte[] mensajeEncriptado = kg.encriptarSimetrico(conexTCP.getKey(), datosAEncriptar);
-						conexTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-						conexTCP.getOutBuff().flush();
-						
-						conexTCP.getSocket().close();
-					} catch (Exception e) {
-						this.threadCliente.logger.error("ThreadLeecher - Falló cerrar socket contra peer servidor");
-						e.printStackTrace();
-					}	
-				}else {
-					//Saco a peer del array swarm
-					synchronized(this.threadCliente.getSwarm()) {
-						this.threadCliente.getSwarm().remove(seed);
-						this.threadCliente.logger.error("ThreadLeecher - Retiro peer de swarm permanentemente");
+						conexionTCP.getSocket().close();
+					} catch (IOException e1) {
+						e1.printStackTrace();
 					}
 				}
-			}else {//Renuevo peersDisponible con swarm 
-				this.threadCliente.setPeersDisponibles(this.threadCliente.getSwarm());
-				this.threadCliente.logger.info("ThreadLeecher - Actualización de peers disponibles con swarm");
+			}else if(!encontre){//El peer al que me conecte no tiene ninguna parte que me falte
+				log = "ThreadLeecher - peer "+ip+":"+port+" No posee ninguna parte que nos falte descargar.";
+				this.threadCliente.logger.info(log);
+				System.out.println(log);
+				
+				this.threadCliente.RemovePeerDeSwarm(seed, ip, port);
+			}
+		}
+		return fallo;
+	}
+
+	private boolean getParteFaltante() {
+		boolean encontre = false;
+		nroParte = 0;
+		sizeParte = 0;
+		hashParte = "";
+		
+		synchronized(this.threadCliente.getPartesArchivo()) {
+			int index = 0 ;
+			
+			while(!this.threadCliente.getStop() && !encontre && index<this.threadCliente.getPartesArchivo().size()) {
+				ParteArchivo parte = this.threadCliente.getPartesArchivo().get(index);
+				if(parte.getEstado() == Estado.PENDIENTE) {//Parte que necesito y no está siendo descargada por otro threadLeecher
+					nroParte = parte.getParte();
+					if (peerPartes[nroParte] == 1) {//El peer tiene la parte que necesito
+						encontre = true;
+						hashParte = parte.getHash();
+						sizeParte = parte.getSize();
+						this.threadCliente.getPartesArchivo().get(index).setEstado(Estado.DESCARGANDO);
+						log = "ThreadLeecher - Descargando parte numero "+nroParte+" de peer "+ip+":"+port;
+						this.threadCliente.logger.info(log);
+					}
+				}
+				index++;
+			}
+		}
+		return encontre;
+	}
+
+	private void estadoPendiente(int nroParte) {
+		synchronized(this.threadCliente.getPartesArchivo()) {
+			int index = 0 ;
+			boolean encontreParte = false;
+			while(!encontreParte && index<this.threadCliente.getPartesArchivo().size()) {
+				if(this.threadCliente.getPartesArchivo().get(index).getParte() == nroParte) {
+					this.threadCliente.getPartesArchivo().get(index).setEstado(Estado.PENDIENTE);
+					encontreParte = true;
+					log = "ThreadLeecher - Parte numero "+nroParte+" vuelve a estado Pendiente.";
+					this.threadCliente.logger.info(log);
+				}
+				index++;
 			}
 		}
 	}
-
+	
 	public String hash (String path) throws IOException, NoSuchAlgorithmException, ParseException 
 	{	
 		File file = new File(path);
@@ -282,48 +303,79 @@ public class ThreadLeecher implements Runnable {
     		sb.append(Integer.toHexString(i & 0xff).toString());    		
     	}
     	
+    	in.close();
+    	fis.close();
+    	
     	//devuelvo hash
     	return sb.toString();
 	}
 	
 	private String guardarArchivoBuffer(ConexionTCP ctcp, int nroParte, int sizeParte) throws InterruptedException {
-		Thread.sleep(100);//Espero a que el peer servidor haya escrito el archivo completo en el outputStream
 		int byteread;
 	
-	    try {
-	    	//agrego nombre parte
-	    	String pathParte = this.threadCliente.getPathPartes() + "/" + this.threadCliente.getName() + "." + nroParte;
-	        File archivo = new File(pathParte);
-	        archivo.createNewFile();
-	        FileOutputStream fos = new FileOutputStream(archivo);
-	        BufferedOutputStream out = new BufferedOutputStream(fos);
-	        
-	        byte[] buffer = new byte[sizeParte];
+	    try {	   
+	    	byte[] buffer = new byte[sizeParte];
 	        int leido = 0;
-	        boolean salir = false;
-	        while(leido != sizeParte && !salir) {
-	        	byteread = ctcp.getInBuff().read(buffer, 0, sizeParte);
-	        	if(byteread != -1) {
-	        		out.write(buffer, 0, byteread);
-	        		leido+=byteread;
-	        	}else
-	        		salir = true;
-	        }
+	        int leo = 0;
+	        int available;
+			long esperoHasta = System.currentTimeMillis() + 15000;//15 seg
+			boolean error = false;
+			boolean salir = false;
+			boolean tiempo = false;
+			log = "ThreadLeecher - Guardando parte "+nroParte+".";
+			this.threadCliente.logger.info(log);
+			
+			while (!error && !salir && !tiempo) {
+				if(leido < sizeParte) {//Si todavía no leí todo el archivo
+					if(System.currentTimeMillis() < esperoHasta) {//Si no superamos el tiempo máximo para descargar parte
+						leo = java.lang.Math.min(ctcp.getInBuff().available(),sizeParte-leido);
+				        available = ctcp.getInBuff().read(buffer, leido, leo);
+				        if (available == -1) {
+				        	log = "ThreadLeecher - Parte "+nroParte+": ERROR available igual a -1.";
+				        	this.threadCliente.logger.info(log);
+				        	error = true;
+				        } else {
+							leido += leo;
+							if(available != 0)
+								esperoHasta = System.currentTimeMillis() + 15000;//15 seg
+				        }
+					} else {
+						log = "ThreadLeecher - Parte "+nroParte+": Exceso de tiempo.";
+						this.threadCliente.logger.info(log);
+						tiempo = true;
+					}
+				} else {
+					log = "ThreadLeecher - Parte "+nroParte+": Descargada.";
+					this.threadCliente.logger.info(log);
+					salir = true;
+				}
+			}
+			
+		    if(salir) {
+		    	//agrego nombre parte
+				String pathParte = String.format("%s.%06d", this.threadCliente.getPathPartes() + "/" + this.fileName, nroParte);
+				File archivo = new File(pathParte);	        
+		        archivo.createNewFile();
+		        FileOutputStream fos = new FileOutputStream(archivo);
+		        BufferedOutputStream out = new BufferedOutputStream(fos);
+		        out.write(buffer, 0, sizeParte);
+		        
+		        out.flush();
+		        out.close();
+		        fos.close();
+		        return pathParte;
+	    	} else if(tiempo){//Se pasó de tiempo
+	        	return "tiempo";//No sacamos al peer del swarm
+	    	} else {//Error por available
+	    		return "error";//Sacamos al peer del swarm
+	    	}
 
-	        out.flush();
-	        
-	        out.close();
-	        fos.close();
-	      
-	        if(salir) {
-	        	archivo.delete();
-	        	return "";
-	        }else
-	        	return pathParte;
 	    }catch(IOException ex) {
-	    	this.threadCliente.logger.error("ThreadLeecher - Falló guardar parte archivo en ThreadLeecher.");
-	    	ex.printStackTrace();
+	    	log = "ThreadLeecher - Fallo guardar parte archivo en ThreadLeecher.";
+	    	this.threadCliente.logger.error(log);
+			System.out.println(log);
 	    	return "";
 	    }	
 	}
+	
 }

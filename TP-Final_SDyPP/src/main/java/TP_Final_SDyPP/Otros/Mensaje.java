@@ -9,9 +9,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
 import TP_Final_SDyPP.DB4O.FileTable;
@@ -28,6 +34,7 @@ public class Mensaje implements Serializable {
 		ACK,
 		SEND_FILE,//Peer servidor envia el archivo (Master no participa)
 		FILES_AVAILABLE, //Lo envia el master en respuesta a una busqueda de un archivo
+		FILE_UNAVAILABLE,//Enviado por peer servidor cuando no posee el archivo a descargar. Ya no es seed.
 		CHECK_AVAILABLE,
 		SET_PRIMARY, //Enviado por un master cuando el se define como primario
 		CHANGE_PRIMARY, //Es utilizado cuando un master detecta que se cayó el primario y encuentra su reemplazo
@@ -79,9 +86,12 @@ public class Mensaje implements Serializable {
 	public SecretKey key;
 	public byte[] keyEncriptada;
 	public byte[] datosEncriptados;
-	public boolean mantenerConexion;
+	public boolean mantenerConexion;	
 	
-	public Mensaje(Tipo tipo, byte[] keyEncriptada) {
+	//Constructores
+	public Mensaje() {}	
+	
+	public Mensaje(Tipo tipo, byte[] keyEncriptada) {//ACK DEL PEER SERVIDOR
 		this.tipo = tipo;
 		this.keyEncriptada = keyEncriptada;
 	}
@@ -104,7 +114,7 @@ public class Mensaje implements Serializable {
 		this.hash = hash;
 	}
 	
-	public Mensaje(Tipo tipo) {//LOADDOWN, ALIVE
+	public Mensaje(Tipo tipo) {//LOADDOWN, ALIVE, ERROR
 		this.tipo = tipo;
 	}
 	
@@ -211,5 +221,26 @@ public class Mensaje implements Serializable {
 		this.sizeParte = sizeParte;
 		this.hash = hash;
 	}
+	
+	//Envío mensajes
+	public void enviarMensaje(ConexionTCP c, Mensaje m, KeysGenerator kg) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+		//encripto mensaje con la clave simetrica
+		byte[] datosAEncriptar = c.convertToBytes(m);
+		byte[] mensajeEncriptado = kg.encriptarSimetrico(c.getKey(), datosAEncriptar);
+		c.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
+		c.getOutBuff().flush();	
+	}
+	
+	public byte[] recibirMensaje(ConexionTCP c, KeysGenerator kg) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, ClassNotFoundException {	
+		int msgSize = 1024*1024;//1MB
+        byte[] buffer = new byte[msgSize];
+        int byteread = c.getInBuff().read(buffer, 0, msgSize);
+        //desencripto con la clave simetrica
+        byte[] datosEncriptados = Arrays.copyOfRange(buffer, 0, byteread);
+        byte[] msgDesencriptado = kg.desencriptarSimetrico(c.getKey(),datosEncriptados);
+
+        return msgDesencriptado;
+	}
+
 
 }

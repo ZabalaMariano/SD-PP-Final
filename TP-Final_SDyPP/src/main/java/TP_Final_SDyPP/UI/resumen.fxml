@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.StackedBarChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+
+<AnchorPane prefHeight="441.0" prefWidth="846.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TP_Final_SDyPP.UI.ResumenDescargaController">
+	<children>
+      <TabPane prefHeight="441.0" prefWidth="846.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Resumen">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="412.0" prefWidth="378.0">
+                     <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ebebeb" height="218.0" layoutX="166.0" layoutY="14.0" stroke="BLACK" strokeType="INSIDE" width="508.0" />
+                        <Label layoutX="181.0" layoutY="21.0" text="Tiempo total para descargar el archivo:" />
+                        <Label layoutX="181.0" layoutY="47.0" text="Velocidad de descarga promedio:" />
+                        <Label layoutX="192.0" layoutY="122.0" text="Tiempo mínimo:" />
+                        <Label layoutX="192.0" layoutY="148.0" text="Tiempo máximo:" />
+                        <Label layoutX="192.0" layoutY="175.0" text="Tiempo promedio:" />
+                        <Label layoutX="262.0" layoutY="93.0" text="Tiempos para descargar partes que conforman el archivo" />
+                        <Label layoutX="193.0" layoutY="202.0" text="Desvío estándar:" />
+                        <Separator layoutX="177.0" layoutY="84.0" prefHeight="0.0" prefWidth="480.0" />
+                        <Label fx:id="tiempoTotal" layoutX="401.0" layoutY="21.0" prefHeight="17.0" prefWidth="143.0" />
+                        <Label fx:id="velocidadPromedio" layoutX="373.0" layoutY="47.0" prefHeight="17.0" prefWidth="185.0" />
+                        <Label fx:id="tiempoMinimo" layoutX="291.0" layoutY="122.0" prefHeight="17.0" prefWidth="81.0" />
+                        <Label fx:id="tiempoMaximo" layoutX="294.0" layoutY="146.0" prefHeight="17.0" prefWidth="70.0" />
+                        <Label fx:id="tiempoPromedio" layoutX="303.0" layoutY="175.0" prefHeight="17.0" prefWidth="111.0" />
+                        <Label fx:id="tiempoDesvioEstandar" layoutX="292.0" layoutY="201.0" prefHeight="17.0" prefWidth="122.0" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Tiempo descarga partes">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="378.0" prefHeight="412.0" prefWidth="378.0">
+                     <children>
+                        <LineChart fx:id="chartTiempoDescarga" layoutX="-3.0" layoutY="-2.0" prefHeight="418.0" prefWidth="846.0" title="Tiempo de descarga por partes">
+                          <xAxis>
+                            <CategoryAxis animated="false" label="Número parte" side="BOTTOM" fx:id="x" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis fx:id="y" label="Tiempo descarga (ms)" side="LEFT" />
+                          </yAxis>
+                        </LineChart>
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Cant. partes bajadas por peer">
+	          <content>
+	              <AnchorPane minHeight="0.0" minWidth="378.0" prefHeight="412.0" prefWidth="378.0">
+                     <children>
+                        <BarChart fx:id="chartDescargasPorPeer" layoutY="-2.0" prefHeight="415.0" prefWidth="846.0" title="Descargas por peer">
+                          <xAxis>
+                            <CategoryAxis label="Socket Peer" side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis label="Cantidad de partes" side="LEFT" />
+                          </yAxis>
+                        </BarChart>
+                     </children></AnchorPane>
+          	  </content>
+          </Tab>
+          <Tab text="Velocidad promedio por peer">
+	          <content>
+	              <AnchorPane minHeight="0.0" minWidth="378.0" prefHeight="412.0" prefWidth="378.0">
+                     <children>
+                        <BarChart fx:id="chartVelPromedioPorPeer" layoutY="-1.0" prefHeight="418.0" prefWidth="846.0" title="Velocidad promedio de descarga por peer">
+                          <xAxis>
+                            <CategoryAxis label="Socket Peer" side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis label="velocidad (Kbps)" side="LEFT" />
+                          </yAxis>
+                        </BarChart>
+                     </children></AnchorPane>
+          	  </content>
+          </Tab>
+          <Tab text="Fallos por peer">
+	          <content>
+	              <AnchorPane minHeight="0.0" minWidth="378.0" prefHeight="412.0" prefWidth="378.0">
+                     <children>
+                        <StackedBarChart fx:id="chartErroresPorPeer" layoutY="-1.0" prefHeight="416.0" prefWidth="846.0" title="Tipos de fallos por peer">
+                          <xAxis>
+                            <CategoryAxis label="Socket Peer" side="BOTTOM" fx:id="xAxisFallos" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis label="Cantidad de fallos" side="LEFT" />
+                          </yAxis>
+                        </StackedBarChart>
+                     </children></AnchorPane>
+          	  </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

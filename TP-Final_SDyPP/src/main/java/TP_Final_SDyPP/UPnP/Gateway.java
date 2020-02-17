@@ -176,6 +176,7 @@ class Gateway {
             command("DeletePortMapping", params);
             return true;
         } catch (Exception ex) {
+        	ex.printStackTrace();
             return false;
         }
     }

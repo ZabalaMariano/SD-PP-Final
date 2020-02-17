@@ -10,10 +10,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -31,25 +32,97 @@ import org.json.simple.parser.ParseException;
 
 import TP_Final_SDyPP.DB4O.FileTable;
 import TP_Final_SDyPP.DB4O.SeedTable;
+import TP_Final_SDyPP.Observable.Observable;
+import TP_Final_SDyPP.Observable.Observer;
 import TP_Final_SDyPP.Otros.ConexionTCP;
+import TP_Final_SDyPP.Otros.DatosArchivo;
+import TP_Final_SDyPP.Otros.KeysGenerator;
 import TP_Final_SDyPP.Otros.Mensaje;
 import TP_Final_SDyPP.Otros.TrackerInfo;
+import TP_Final_SDyPP.Otros.TrackerManager;
 import TP_Final_SDyPP.UPnP.UPnPAdmin;
+import javafx.application.Platform;
 
-public class Cliente implements Runnable {
+public class Cliente implements Observable{//, Runnable {
+	
+	private ArrayList<Observer> observadores = new ArrayList<Observer>();
+	
+	//Metodos Observable
+	@Override
+	public void addObserver(Object o) {
+		if (o instanceof Observer)
+		{
+			Observer ob = (Observer) o;
+			observadores.add(ob);
+		}
+	}
+
+	@Override
+	public void notifyObserver(int op, String log) {
+		synchronized(this) {
+			for (Observer o: observadores)
+			{
+				o.update(this, op, log);
+			}
+		}
+	}
+	
 	//Atributos//
 	private ConexionTCP conexionTCP;
 	private int portServer;
 	private int portExterno;
 	private String ipExterna;
-	private static Scanner scanner = new Scanner(System.in);
 	private String pathJSONs;
 	private UPnPAdmin admin;
-	private Servidor servidor;
 	private ArrayList<TrackerInfo> listaTrackers;
 	private ArrayList<ThreadCliente> listaThreadsClientes;
 	private ArrayList<DescargaPendiente> listaDescargasPendientes;
+	private int leechersDisponibles = 3;
+	private String trackersJSON = "trackers.json";
+	private PublicKey kPub;
+	private PrivateKey kPriv;
+	private KeysGenerator kg;
+	private TrackerManager tm;
+	private String log;
+	private ArrayList<DatosArchivo> metaArchivosEncontrados;
+	private String pathDescargasPendientes = "Descargas pendientes";//Para reanudar descargas
+	private String pathGraficos = "Graficos";//Con información para gráficos
+	private final Object lockLeechersDisponibles = new Object();
 	public Logger logger;
+	
+	public Object getLockLeechersDisponibles() {
+		return this.lockLeechersDisponibles;
+	}
+	
+	public String getPathDescargasPendientes() {
+		return this.pathDescargasPendientes;
+	}
+	
+	public PrivateKey getKpriv() {
+		return this.kPriv;
+	}
+	
+	public PublicKey getKpub() {
+		return this.kPub;
+	}
+	
+	public KeysGenerator getKG() {
+		return kg;
+	}
+	
+	public int getLeechersDisponibles() {
+		return leechersDisponibles;
+	}
+	
+	public void reducirLeechersDisponibles() {
+		this.leechersDisponibles--;
+		System.out.println("leechers disponibles: "+leechersDisponibles);
+	}
+	
+	public void aumentarLeechersDisponibles() {
+		this.leechersDisponibles++;
+		System.out.println("leechers disponibles: "+leechersDisponibles);
+	}
 	
 	public int getPort() {
 		return portExterno;
@@ -59,34 +132,41 @@ public class Cliente implements Runnable {
 		return ipExterna;
 	}
 	
-	public Servidor getServidor() {
-		return servidor;
+	public ArrayList<ThreadCliente> getListaThreadsClientes() {
+		return listaThreadsClientes;
 	}
 	
-	public ArrayList<ThreadCliente> getListaThreadsClientes() {
-		synchronized(this) {
-			return listaThreadsClientes;
+	public void eliminarThreadCliente(ThreadCliente tc) {
+		synchronized(this.listaThreadsClientes) {
+			this.listaThreadsClientes.remove(tc);
 		}
 	}
 
 	public ArrayList<DescargaPendiente> getListaDescargasPendientes() {
-		return listaDescargasPendientes;
+		synchronized(this.listaDescargasPendientes) {
+			return listaDescargasPendientes;
+		}
 	}
 	
 	public void eliminarDescargaPendiente(int i) {
-		synchronized(this) {
+		synchronized(this.listaDescargasPendientes) {
 			this.listaDescargasPendientes.remove(i);
 		}
 	}
 	
-	public void eliminarThreadCliente(ThreadCliente tc) {
-		synchronized(this) {
-			this.listaDescargasPendientes.remove(tc);
-		}
+	public ArrayList<DatosArchivo> getMetaArchivosEncontrados(){
+		return this.metaArchivosEncontrados;
+	}
+	
+	public String getPathGraficos() {
+		return this.pathGraficos;
 	}
 
 	//Constructor//
-	public Cliente(String path, int port, int portExterno, String ipExterna, UPnPAdmin admin, Servidor s, Logger logger) throws IOException {
+	public Cliente(String path, int port, int portExterno, String ipExterna, UPnPAdmin admin, PublicKey publicKey, PrivateKey privateKey, Logger logger) throws IOException {
+		this.crearCarpetaDescargasPendientes();
+		this.crearCarpetaGraficos();
+		
 		this.setListaDescargasPendientes();
 		this.listaThreadsClientes = new ArrayList<ThreadCliente>();
 		this.logger = logger;
@@ -95,22 +175,41 @@ public class Cliente implements Runnable {
 		this.portExterno = portExterno;
 		this.ipExterna = ipExterna;
 		this.admin = admin;
-		this.servidor = s;
+		this.kPub = publicKey;
+		this.kPriv = privateKey;
+		this.tm = new TrackerManager();
+		this.kg = new KeysGenerator();
 	}
 	
+	private void crearCarpetaGraficos() {
+		File f = new File(this.pathGraficos);
+		if(!f.exists())
+			new File(this.pathGraficos).mkdirs();		
+	}
+
+	private void crearCarpetaDescargasPendientes() {
+		File f = new File(this.pathDescargasPendientes);
+		if(!f.exists())
+			new File(this.pathDescargasPendientes).mkdirs();
+	}
+
 	private void setListaDescargasPendientes() {
 		this.listaDescargasPendientes = new ArrayList<DescargaPendiente>();
-		File pathDescargasPendientes = new File("Descargas pendientes/");
+		File pathDescargasPendientes = new File(this.pathDescargasPendientes +"/");
 		for (File file : pathDescargasPendientes.listFiles()) {
 			if (file.isFile()) {
 				Object obj;
 				try {
-					obj = new JSONParser().parse(new FileReader("Descargas pendientes/"+file.getName()));
+					FileReader fileReader = new FileReader(this.pathDescargasPendientes+"/"+file.getName());
+					obj = new JSONParser().parse(fileReader);
+					fileReader.close();
+					
 					JSONObject jo = (JSONObject) obj; 
-			        String name = (String) jo.get("name");
+					String name = (String) jo.get("name");
 			        String hash = (String) jo.get("hash");
 			         
-					DescargaPendiente dp = new DescargaPendiente(name,hash);
+					DescargaPendiente dp = new DescargaPendiente(name,file.getName(),hash);
+			        
 					listaDescargasPendientes.add(dp);
 				} catch (IOException | ParseException e) {
 					e.printStackTrace();
@@ -118,177 +217,128 @@ public class Cliente implements Runnable {
 		    }
 		}
 	}
-
-	//Consola//
-	public void Inicio () throws Exception {
-		boolean salir = false;
-		
-		try {
-			while(!salir) {
-				System.out.println("Consola cliente\n");
-				System.out.println("Elija una opcion:");
-				System.out.println("1- Crear Meta Archivo"
-						+ "\n2- Subir Meta Archivo\n3- Descargar Meta Archivo\n4- Descargar Archivo"
-						+ "\n5- Descargas Pendientes \n6- Actualizar Trackers Conocidos\n7- Archivos ofrecidos por mí\n8- Salir");
-				String opcion = scanner.nextLine();
-				switch(opcion) {
-				case "1":
-					this.logger.info("Llamada crear archivo");
-					crearArchivo();
-					break;
-				case "2":
-					this.logger.info("Llamada subir archivo");
-					subirArchivo();
-					break;
-				case "3":
-					this.logger.info("Llamada descargar meta archivo");
-					descargarMetaArchivo();
-					break;
-				case "4":
-					this.logger.info("Llamada descargar archivo");
-					descargarArchivo();
-					break;
-				case "5":
-					this.logger.info("Llamada descargas pendientes");
-					descargasPendientes();
-					break;
-				case "6":
-					this.logger.info("Llamada actualizar trackers");
-					actualizarTrackers();
-					break;
-				case "7":
-					this.logger.info("Llamada archivos ofrecidos");
-					archivosOfrecidos();
-					break;
-				case "8":
-					salir = true;
-					this.admin.closePort(portServer);
-					//pauso todas las descargas activas
-					int i = 0;
-					for(DescargaPendiente dp : this.listaDescargasPendientes) {
-						if(dp.isActivo())
-							this.pausarDescarga(i);
-						i++;
-					}						
-					logger.info("Cliente cerrado");
-					break;
-				default:
-					System.err.println("Elija 1, 2, 3, 4, 5, 6, 7 u 8.\n");
-					break;
-				}
-				System.out.println("-----------------------------------------------------------------------------\n");
-			}			
-			
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+	
+	public void salir() {
+		//pauso todas las descargas activas
+		for(DescargaPendiente dp : this.listaDescargasPendientes) {
+			if(dp.isActivo()) {
+				String hash = dp.getHash();
+				this.pausarDescarga(hash);
+			}
 		}
 		
+		this.admin.closePort(portServer);						
+		logger.info("Cliente cerrado");
 	}
-
-	private void archivosOfrecidos() throws Exception {
+	
+	public void archivosOfrecidos() throws Exception {
 		conexionTCP = null;
-		conexionTCP = this.servidor.getTracker();
+		conexionTCP = tm.getTracker(kg, kPub, kPriv);
 		
 		if(conexionTCP!=null) {
 			Mensaje m = new Mensaje(Mensaje.Tipo.GET_FILES_OFFERED, this.ipExterna, this.portExterno);
-			
-			//encripto mensaje con la clave simetrica
-			byte[] datosAEncriptar = conexionTCP.convertToBytes(m);
-			byte[] mensajeEncriptado = this.servidor.getKG().encriptarSimetrico(conexionTCP.getKey(), datosAEncriptar);
-			conexionTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-			conexionTCP.getOutBuff().flush();
-			
-			int msgSize = 1024*1024;//1MB
-	        byte[] buffer = new byte[msgSize];
-	        int byteread = conexionTCP.getInBuff().read(buffer, 0, msgSize);
-	        //desencripto con la clave privada
-	        byte[] datosEncriptados = Arrays.copyOfRange(buffer, 0, byteread);
-	        byte[] msgDesencriptado = this.servidor.getKG().desencriptarSimetrico(conexionTCP.getKey(),datosEncriptados);
-	        Mensaje response = (Mensaje) conexionTCP.convertFromBytes(msgDesencriptado);
+			m.enviarMensaje(conexionTCP,m, kg);
+			byte[] datosDesencriptados = m.recibirMensaje(conexionTCP, kg);
+			Mensaje response = (Mensaje) conexionTCP.convertFromBytes(datosDesencriptados);
 	        
 	        if(response.tipo == Mensaje.Tipo.GET_FILES_OFFERED) {
 	        	ArrayList<FileTable> files = (ArrayList<FileTable>) response.lista;
 	        	if(files.size()>0) {
-	        		System.out.println("Está ofreciendo "+files.size()+" archivo/s.");
-	        		int i=1;
+	        		System.out.println("Ofrece "+files.size()+" archivo/s.");
 	        		for(FileTable ti : files) {
-	        			System.out.println(i+"- "+ti.getName());
+	        			System.out.println("- "+ti.getName());
 	        		}
 	        	}else {
-	        		System.out.println("No está ofreciendo ningún archivo.");		        	
+	            	log = "No esta ofreciendo ningun archivo.";
+	            	this.logger.info(log);
+	            	System.out.println(log);		        	
 	        	}
 	        }else {
-	        	this.logger.error("Fallo al intentar obtener los archivos ofrecidos.");
+	        	log = "Fallo al intentar obtener los archivos ofrecidos.";
+	        	this.logger.error(log);
+	        	System.out.println(log);
 	        }	
 		}else {
-			this.logger.error("No hay trackers disponibles en este momento.");
+        	log = "No hay trackers disponibles en este momento.";
+        	this.logger.error(log);
+        	System.out.println(log);
         }
 	}
 
-	private void actualizarTrackers() throws Exception {
-		readtrackerJSON();//Lleno la listatracker antes de buscar un tracker
+	public void actualizarTrackers() throws Exception {
+		this.listaTrackers = tm.readtrackerJSON(this.listaTrackers);//Lleno la listatracker antes de buscar un tracker
     	
 		int i = 0;
 		boolean trackerDisponible = false;
 		Socket s;
+		log = "tamanio lista de trackers: "+listaTrackers.size();
+		this.logger.info(log);
+		System.out.println(log);
+		
     	while(i<listaTrackers.size() && !trackerDisponible) {
     		int port = listaTrackers.get(i).getPort();
     		String ip = listaTrackers.get(i).getIp();
-    
-    		if(getTrackers(ip,port)) {//Intenta conectarse al socket del tracker.
+    		log = "llamada a getTrackers con ip:"+ip+" y port:"+port;
+    		this.logger.info(log);
+    		System.out.println(log);
+    		if(getTrackers(ip,port)) {//Intenta conectarse al socket del tracker y pide la lista de trackers activos
     			trackerDisponible=true;
     		}
     		i++;
     	}
     	
     	if(trackerDisponible) {
-    		this.logger.info("La lista de trackers se actualizo correctamente.");
+    		log = "La lista de trackers se actualizo correctamente."; 
+    		this.logger.info(log);
+    		System.out.println(log);
     		this.getListaTrackers();
     	}else {
-    		this.logger.error("No se pudo actualizar la lista de trackers. No hay ningún tracker disponible.");
+    		log = "No se pudo actualizar la lista de trackers. No hay ningun tracker disponible.";
+    		this.logger.error(log);
+    		System.out.println(log);
     	}
 	}
 	
 	public void getListaTrackers() throws Exception {
-		readtrackerJSON();
+		tm.readtrackerJSON(this.listaTrackers);
 		
-		System.out.println("-------------------------------------------");
 		if(this.listaTrackers.size()==0) {
-			System.out.println("Lista de Trackers activos vacía");
+			log = "Lista de Trackers activos vacia";
+			System.out.println(log);
 		}else {
 			for(int i=0; i<this.listaTrackers.size(); i++){
-				if(i!=0)
+				if(i!=0) 
 					System.out.println("");
 				System.out.println("Tracker ID: "+this.listaTrackers.get(i).getId());
 				System.out.println("Tracker socket: "+this.listaTrackers.get(i).getIp()+":"+this.listaTrackers.get(i).getPort());
 			}
 		}
-		System.out.println("-------------------------------------------\n");
 	}
 	
 	public boolean getTrackers(String ip, int port) throws Exception {//Compruebo que el nodo destino   
         try {										   					//este disponible
         	ConexionTCP c = new ConexionTCP(ip,port);
-        	Mensaje msj = new Mensaje(Mensaje.Tipo.GET_TRACKERS, this.servidor.getKpub());
+        	Mensaje msj = new Mensaje(Mensaje.Tipo.GET_TRACKERS, kPub);
         	c.getOutObj().writeObject(msj);
-        	
         	Mensaje response = (Mensaje) c.getInObj().readObject();
         	
         	if (response.tipo == Mensaje.Tipo.ACK) {
-        		
         		//desencripto con la clave privada la clave simetrica
-    	        byte[] msgDesencriptado = this.servidor.getKG().desencriptarAsimetrico(response.keyEncriptada, this.servidor.getKpriv());
+    	        byte[] msgDesencriptado = kg.desencriptarAsimetrico(response.keyEncriptada, this.getKpriv());
     	        c.setKey((SecretKey) c.convertFromBytes(msgDesencriptado));
         		
     	        //Desencripto lista de trackers con la clave simetrica
-    	        byte[] trackersEnBytes = this.servidor.getKG().desencriptarSimetrico(c.getKey(),response.datosEncriptados);
+    	        byte[] trackersEnBytes = kg.desencriptarSimetrico(c.getKey(),response.datosEncriptados);
     	        this.listaTrackers = (ArrayList<TrackerInfo>) c.convertFromBytes(trackersEnBytes);
     	        
-        		this.actualizarJSONTrackers();
+    	        //Actualizo JSON de trackers
+    			tm.actualizarJSONTrackers(this.listaTrackers, this.trackersJSON, this.logger);
+        		
         		return true;
         	}else {
+        		log = "No recibi ack del tracker despues de get_trackers";
+        		this.logger.info(log);
+        		System.out.println(log);
         		c.getSocket().close();
         		return false;
         	}   
@@ -297,113 +347,27 @@ public class Cliente implements Runnable {
         	 return false;
         }
     }
-	
-	public void actualizarJSONTrackers() 
-	{
-		File trackers = new File("trackers.json");
-		trackers.delete();//Elimino el archivo de trackers existente
+
+	//Crear Archivo
+	public void crearArchivo(String pathArchivo) throws NoSuchAlgorithmException, IOException, ParseException {
+		log = "Llamada crear JSON.";
+		this.logger.info(log);
+		System.out.println(log);
+		this.crearArchivoMeta(pathArchivo);
 		
-		String id = "";
-		String port = "";
-		
-		JSONArray array = new JSONArray();
-		for(TrackerInfo t : this.listaTrackers) {
-			JSONObject obj = new JSONObject();
-			
-			id = String.valueOf(t.getId());
-			port = String.valueOf(t.getPort());			
-			
-			obj.put("id", id);
-			obj.put("ip", t.getIp());
-			obj.put("puerto", port);
-			array.add(obj);
-		}
-		
-		//Escribo datos en JSON
-		FileWriter file;
-		try {
-			file = new FileWriter("trackers.json");
-			file.write(array.toJSONString());
-			file.flush();
-			file.close();
-		} catch (IOException e) {
-			this.logger.error("Falló creación de json con trackers.");
-			e.printStackTrace();
-		}
+		log = "JSON creado.";
+		this.logger.info(log);
+		System.out.println(log);
 	}
 
-	public void readtrackerJSON() throws Exception  
-    {  
-    	String ip;
-    	String port;
-    	String id;
-    	int idtracker;
-    	int porttracker;
-        Object obj = new JSONParser().parse(new FileReader("trackers.json")); 
-           
-        JSONArray jo = (JSONArray) obj; 
-          
-        this.listaTrackers = new ArrayList<TrackerInfo>();
-        TrackerInfo tracker;
-        
-        for(int i=0; i<jo.size(); i++){
-        	
-        	JSONObject jsonObject = (JSONObject) jo.get(i);
-            id = (String) jsonObject.get("id");
-            ip = (String) jsonObject.get("ip");
-            port = (String) jsonObject.get("puerto");
-      
-            idtracker = Integer.parseInt(id);
-            porttracker = Integer.parseInt(port);
-            tracker = new TrackerInfo(idtracker, ip, porttracker);
-            this.listaTrackers.add(tracker);
-        }
-    }
-
-	//Crear Archivo//
-	private void crearArchivo() throws NoSuchAlgorithmException, IOException, ParseException {
-		//Buscar archivo en path
-		System.out.print("Ingrese el path donde se encuentra el archivo a partir del cual desea crear el META-Archivo: ");
-		String pathArchivo = this.buscarArchivo();
-		System.out.println("Espere mientras se crea el archivo JSON con META-DATA del archivo que desea subir.");
-		this.crearArchivoMeta(pathArchivo);		
-		this.logger.info("JSON creado.");
-	}
-
-	//Subir Archivo//
-	private void subirArchivo() throws Exception 
+	//Subir Archivo
+	public void subirArchivo(String pathJSON) throws Exception 
 	{
-		System.out.print("Ingrese el path donde se encuentra el META-Archivo que desea publicar: ");
-		String pathJSON = this.buscarArchivo();
-		this.logger.info("Enviando JSON a Tracker...");
 		String hashJSON = this.hash(pathJSON);
 		this.enviarArchivo(pathJSON, hashJSON);
 	}
 
-	//Subir Archivo y Crear Archivo--> Buscar archivo en path, devuelve path si es válido//
-	private String buscarArchivo() 
-	{		
-		String path = "";
-		File sharedPath;
-    	boolean pathCorrecto = false;
-    	
-    	do {
-	    	try {
-	    		path = scanner.nextLine();
-	    		sharedPath = new File(path);
-	    		if(sharedPath.isFile())
-	    			pathCorrecto = true;
-	    		else
-	    			System.err.println("El path es inválido. Elija un archivo. Pruebe nuevamente:");
-	    	}catch(NumberFormatException  e){
-	    		System.err.println("El path es inválido. Pruebe nuevamente:");
-	    	}
-    	}while(!pathCorrecto);
-		
-    	return path;
-	}
-
-	//Crear Archivo --> Crear archivo JSON con meta data del archivo a subir//
+	//Crear Archivo --> Crear archivo JSON con meta data del archivo a subir
 	private void crearArchivoMeta(String path) throws NoSuchAlgorithmException, IOException, ParseException 
 	{
 		File file = new File(path);
@@ -416,29 +380,24 @@ public class Cliente implements Runnable {
 		
 		//Creo JSON con meta-data
 		String nameRemoveExt = name.substring(0, name.lastIndexOf('.'));
+		//Creo y guardo el nuevo json, y obtengo su path
 		String pathJSON = this.ConstruirArchivoMeta(name, size, sizePiece, piecesHashes, nameRemoveExt, path);
 		this.ConstruirArchivoPartes(path, pathJSON);
 	}
 
 	//Crear Archivo --> CrearArchivoMeta --> generar archivo json que indica las partes que se posee del archivo
 	private void ConstruirArchivoPartes(String path, String pathJSON) throws FileNotFoundException, IOException, ParseException {
-		//Creo archivo que indica que partes poseo del archivo (todas al ser seed)     	
-    	Object obj = new JSONParser().parse(new FileReader(pathJSON));
+     	
+		FileReader fileReader = new FileReader(pathJSON);
+    	Object obj = new JSONParser().parse(fileReader);
+    	fileReader.close();
+    	
     	JSONObject json = (JSONObject) obj;
     	String name = (String) json.get("name");
     	JSONArray hashes = (JSONArray) json.get("hashes");
-    	JSONArray partes = new JSONArray();
     	
-    	for(int i=0; i<hashes.size(); i++) {
-    		JSONObject hash = (JSONObject) hashes.get(i);
-    		
-    		JSONObject parte = new JSONObject();
-    		parte.put("parte", i);
-    		parte.put("hash", hash.get("hash"));
-    		parte.put("size", hash.get("size"));
-    		parte.put("estado", "descargada");
-    		partes.add(parte);
-    	}		
+    	//Creo archivo que indica que partes poseo del archivo (todas al ser seed)    	
+    	JSONArray partes = this.crearArchivoPartesFaltantes(json, pathJSON, hashes, true);
     	
     	try {
     		String pathDest;
@@ -453,49 +412,59 @@ public class Cliente implements Runnable {
 			fileW.flush();
 			fileW.close();
 		} catch (IOException e) {
-			this.logger.error("Falló al crear JSON de partes descargadas.");
+			log = "Fallo al crear JSON de partes descargadas.";
+			this.logger.error(log);
+			System.out.println(log);
 		}
 	}
 
-	//Crear Archivo --> CrearArchivoMeta --> generar hash de cada parte del arhivo y devolver lista para el archivo META-DATA//
+	//Crear Archivo --> CrearArchivoMeta --> generar hash de cada parte del arhivo y devolver lista para el archivo META-DATA
 	private String[] getPiecesHashes(File file, long size, int sizePiece) throws NoSuchAlgorithmException, IOException 
 	{
 		int partes = (int) ((size / sizePiece) + 1);
 		String[] piecesHashes = new String[partes];
 		int index = 0;
 	    byte[] buffer = new byte[sizePiece];//1 MB
-	    byte[] bufferFinal = new byte[0];
 	    
         FileInputStream fis = new FileInputStream(file);
         BufferedInputStream in = new BufferedInputStream(fis);
         int byteread;
-        
-        while ((byteread = in.read(buffer,0,buffer.length)) != -1 ) {
-        	if(index+1 == partes)
+         
+        while ((byteread = in.read(buffer)) > 0 ) {
+        	if(index+1 == partes)//Si es la ultima parte
         		buffer = Arrays.copyOfRange(buffer, 0, byteread);
-        	MessageDigest md = MessageDigest.getInstance("SHA-1"); 
-        	md.update(buffer);
-        	byte[] b = md.digest();
-        	StringBuffer sb = new StringBuffer();
-        	for(byte bl : b) {
-        		sb.append(Integer.toHexString(bl & 0xff).toString());    		
-        	}
-        	piecesHashes[index] = sb.toString();
+        	
+        	piecesHashes[index] = this.crearHash(buffer);
         	index++;
         }  	
-        
+        in.close();
+        fis.close();
 		return piecesHashes;
 	}
 	
-	//Crear Archivo --> CrearArchivoMeta --> creo JSON con nombre, tamaño, tamaño pieza, lista de hashes//
+	private String crearHash(byte[] buffer) throws NoSuchAlgorithmException {
+		MessageDigest md = MessageDigest.getInstance("SHA-1"); 
+    	md.update(buffer);
+    	byte[] b = md.digest();
+    	StringBuffer sb = new StringBuffer();
+    	
+    	for(byte i : b) {
+    		sb.append(Integer.toHexString(i & 0xff).toString());    		
+    	}
+    	
+    	//devuelvo ID
+    	return sb.toString();
+	}
+	
+	//Crear Archivo --> CrearArchivoMeta --> creo JSON con nombre, tamaño, tamaño pieza, lista de hashes
 	private String ConstruirArchivoMeta(String name, long size, int sizePiece, String[] piecesHashes, String nameRemoveExt, String pathArchivo) 
 	{	
 		JSONObject json = new JSONObject();
 		json.put("name", name);
 		if(pathArchivo.contains("/"))
-			json.put("path", pathArchivo.substring(0, pathArchivo.lastIndexOf('/')));//Le saco el nombre. En este path está el archivo y partes.json	
+			json.put("path", pathArchivo.substring(0, pathArchivo.lastIndexOf('/')));//Le saco el nombre. En este path esta el archivo y partes.json	
 		else
-			json.put("path", pathArchivo.substring(0, pathArchivo.lastIndexOf('\\')));//Le saco el nombre. En este path está el archivo y partes.json
+			json.put("path", pathArchivo.substring(0, pathArchivo.lastIndexOf('\\')));//Le saco el nombre. En este path esta el archivo y partes.json
 		json.put("fileSize", size);
 		json.put("pieceSize", sizePiece);
 
@@ -506,7 +475,7 @@ public class Cliente implements Runnable {
 				piece.put("hash", piecesHashes[i]);
 				piece.put("size", sizePiece);
 				array.add(piece);	
-			}else {//Última pieza
+			}else {//ultima pieza
 				JSONObject piece = new JSONObject();
 				piece.put("hash", piecesHashes[i]);
 				
@@ -521,40 +490,25 @@ public class Cliente implements Runnable {
 		}
 		
 		json.put("hashes", array);
-		
-		try {			
-			//Creo archivo con nombre no utilizado
-			String pathJSON = "";
-			boolean yaExiste = false;
-			int index = 1;
-			do {
-				File f = null;
-				if(index == 1) {
-					pathJSON = this.pathJSONs + "/" + nameRemoveExt +".json";
-					f = new File(pathJSON);
-					index++;
-				}else {//Ya fallo el primer nombre. Pongo un numero entre parentesis desde ahora
-					pathJSON = this.pathJSONs + "/" + nameRemoveExt +" ("+ index +").json";
-					f = new File(pathJSON);
-					index++;
-				}	
-				yaExiste = f.exists();
-			}while(yaExiste);//Mientras que el nombre exista no sale del loop
-			
+
+		String pathJSON = this.getNameUnico(nameRemoveExt, this.pathJSONs);
+		try {
 			//Escribo datos en JSON
-			FileWriter file = new FileWriter(pathJSON);
-			file.write(json.toJSONString());
-			file.flush();
-			file.close();
+			FileWriter fileW = new FileWriter(pathJSON);
+			fileW.write(json.toJSONString());
+			fileW.flush();
+			fileW.close();
 			return pathJSON;
 		} catch (IOException e) {
-			this.logger.error("Falló creación de JSON");
+			log = "Fallo creacion de JSON.";
+			this.logger.error(log);
+			System.out.println(log);
 			return "";
 		}
 	}
 	
-	//Subir Archivo --> Hash del JSON para usarlo como ID/Nombre del mismo JSON//
-	public String hash (String path) throws IOException, NoSuchAlgorithmException, ParseException 
+	//Subir Archivo --> Hash del JSON para usarlo como ID/Nombre del mismo JSON
+	public String hash(String path) throws IOException, NoSuchAlgorithmException, ParseException 
 	{	
 		File file = new File(path);
         FileInputStream fis = new FileInputStream(file);
@@ -563,78 +517,80 @@ public class Cliente implements Runnable {
         byte[] buffer = new byte[size];
         
         in.read(buffer,0,buffer.length);
-    	MessageDigest md = MessageDigest.getInstance("SHA-1"); 
-    	md.update(buffer);
-    	byte[] b = md.digest();
-    	StringBuffer sb = new StringBuffer();
-    	
-    	for(byte i : b) {
-    		sb.append(Integer.toHexString(i & 0xff).toString());    		
-    	}
-    	
-    	//devuelvo ID
-    	return sb.toString();
+        in.close();
+        fis.close();
+    	return this.crearHash(buffer);
     }
 	
-	//Subir Archivo --> una vez creado el JSON se lo envia al tracker conocido//
+	//Subir Archivo --> una vez creado el JSON se lo envia a uno de los tracker conocidos
 	private void enviarArchivo(String pathJSON, String hashJSON) throws Exception 
 	{			
-		try {//En caso de que el tracker al que estoy conectado se haya caido, creo la conexion dentro de try
+		try {
 			conexionTCP = null;
-			conexionTCP = this.servidor.getTracker();
+			conexionTCP = tm.getTracker(kg, kPub, kPriv);//Obtengo tracker activo
     		
     		if(conexionTCP!=null) {
     			Mensaje m = new Mensaje(Mensaje.Tipo.GET_PRIMARIO);
-        		//encripto mensaje con la clave simetrica
-    			byte[] datosAEncriptar = conexionTCP.convertToBytes(m);
-    			byte[] mensajeEncriptado = this.servidor.getKG().encriptarSimetrico(conexionTCP.getKey(), datosAEncriptar);
-    			conexionTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-    			conexionTCP.getOutBuff().flush();
-        		
-        		//Recibo primario, enviado por mi tracker
-    			int msgSize = 1024*1024;//1MB
-    	        byte[] buffer = new byte[msgSize];
-    	        int byteread = conexionTCP.getInBuff().read(buffer, 0, msgSize);
-    	        //desencripto con la clave simetrica
-    	        byte[] datosEncriptados = Arrays.copyOfRange(buffer, 0, byteread);
-    	        byte[] msgDesencriptado = this.servidor.getKG().desencriptarSimetrico(conexionTCP.getKey(), datosEncriptados);
-    	        Mensaje response = (Mensaje) conexionTCP.convertFromBytes(msgDesencriptado);
+    			m.enviarMensaje(conexionTCP,m, kg);
+    			byte[] datosDesencriptados = m.recibirMensaje(conexionTCP, kg);
+    			Mensaje response = (Mensaje) conexionTCP.convertFromBytes(datosDesencriptados);
         		conexionTCP.getSocket().close();
         		
         		if (response.tipo == Mensaje.Tipo.TRACKER_PRIMARIO) {
-    	    		conexionTCP = new ConexionTCP(response.ip, response.port);
-    	    		this.getSecretKey(conexionTCP);
+        			log = "Enviando JSON a Tracker...";
+        			this.logger.info(log);
+        			System.out.println(log);
+        			
+    	    		conexionTCP = new ConexionTCP(response.ip, response.port);//Conexion con tracker primario
+    	    		
+    	    		tm.getSecretKey(conexionTCP, true, this.kPub, this.kPriv, kg, this.logger);//Obtengo clave simetrica
     	    		
     	    		m = new Mensaje(Mensaje.Tipo.SEND_FILE, this.ipExterna, this.portExterno, hashJSON);//hash para identificarlo
-    	    		//encripto mensaje con la clave simetrica
-    				datosAEncriptar = conexionTCP.convertToBytes(m);
-    				mensajeEncriptado = this.servidor.getKG().encriptarSimetrico(conexionTCP.getKey(), datosAEncriptar);
-    				conexionTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-    				conexionTCP.getOutBuff().flush();
+    	    		m.enviarMensaje(conexionTCP,m, kg);//Le indico al tracker que estoy por enviar un archivo
     	    		
-    	    		//Enviar json
-    	    		this.enviarArchivoBuffer(pathJSON);//Le paso el path del JSON para que pueda encontrarlo y enviarlo
-    	    		
-    	    		this.logger.info("JSON enviado al Tracker.");	
+    	    		//Recibo ACK
+			        byte[] msgDesencriptado = m.recibirMensaje(conexionTCP, kg);
+			        response = (Mensaje) conexionTCP.convertFromBytes(msgDesencriptado);
+			        if(response.tipo == Mensaje.Tipo.ACK) {
+	    	    		//Enviar json
+	    	    		this.enviarArchivoBuffer(pathJSON);//Paso el path del JSON para que pueda encontrarlo y enviarlo
+	    	    		log = "JSON enviado al Tracker.";
+	    	    		this.logger.info(log);
+	    	    		System.out.println(log);
+			        }else {
+			        	log = "Su tracker actual ("+conexionTCP.getSocket().getInetAddress().getCanonicalHostName()+":"+conexionTCP.getSocket().getPort()+") no respondio con un ACK. No se envio el archivo.";
+	            		this.logger.error(log);
+	            		System.out.println(log);
+	            	}
             	}else {
-            		this.logger.error("Su tracker actual ("+conexionTCP.getSocket().getInetAddress().getCanonicalHostName()+":"+conexionTCP.getSocket().getPort()+") no pudo recuperar el tracker primario. No se subió el archivo.");
+            		log = "Su tracker actual ("+conexionTCP.getSocket().getInetAddress().getCanonicalHostName()+":"+conexionTCP.getSocket().getPort()+") no pudo recuperar el tracker primario. No se envio el archivo.";
+            		this.logger.error(log);
+            		System.out.println(log);
             	}
         		conexionTCP.getSocket().close();
     		}else {
-    			this.logger.error("No hay trackers disponibles en este momento.");
+    			log = "No hay trackers disponibles en este momento.";
+    			this.logger.error(log);
+    			System.out.println(log);
     		}
 		}catch(IOException ex) {
-			this.logger.error("Falló la conexión con el tracker.");
+			log = "Fallo la conexion con el tracker."; 
+			this.logger.error(log);
+			System.out.println(log);
 		}
 	}
 	
-	//Subir Archivo --> enviarArchivo --> envío archivo JSON
+	//Subir Archivo --> enviarArchivo --> envio archivo JSON
 	private void enviarArchivoBuffer(String pathJSON) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InterruptedException 
-	{
-		Thread.sleep(100);
+	{		
+		try {
+			Thread.sleep(100);//Necesario en pruebas locales
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+
 	    try {
 			File archivo = new File(pathJSON);
-			   
 			byte[] buffer = new byte[(int) archivo.length()];
 			   
 	        FileInputStream fis = new FileInputStream(archivo);
@@ -642,159 +598,110 @@ public class Cliente implements Runnable {
 	        in.read(buffer,0,buffer.length);
 	        
 	        //encripto archivo json con la clave simetrica
-			byte[] mensajeEncriptado = this.servidor.getKG().encriptarSimetrico(conexionTCP.getKey(), buffer);
+			byte[] mensajeEncriptado = kg.encriptarSimetrico(conexionTCP.getKey(), buffer);
 			conexionTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
 			conexionTCP.getOutBuff().flush();
 	        
 	        in.close();//Cierro el buffer de lectura del JSON
+	        fis.close();
 	    }catch (IOException e) {
-	    	this.logger.error("Fallo durante envío del JSON.");
+	    	log = "Fallo durante envio del JSON.";
+	    	this.logger.error(log);
+	    	System.out.println(log);
 	    }
 	}
 	
-	private void descargarMetaArchivo() throws Exception {
+	public void buscarMetaArchivo(String nombreArchivo) throws Exception {
 		try {
-			System.out.println("Ingrese el nombre del archivo que desea descargar:");
-			String nombreArchivo = scanner.nextLine();
-					
 			conexionTCP = null;
-			conexionTCP = this.servidor.getTracker();
+			conexionTCP = tm.getTracker(kg, kPub, kPriv);
     		
     		if(conexionTCP!=null) {
-				Mensaje m = new Mensaje(Mensaje.Tipo.FIND_FILE, nombreArchivo);	
-				//encripto mensaje con la clave simetrica
-				byte[] datosAEncriptar = conexionTCP.convertToBytes(m);
-				byte[] mensajeEncriptado = this.servidor.getKG().encriptarSimetrico(conexionTCP.getKey(), datosAEncriptar);
-				conexionTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-				conexionTCP.getOutBuff().flush();
-	    		
-				int msgSize = 1024*1024;//1MB
-		        byte[] buffer = new byte[msgSize];
-		        int byteread = conexionTCP.getInBuff().read(buffer, 0, msgSize);
-		        //desencripto con la clave simetrica
-		        byte[] datosEncriptados = Arrays.copyOfRange(buffer, 0, byteread);
-		        byte[] msgDesencriptado = this.servidor.getKG().desencriptarSimetrico(conexionTCP.getKey(), datosEncriptados);
-		        Mensaje response = (Mensaje) conexionTCP.convertFromBytes(msgDesencriptado);
+				Mensaje m = new Mensaje(Mensaje.Tipo.FIND_FILE, nombreArchivo);
+				m.enviarMensaje(conexionTCP,m, kg);
+				byte[] datosDesencriptados = m.recibirMensaje(conexionTCP, kg);
+				Mensaje response = (Mensaje) conexionTCP.convertFromBytes(datosDesencriptados);
+				conexionTCP.getSocket().close();
 				
 				if(response.tipo == Mensaje.Tipo.FILES_AVAILABLE) 
 				{
-					ArrayList<FileTable> files = (ArrayList<FileTable>) response.lista;
-					System.out.println("Archivos disponibles:");
-					int i=1;
-					String[] unidades = {"Bytes","KB","MB","GB","TB"};
-					
-					for(FileTable f : files) { //Muestro los nombres de archivos que coincidieron con la búsqueda
-						double peso = f.getSize();
-						int pos = 0;
-						
-						while(peso >= 1024) {
-							peso /= 1024;
-							pos++;
-						}
-						String pesoString = String.format("%.2f", peso);	
-						System.out.println(i+"- "+f.getName()+", " + pesoString + " " + unidades[pos]);
-						i++;
-					}
-					
-					boolean correcto = false;
-					int pos = 0;
-					int n = files.size();
-					String archivoElegido;
-					do {
-						System.out.println("\nEscriba el número a la izquierda del nombre del archivo que desea descargar o 'salir' si no quiere descargar nada:");
-						archivoElegido = scanner.nextLine();
-						
-						if(archivoElegido.equals("salir")) {
-							correcto = true;
-						}else {
-							try {
-					    		pos = Integer.parseInt(archivoElegido);
-					    		if(pos>=1 && pos<=n) {
-					    			correcto = true;
-					    		}else {
-					    			if(n>1)
-										System.err.println("ERROR: Escriba un número (de 1 a "+n+") o salir");
-									else
-										System.err.println("ERROR: Escriba 1 o salir");
-					    		}
-							}catch(Exception e) {
-								if(n>1)
-									System.err.println("ERROR: Escriba un número (de 1 a "+n+") o salir");
-								else
-									System.err.println("ERROR: Escriba 1 o salir");
-							}
-						}
-					}while(!correcto);
-					
-					if(!archivoElegido.equals("salir")) {
-						String hash = files.get(pos-1).getHash();
-						m = new Mensaje (Mensaje.Tipo.REQUEST, hash);
-						//Envío el hash del archivo a descargar
-						//encripto mensaje con la clave simetrica
-						datosAEncriptar = conexionTCP.convertToBytes(m);
-						mensajeEncriptado = this.servidor.getKG().encriptarSimetrico(conexionTCP.getKey(), datosAEncriptar);
-						conexionTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-						conexionTCP.getOutBuff().flush();
-
-						String name = files.get(pos-1).getName();
-						String nameSinExt = name.substring(0, name.lastIndexOf('.'));
-						this.guardarArchivoBuffer(conexionTCP, nameSinExt);	
-						this.logger.info("JSON descargado exitosamente.");
-
-					}else{
-						m = new Mensaje (Mensaje.Tipo.EXIT);
-						
-						//encripto mensaje con la clave simetrica
-						datosAEncriptar = conexionTCP.convertToBytes(m);
-						mensajeEncriptado = this.servidor.getKG().encriptarSimetrico(conexionTCP.getKey(), datosAEncriptar);
-						conexionTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-						conexionTCP.getOutBuff().flush();
-						
-						conexionTCP.getSocket().close();
-					}
+					this.metaArchivosEncontrados = (ArrayList<DatosArchivo>) response.lista;
+					this.notifyObserver(1, null);
+	
 				}else if(response.tipo == Mensaje.Tipo.ERROR) {
-					System.err.println("-------------------------------------------");
 					this.logger.error(response.string);
-					conexionTCP.getSocket().close();
+					System.out.println(response.string);
 				}
 			}else {
-				this.logger.error("No hay trackers disponibles en este momento.");
+				log = "No hay trackers disponibles en este momento.";
+				this.logger.error(log);
+				System.out.println(log);
 	        }
 		}catch(IOException ex) {
-			this.logger.error("Fallo al intentar descargar META-Archivo.");
+			log = "Fallo al intentar descargar META-Archivo.";
+			this.logger.error(log);
+			System.out.println(log);
 			ex.printStackTrace();
 		}	
-			
 	}
+					
+	public void descargarJSON(int pos) throws Exception {
+		try {
+			conexionTCP = null;
+			conexionTCP = tm.getTracker(kg, kPub, kPriv);
+    		
+    		if(conexionTCP!=null) {
+				Mensaje m;
+				
+				String hash = this.metaArchivosEncontrados.get(pos-1).getHash();
+				m = new Mensaje (Mensaje.Tipo.REQUEST, hash);
+				m.enviarMensaje(conexionTCP,m, kg);//Envio el hash del archivo a descargar
+				String name = this.metaArchivosEncontrados.get(pos-1).getName();
+				String nameSinExt = name.substring(0, name.lastIndexOf('.'));
+				this.guardarArchivoBuffer(nameSinExt);
+				
+				log = "JSON descargado exitosamente.";
+				this.logger.info(log);
+				System.out.println(log);
+    		}else {
+				log = "No hay trackers disponibles en este momento.";
+				this.logger.error(log);
+				System.out.println(log);
+	        }
+		} catch(IOException ex) {
+			log = "Fallo al intentar descargar META-Archivo.";
+			this.logger.error(log);
+			System.out.println(log);
+			ex.printStackTrace();
+		}	
+	}					
 	
-	private boolean guardarArchivoBuffer(ConexionTCP ctcp, String name) throws InterruptedException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+	private boolean guardarArchivoBuffer(String name) throws InterruptedException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, ClassNotFoundException {
 		int byteread;
 	    int current = 0;
 	
 	    try {	    	
 	    	//Creo archivo con nombre no utilizado
-			String pathJSON = this.getNameUnico(name,this.pathJSONs);
+			String pathJSON = this.getNameUnico(name, this.pathJSONs);
 	    	
 	        File archivo = new File(pathJSON);//Al JSON le pongo como nombre su ID para evitar repetidos
 	        archivo.createNewFile();//Almaceno JSON en una carpeta del cliente donde van todos los JSON
 	        FileOutputStream fos = new FileOutputStream(archivo);
 	        BufferedOutputStream out = new BufferedOutputStream(fos);
 	        
-	        int msgSize = 1024*1024;//1MB
-	        byte[] buffer = new byte[msgSize];
-	        byteread = ctcp.getInBuff().read(buffer, 0, msgSize);
-	        //desencripto con la clave simetrica
-	        byte[] datosEncriptados = Arrays.copyOfRange(buffer, 0, byteread);
-	        byte[] datosDesencriptados = this.servidor.getKG().desencriptarSimetrico(ctcp.getKey(), datosEncriptados);
-	        
+	        Mensaje m = new Mensaje();
+			byte[] datosDesencriptados = m.recibirMensaje(conexionTCP, kg);
 	        out.write(datosDesencriptados, 0, datosDesencriptados.length);
 	        out.flush();
-
+	        
+	        out.close();
 	        fos.close();
-	        ctcp.getSocket().close();
+	        conexionTCP.getSocket().close();
 	        return true;
 	    }catch(IOException ex) {
-	    	this.logger.error("Falló guardar JSON.");
+	    	log = "Fallo guardar JSON.";
+	    	this.logger.error(log);
+	    	System.out.println(log);
 	    	ex.printStackTrace();
 	    	return false;
 	    }	
@@ -820,301 +727,315 @@ public class Cliente implements Runnable {
 		return path;
 	}
 
-	//Descargar archivo//
-	private void descargarArchivo() {
-		System.out.println("Elija el META-Archivo del archivo que desea descargar, indicando su path:");
-		String pathJSON = this.buscarArchivo();
-		
-		System.out.println("Elija una carpeta donde guardar el archivo a descargar, indicando su path:");
-		String pathArchivo = this.buscarCarpeta();
-		
+	private JSONArray crearArchivoPartesFaltantes(JSONObject json, String pathJSON, JSONArray hashes, boolean seed) throws FileNotFoundException, IOException, ParseException {
+    	JSONArray partes = new JSONArray();
+    	
+    	for(int i=0; i<hashes.size(); i++) {
+    		JSONObject hash = (JSONObject) hashes.get(i);
+    		
+    		String parteString = String.valueOf(i);
+    		String size = String.valueOf(hash.get("size"));
+    		
+    		JSONObject parte = new JSONObject();
+    		parte.put("parte", parteString);
+    		parte.put("hash", hash.get("hash"));
+    		parte.put("size", size);
+    		if(seed)
+    			parte.put("estado", "descargada");
+    		else
+    			parte.put("estado", "pendiente");
+    		partes.add(parte);
+    	}
+    	
+    	return partes;    	
+	}
+	
+	private String crearCarpeta(String pathArchivo, String nameSinExtension) {
+		int index = 1;
+		String path = "";
+		boolean b=false;
+		do {
+			if(index == 1) {
+				path = pathArchivo+"/"+nameSinExtension;
+				b = new File(path).mkdirs();
+				index++;
+			}else {//Ya fallo el primer nombre. Pongo un numero entre parentesis desde ahora
+				path = pathArchivo+"/"+nameSinExtension+" ("+ index +")";
+				b = new File(path).mkdirs();
+				index++;
+			}	
+		}while(!b);
+		return path;
+	}
+	
+	//Descargar archivo
+	public void descargarArchivo(String pathJSON, String pathCarpeta) {
 		try {			
-			//Creo archivo que indica que partes faltan descargar.     	
-	    	Object obj = new JSONParser().parse(new FileReader(pathJSON));
+			FileReader fileReader = new FileReader(pathJSON);
+	    	Object obj = new JSONParser().parse(fileReader);
+	    	fileReader.close();
+	    	
 	    	JSONObject json = (JSONObject) obj;
 	    	JSONArray hashes = (JSONArray) json.get("hashes");
-	    	JSONArray partes = new JSONArray();
 	    	
-	    	for(int i=0; i<hashes.size(); i++) {
-	    		JSONObject hash = (JSONObject) hashes.get(i);
-	    		
-	    		String parteString = String.valueOf(i);
-	    		String size = String.valueOf(hash.get("size"));
-	    		
-	    		JSONObject parte = new JSONObject();
-	    		parte.put("parte", parteString);
-	    		parte.put("hash", hash.get("hash"));
-	    		parte.put("size", size);
-	    		parte.put("estado", "pendiente");
-	    		partes.add(parte);
-	    	}
+			//Creo archivo que indica que partes faltan descargar.     	
+	    	JSONArray partes = this.crearArchivoPartesFaltantes(json, pathJSON, hashes, false);
 	    	
 	    	//Leo hash y name del json  	
 	    	String hash = (String) json.get("ID");
-	    	if(hash!=null) {//Si es null está utilizando un json creado en su pc
+	    	if(hash!=null) {//Si es null esta utilizando un json invalido
 	    		String name = (String) json.get("name");
 	        	int cantPartes = hashes.size();//Para calcular % de archivo descargado
 	        	String nameSinExtension = name.substring(0, name.lastIndexOf('.'));
 	        	
 	        	try {
-	        		new File(pathArchivo+"/"+nameSinExtension).mkdirs();
-	        		File file = new File(pathArchivo+"/"+nameSinExtension+"/"+name+"Partes.json");
+	        		//Creo carpeta donde guardar el archivo a descargar
+	        		String path = this.crearCarpeta(pathCarpeta, nameSinExtension);	        		
+	        		//Creo archivo json que indica partes que faltan descargar en la carpeta
+	        		File file = new File(path+"/"+name+"Partes.json");
 	        		file.createNewFile();
 	    			FileWriter fileW = new FileWriter(file);
 	    			fileW.write(partes.toJSONString());
 	    			fileW.flush();
 	    			fileW.close();
+	    			
+	    			//Creo archivo en "Descargas Pendientes" para que pueda ser retomada la descarga en caso de detenerla
+		        	String portS = String.valueOf(portExterno);
+		        	String cantPartesS = String.valueOf(cantPartes);
+		        	long fileSize = (long) json.get("fileSize");
+		        	JSONObject datosDescarga = new JSONObject();
+		        	datosDescarga.put("path", path);
+		        	datosDescarga.put("hash", hash);
+		        	datosDescarga.put("name", name);
+		        	datosDescarga.put("ip", this.ipExterna);
+		        	datosDescarga.put("port", portS);
+		        	datosDescarga.put("cantPartes", cantPartesS);
+		        	datosDescarga.put("time", "0");
+		        	datosDescarga.put("fileSize", fileSize);
+		        	datosDescarga.put("descargado", "0%");
+		        	datosDescarga.put("leecher", "false");//Se vuelve true luego de enviar DOWNLOAD al tracker. Con true envia SWARM
+
+		        	//Array de tiempos de descarga de cada parte
+		        	JSONArray tiemposPartes = new JSONArray();
+		        	for(int i=0; i<cantPartes; i++) {
+		        		JSONObject tiempoParte = new JSONObject();
+		        		tiempoParte.put("tiempo", "0");
+			    		tiemposPartes.add(tiempoParte);	
+		        	}
+		        	datosDescarga.put("tiemposPartes", tiemposPartes);
+		        	
+		        	try {
+		        		//Creo archivo con nombre no utilizado
+		    			pathJSON = this.getNameUnico(hash,this.pathDescargasPendientes);
+		        		file = new File(pathJSON);
+		        		file.createNewFile();
+		    			fileW = new FileWriter(file);
+		    			fileW.write(datosDescarga.toJSONString());
+		    			fileW.flush();
+		    			fileW.close();
+		    			
+		    			//Agrego a lista DescargasPendientes
+		    			String descargaPendienteFileName = pathJSON.substring(pathJSON.lastIndexOf('/')+1, pathJSON.length());
+			        	DescargaPendiente dp = new DescargaPendiente(name,descargaPendienteFileName,hash);
+			        	this.listaDescargasPendientes.add(dp);
+			        	
+			        	this.crearJSONgraficos(hash);//JSON de la descarga que almacenará datos para generar gráficos
+			        	
+			        	try {
+			        		boolean nuevaDescarga = true;
+			        		this.getSwarm(Mensaje.Tipo.DOWNLOAD, this.ipExterna, this.portExterno, path, name, cantPartes, hash, descargaPendienteFileName, "0%", nuevaDescarga);
+			        		
+			    		}catch(Exception e) {
+			    			log = "Fallo la conexion con su tracker.";
+			    			this.logger.error(log);
+			    			System.out.println(log);
+			    		}
+		    		} catch (IOException e) {
+		    			log = "Fallo al crear JSON de Archivo pendiente a descargar.";
+		    			this.logger.error(log);
+		    			System.out.println(log);
+		    		}
 	    		} catch (IOException e) {
-	    			this.logger.error("Fallo al crear JSON de partes descargadas.");
-	    		}
-	        	
-	        	//Creo archivo en "Descargas Pendientes" para que pueda ser retomada la descarga en caso de detenerla
-	        	String ipS = String.valueOf(portExterno);
-	        	String cantPartesS = String.valueOf(cantPartes);
-	        	JSONObject datosDescarga = new JSONObject();
-	        	datosDescarga.put("path", pathArchivo+"/"+nameSinExtension);
-	        	datosDescarga.put("hash", hash);
-	        	datosDescarga.put("name", name);
-	        	datosDescarga.put("ip", this.ipExterna);
-	        	datosDescarga.put("port", ipS);
-	        	datosDescarga.put("cantPartes", cantPartesS);
-	        	
-	        	try {
-	        		//Creo archivo con nombre no utilizado
-	    			pathJSON = this.getNameUnico(name,"Descargas pendientes");
-	        		File file = new File(pathJSON);
-	        		file.createNewFile();
-	    			FileWriter fileW = new FileWriter(file);
-	    			fileW.write(datosDescarga.toJSONString());
-	    			fileW.flush();
-	    			fileW.close();
-	    		} catch (IOException e) {
-	    			this.logger.error("Fallo al crear JSON de Archivo pendiente a descargar.");
-	    		}
-	        	
-	        	//Agrego a lista DescargasPendientes
-	        	DescargaPendiente dp = new DescargaPendiente(name,hash);
-	        	dp.setActivo(true);
-	        	this.listaDescargasPendientes.add(dp);
-	        	
-	    		try {
-	    			conexionTCP = null;
-	    			conexionTCP = this.servidor.getTracker();
-	        		
-	        		if(conexionTCP!=null) {
-	    				Mensaje m = new Mensaje(Mensaje.Tipo.DOWNLOAD, hash, pathArchivo+"/"+nameSinExtension, this.ipExterna, this.portExterno);	
-	    				//encripto mensaje con la clave simetrica
-	    				byte[] datosAEncriptar = conexionTCP.convertToBytes(m);
-	    				byte[] mensajeEncriptado = this.servidor.getKG().encriptarSimetrico(conexionTCP.getKey(), datosAEncriptar);
-	    				conexionTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-	    				conexionTCP.getOutBuff().flush();
-	    				
-	    				//Recibo swarm - cast objeto en arrayList<seedtable>
-	    				int msgSize = 1024*1024;//1MB
-	    		        byte[] buffer = new byte[msgSize];
-	    		        int byteread = conexionTCP.getInBuff().read(buffer, 0, msgSize);
-	    		        //desencripto con la clave simetrica
-	    		        byte[] datosEncriptados = Arrays.copyOfRange(buffer, 0, byteread);
-	    		        byte[] msgDesencriptado = this.servidor.getKG().desencriptarSimetrico(conexionTCP.getKey(), datosEncriptados);
-	    		        Mensaje response = (Mensaje) conexionTCP.convertFromBytes(msgDesencriptado);
-	    		        
-	    				if(response.tipo == Mensaje.Tipo.SWARM) {
-	    					ArrayList<SeedTable> swarm = (ArrayList<SeedTable>) response.lista;
-	    					ThreadCliente tc = new ThreadCliente(swarm, pathArchivo+"/"+nameSinExtension, name, cantPartes, hash, this);
-	    					listaThreadsClientes.add(tc);
-	    					Thread t = new Thread(tc);
-	    					t.start();
-	    					
-	    					this.logger.info("ThreadCliente, para descargar archivo "+name+", iniciado");
-	    				}else {
-	    					this.logger.error("Fallo al recibir Swarm. Intente descargar el archivo nuevamente.");
-	    				}	
-	    			}else {
-	    				this.logger.error("No hay trackers disponibles en este momento.");
-	    	        }			
-	    		}catch(Exception e) {
-	    			this.logger.error("Falló la conexión con su tracker. Conéctese a otro.");
+	    			log = "Fallo al crear JSON de partes descargadas.";
+	    			this.logger.error(log);
+	    			System.out.println(log);
 	    		}	
 	    	} else {
-	    		this.logger.error("JSON inválido. Debe utilizar un JSON descargado desde la aplicación.");
+	    		log = "JSON invalido. Debe utilizar un JSON descargado desde la aplicacion.";
+	    		this.logger.error(log);
+	    		System.out.println(log);
 	    	}
 		} catch(Exception e){
-			this.logger.error("Archivo inválido. Debe utilizar un JSON descargado desde la aplicación.");
+			log = "Archivo invalido. Debe utilizar un JSON descargado desde la aplicacion.";
+			this.logger.error(log);
+			System.out.println(log);
 		}
 	}
 	
-	//Descargas Pendientes --> lista los archivos pendientes a descargar. La descarga puede estar activa o pausada
-	private void descargasPendientes() {
-		if(this.listaDescargasPendientes.size()>0) {
-			int i=1;
-			for(DescargaPendiente dp : this.listaDescargasPendientes) {
-				if(dp.isActivo())
-					System.out.println(i+"- "+dp.getName()+" - Descargando");
-				else
-					System.out.println(i+"- "+dp.getName()+" - Descarga Pausada");
-				i++;
-			}
-			
-			//Elegir descarga para cambiar estado o salir
-			boolean correcto = false;
-			int pos = 0;
-			int n = this.listaDescargasPendientes.size();
-			String archivoElegido;
-			do {
-				System.out.println("\nEscriba el número a la izquierda del nombre del archivo que desea cambiar su estado o 'salir':");
-				archivoElegido = scanner.nextLine();
-				
-				if(archivoElegido.equals("salir")) {
-					correcto = true;
-				}else {
-					try {
-			    		pos = Integer.parseInt(archivoElegido);
-			    		if(pos>=1 && pos<=n) {
-			    			correcto = true;
-			    		}else {
-			    			if(n>1)
-								System.err.println("ERROR: Escriba un número (de 1 a "+n+") o salir");
-							else
-								System.err.println("ERROR: Escriba 1 o salir");
-			    		}
-					}catch(Exception e) {
-						if(n>1)
-							System.err.println("ERROR: Escriba un número (de 1 a "+n+") o salir");
-						else
-							System.err.println("ERROR: Escriba 1 o salir");
-					}
-				}
-			}while(!correcto);
-			
-			if(!archivoElegido.equals("salir")) {
-				pos--;
-				boolean activo = this.listaDescargasPendientes.get(pos).isActivo();
-				if(activo)
-					this.pausarDescarga(pos);
-				else
-					this.reanudarDescarga(pos);
-			}	
-		}else {
-			System.out.println("No hay descargas pendientes");
-		}
-	}
 	
+	private void crearJSONgraficos(String hash) throws IOException {
+		JSONObject json = new JSONObject();
+		JSONArray tiempoPartes = new JSONArray();
+		JSONArray fallosPeers = new JSONArray();
+		JSONArray descargasPeers = new JSONArray();
+    	
+		json.put("tiempoPartes", tiempoPartes);
+		json.put("fallosPeers", fallosPeers);
+		json.put("descargasPeers", descargasPeers);
+		
+		File file = new File(this.pathGraficos+"/"+hash+".json");
+		file.createNewFile();
+		FileWriter fileW = new FileWriter(file);
+		fileW.write(json.toJSONString());
+		fileW.flush();
+		fileW.close();	
+	}
+
 	//Descargas Pendientes --> reanudarDescarga --> crea nuevo thread cliente para continuar descarga
-	private void reanudarDescarga(int pos) {
-		String nameFile = this.listaDescargasPendientes.get(pos).getName();
-		//obtener datos json descargaPendiente
-		Object obj = null;
-		try {
-			obj = new JSONParser().parse(new FileReader("Descargas pendientes/"+nameFile+".json"));
-			JSONObject jsonObject = (JSONObject) obj;
-	        String path = (String) jsonObject.get("path");
-	        String hash = (String) jsonObject.get("hash");
-	        String name = (String) jsonObject.get("name");
-	        String ip = (String) jsonObject.get("ip");
-	        int port = Integer.parseInt((String) jsonObject.get("port"));
-	        int cantPartes = Integer.parseInt((String) jsonObject.get("cantPartes"));
-			
-			//Pedir swarm
-			conexionTCP = null;
+	public void reanudarDescarga(String hashBuscado) {
+		DescargaPendiente dp = this.buscarDescargaPendiente(hashBuscado);
+		if(dp != null) {
+			String nameFile = dp.getNameFile();
+			//obtener datos json descargaPendiente
+			Object obj = null;
 			try {
-				conexionTCP = this.servidor.getTracker();
-				if(conexionTCP!=null) {
-					Mensaje m = new Mensaje(Mensaje.Tipo.SWARM, ip, port, hash);	
-					//encripto mensaje con la clave simetrica
-					byte[] datosAEncriptar = conexionTCP.convertToBytes(m);
-					byte[] mensajeEncriptado = this.servidor.getKG().encriptarSimetrico(conexionTCP.getKey(), datosAEncriptar);
-					conexionTCP.getOutBuff().write(mensajeEncriptado,0,mensajeEncriptado.length);
-					conexionTCP.getOutBuff().flush();
-					
-					//Recibo swarm - cast objeto en arrayList<seedtable>
-					int msgSize = 1024*1024;//1MB
-			        byte[] buffer = new byte[msgSize];
-			        int byteread = conexionTCP.getInBuff().read(buffer, 0, msgSize);
-			        //desencripto con la clave simetrica
-			        byte[] datosEncriptados = Arrays.copyOfRange(buffer, 0, byteread);
-			        byte[] msgDesencriptado = this.servidor.getKG().desencriptarSimetrico(conexionTCP.getKey(), datosEncriptados);
-			        Mensaje response = (Mensaje) conexionTCP.convertFromBytes(msgDesencriptado);
-			        
-					if(response.tipo == Mensaje.Tipo.SWARM) {
-						ArrayList<SeedTable> swarm = (ArrayList<SeedTable>) response.lista;
-						ThreadCliente tc = new ThreadCliente(swarm, path, name, cantPartes, hash, this);
-						listaThreadsClientes.add(tc);
-						Thread t = new Thread(tc);
-						t.start();
-						this.listaDescargasPendientes.get(pos).setActivo(true);
-						this.logger.info("ThreadCliente, para descargar archivo "+name+", iniciado");
-					}else {
-						this.logger.error("Fallo al recibir Swarm. Intente descargar el archivo nuevamente.");
-					}						
+				FileReader fileReader = new FileReader(this.pathDescargasPendientes+"/"+nameFile);
+				obj = new JSONParser().parse(fileReader);
+				fileReader.close();
+				
+				JSONObject jsonObject = (JSONObject) obj;
+		        String path = (String) jsonObject.get("path");
+		        String hash = (String) jsonObject.get("hash");
+		        String name = (String) jsonObject.get("name");
+		        String ip = (String) jsonObject.get("ip");
+		        String descargado = (String) jsonObject.get("descargado");
+		        String leecher = (String) jsonObject.get("leecher");
+		        int port = Integer.parseInt((String) jsonObject.get("port"));
+		        int cantPartes = Integer.parseInt((String) jsonObject.get("cantPartes"));
+				
+				try {
+					boolean nuevaDescarga = false;//Ya existe en la tabla de descargas
+					//Pedir swarm
+					if(leecher.equals("true")) 
+						this.getSwarm(Mensaje.Tipo.SWARM, ip, port, path, name, cantPartes, hash, nameFile, descargado, nuevaDescarga);
+					else 
+						this.getSwarm(Mensaje.Tipo.DOWNLOAD, ip, port, path, name, cantPartes, hash, nameFile, descargado, nuevaDescarga);
+						
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} catch (IOException | ParseException | ClassCastException e1) {
-			e1.printStackTrace();
+			} catch (IOException | ParseException | ClassCastException e1) {
+				e1.printStackTrace();
+			}			
+		} else {
+			log = "No se pudo reanudar la descarga.";
+			logger.info(log);
+			System.out.println(log);
 		}
+	}
+
+	private DescargaPendiente buscarDescargaPendiente(String hash) {
+		for(DescargaPendiente dp : this.listaDescargasPendientes) {
+			if(dp.getHash().equals(hash)){
+				return dp; 
+			}
+		}
+		return null;
 	}
 
 	//Descargas Pendientes --> pausarDescarga --> detiene thread cliente 
-	private void pausarDescarga(int pos) {
-		//Busco ThreadCliente en lista según nombre
-		int threadCliente = 0;
+	public void pausarDescarga(String hash) {
+		//Busco ThreadCliente en lista según hash
 		ThreadCliente tc = null;
-		String hash = this.listaDescargasPendientes.get(pos).getHash();
-		for(int i=0; i<this.listaThreadsClientes.size(); i++) {
-			if(hash.equals(this.listaThreadsClientes.get(i).getHash()))
-				tc = this.listaThreadsClientes.get(i);
+		synchronized(this.listaThreadsClientes) {
+			for(int i=0; i<this.listaThreadsClientes.size(); i++) {
+				if(hash.equals(this.listaThreadsClientes.get(i).getHash())) {
+					tc = this.listaThreadsClientes.get(i);
+				}
+			}
 		}
-		logger.info("Pausando descarga "+tc.getName());
+		
 		tc.setStop(true);
 	}
-
-	//Descargar Archivo--> Elige carpeta donde almacenar el archivo a descargar//
-	private String buscarCarpeta() 
-	{		
-		String path = "";
-		File sharedPath;
-    	boolean pathCorrecto = false;
-    	
-    	do {
-	    	try {
-	    		path = scanner.nextLine();
-	    		sharedPath = new File(path);
-	    		if(sharedPath.isDirectory())
-	    			pathCorrecto = true;
-	    		else
-	    			System.err.println("El path es inválido. Elija una carpeta. Pruebe nuevamente:");
-	    	}catch(NumberFormatException  e){
-	    		System.err.println("El path es inválido. Pruebe nuevamente:");
-	    	}
-    	}while(!pathCorrecto);
-		
-    	return path;
-	}
 	
-	public void getSecretKey(ConexionTCP conexTCP) {
-		Mensaje msj = new Mensaje(Mensaje.Tipo.CHECK_AVAILABLE, this.servidor.getKpub());
-    	try {
-    		conexTCP.getOutObj().writeObject(msj);
+	private void getSwarm(Mensaje.Tipo tipoMensaje, String ip, int port, String path, String name, int cantPartes, String hash, String nameFile, String descargado, boolean nuevaDescarga) throws Exception {
+		boolean fallo = false;
+		conexionTCP = null;
+		conexionTCP = tm.getTracker(kg, kPub, kPriv);
+		if(conexionTCP!=null) {
+			Mensaje m = null;
+			switch(tipoMensaje) {
+				case SWARM://Continua descarga
+						m = new Mensaje(Mensaje.Tipo.SWARM, ip, port, hash);		
+					break;
+				case DOWNLOAD://Nueva descarga
+						m = new Mensaje(Mensaje.Tipo.DOWNLOAD, hash, path, ip, port);
+					break;
+			}
+				
+			m.enviarMensaje(conexionTCP,m, kg);
 			
-			Mensaje response = (Mensaje) conexTCP.getInObj().readObject();
-	    	if (response.tipo == Mensaje.Tipo.ACK) {
-	    		//desencripto con la clave privada la clave simetrica
-		        byte[] msgDesencriptado = this.servidor.getKG().desencriptarAsimetrico(response.keyEncriptada, this.servidor.getKpriv());
-		        SecretKey key = (SecretKey) conexTCP.convertFromBytes(msgDesencriptado);
-		        conexTCP.setKey(key);
-	    	}
-		} catch (IOException | ClassNotFoundException e) {
-			this.logger.error("Falló obtener clave secreta de primario");
-			e.printStackTrace();
-		}	
-	}
-    
-	public void run() {
-		try {
-			this.Inicio();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}		
+			//Recibo swarm - cast objeto en arrayList<seedtable>
+			byte[] datosDesencriptado = m.recibirMensaje(conexionTCP, kg);
+	        Mensaje response = (Mensaje) conexionTCP.convertFromBytes(datosDesencriptado);
+	        
+			if(response.tipo == Mensaje.Tipo.SWARM) {
+				DescargaPendiente dp = this.buscarDescargaPendiente(hash);
+				dp.setActivo(true);
+				
+				if(tipoMensaje == Mensaje.Tipo.SWARM) {//Reanuda descarga.
+					this.notifyObserver(3, hash);//Cambiar boton de start a stop
+				} else {//Si no, es una nueva descarga
+					//Leecher = true. Soy considerado un leercher por el tracker
+					Object obj;
+					FileReader fileReader = new FileReader(this.pathDescargasPendientes+"/"+nameFile);
+					obj = new JSONParser().parse(fileReader);
+					fileReader.close();
+					
+					JSONObject jsonObject = (JSONObject) obj;
+					String leecher = (String) jsonObject.get("leecher");
+			        leecher = "true";
+			        jsonObject.put("leecher", leecher);
+					
+					File file = new File(this.pathDescargasPendientes+"/"+nameFile);
+					file.createNewFile();
+					FileWriter fileW = new FileWriter(file);
+					fileW.write(jsonObject.toJSONString());
+					fileW.flush();
+					fileW.close();
+			        
+					if(nuevaDescarga)
+						this.notifyObserver(2, "stop");//Datos nueva descarga para agregar en tabla
+					else//Si fue cargado de descargas pendientes
+						this.notifyObserver(3, hash);
+				}
+								
+				ArrayList<SeedTable> swarm = (ArrayList<SeedTable>) response.lista;
+				ThreadCliente tc = new ThreadCliente(swarm, path, name, cantPartes, hash, nameFile, this, descargado);
+				
+				listaThreadsClientes.add(tc);
+				Thread t = new Thread(tc);
+				t.start();
+				
+				log = "ThreadCliente, para descargar archivo "+name+", iniciado";
+				this.logger.info(log);
+				System.out.println(log);
+			}else {
+				log = "Fallo al recibir Swarm. Intente descargar el archivo nuevamente.";
+				this.logger.error(log);
+				System.out.println(log);
+				fallo = true;
+			}						
+		}else {
+			log = "No hay trackers disponibles en este momento.";
+			this.logger.error(log);
+			System.out.println(log);
+			fallo = true;
+        }
+		
+		if(fallo && nuevaDescarga)
+			this.notifyObserver(2, "start");//Datos nueva descarga para agregar en tabla
 	}
 }
+		
+							

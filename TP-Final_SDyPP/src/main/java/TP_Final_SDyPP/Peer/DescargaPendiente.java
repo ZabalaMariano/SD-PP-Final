@@ -3,14 +3,16 @@ package TP_Final_SDyPP.Peer;
 public class DescargaPendiente {
 	private String hash;
 	private String name;
+	private String nameFile;
 	private boolean activo;
 	
-	public DescargaPendiente(String name, String hash) {
+	public DescargaPendiente(String name, String nameFile, String hash) {
 		this.hash = hash;
 		this.name = name;
+		this.nameFile = nameFile;
 		this.activo = false;
 	}
-
+	
 	public String getHash() {
 		return hash;
 	}
@@ -27,6 +29,14 @@ public class DescargaPendiente {
 		this.name = name;
 	}
 
+	public String getNameFile() {
+		return nameFile;
+	}
+
+	public void setNameFile(String nameFile) {
+		this.nameFile = nameFile;
+	}
+	
 	public boolean isActivo() {
 		return activo;
 	}
