@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn">
+	<Properties>
+	    <Property name="LOG_PATTERN">%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} %p %m%n</Property>
+	</Properties>
+ 
+    <Appenders>
+ 
+ 		<Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+ 
+        <RollingFile name="cliente" fileName="${sys:APP_LOG_ROOT}/${sys:logCliente}.log"
+            filePattern="${sys:APP_LOG_ROOT}/${sys:logCliente}-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="19500KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+         
+        <RollingFile name="servidor" fileName="${sys:APP_LOG_ROOT}/${sys:logServidor}.log"
+            filePattern="${sys:APP_LOG_ROOT}/${sys:logServidor}-%d{yyyy-MM-dd}-%i.log" >
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="19500KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+        
+        <RollingFile name="tracker" fileName="${sys:APP_LOG_ROOT}/${sys:logTracker}.log"
+            filePattern="${sys:APP_LOG_ROOT}/${sys:logTracker}-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="19500KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+        
+    </Appenders>
+ 
+    <Loggers>
+    
+        <Logger name="TP_Final_SDyPP.Peer.Cliente" additivity="false">
+            <AppenderRef ref="cliente" />
+        </Logger>
+        
+        <Logger name="TP_Final_SDyPP.Peer.Servidor" additivity="false">
+            <AppenderRef ref="servidor" />
+        </Logger>
+        
+        <Logger name="TP_Final_SDyPP.Tracker.Tracker" additivity="false">
+            <AppenderRef ref="tracker" />
+            <AppenderRef ref="Console"  />
+        </Logger>
+        
+        <Root level="all">
+        </Root>
+ 
+    </Loggers>
+ 
+</Configuration>
