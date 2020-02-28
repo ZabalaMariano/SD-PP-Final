@@ -12,6 +12,7 @@ import TP_Final_SDyPP.Otros.ConexionTCP;
 import TP_Final_SDyPP.Otros.KeysGenerator;
 import TP_Final_SDyPP.Otros.Mensaje;
 import TP_Final_SDyPP.Otros.TrackerManager;
+import TP_Final_SDyPP.UPnP.UPnPAdmin;
 
 public class Servidor implements Runnable {
 	
@@ -27,11 +28,12 @@ public class Servidor implements Runnable {
 	private boolean stop;
 	private String log;
 	private ServerSocket socketServidor = null;
+	private UPnPAdmin admin;
 	public Logger logger;
 		
 	//Constructor por defecto
 	public Servidor(int puertoEscucha, int portExterno, String ipExterna, PublicKey publicKey, 
-			PrivateKey privateKey, Logger logger) {
+			PrivateKey privateKey, Logger logger, UPnPAdmin admin) {
 		this.logger = logger;
 		this.port = puertoEscucha;
 		this.portExterno = portExterno;
@@ -41,9 +43,11 @@ public class Servidor implements Runnable {
 		this.tm = new TrackerManager();
 		this.kg = new KeysGenerator();
 		this.stop = false;
+		this.admin = admin;
 	}
 	
 	public void setStop(boolean estado) throws IOException {
+		this.stop = estado;
 		if(this.socketServidor!=null) {
 			try {
                 new Socket(socketServidor.getInetAddress(), socketServidor.getLocalPort()).close();
@@ -51,8 +55,7 @@ public class Servidor implements Runnable {
                 e.printStackTrace();
             }
 		}
-
-		this.stop = estado;
+		this.admin.closePort(this.port);
 	}
 	
 	public KeysGenerator getKG() {
@@ -144,7 +147,7 @@ public class Servidor implements Runnable {
 	
 	public void StartServer() {
 		
-		try {			
+		try {						
 			//Abrimos un Socket en el Servidor en el puerto especificado para poder establecer conexiones con el cliente
 			this.socketServidor = new ServerSocket (this.port);
 			

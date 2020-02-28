@@ -69,15 +69,14 @@ public class Cliente implements Observable{//, Runnable {
 	
 	//Atributos//
 	private ConexionTCP conexionTCP;
-	private int portServer;
 	private int portExterno;
 	private String ipExterna;
 	private String pathJSONs;
-	private UPnPAdmin admin;
 	private ArrayList<TrackerInfo> listaTrackers;
 	private ArrayList<ThreadCliente> listaThreadsClientes;
 	private ArrayList<DescargaPendiente> listaDescargasPendientes;
-	private int leechersDisponibles = 3;
+	private int nroThreads = 3;
+	private int leechersDisponibles;
 	private String trackersJSON = "trackers.json";
 	private PublicKey kPub;
 	private PrivateKey kPriv;
@@ -110,8 +109,21 @@ public class Cliente implements Observable{//, Runnable {
 		return kg;
 	}
 	
+	public int getNroThreads() {
+		return this.nroThreads;
+	}
+	
+	public void setNroThreads(int nroThreads) {
+		this.nroThreads = nroThreads;
+		this.leechersDisponibles = nroThreads;
+	}
+	
 	public int getLeechersDisponibles() {
-		return leechersDisponibles;
+		return this.leechersDisponibles;
+	}
+	
+	public void setLeechersDisponibles(int leechersDisponibles) {
+		this.leechersDisponibles = leechersDisponibles;
 	}
 	
 	public void reducirLeechersDisponibles() {
@@ -163,7 +175,7 @@ public class Cliente implements Observable{//, Runnable {
 	}
 
 	//Constructor//
-	public Cliente(String path, int port, int portExterno, String ipExterna, UPnPAdmin admin, PublicKey publicKey, PrivateKey privateKey, Logger logger) throws IOException {
+	public Cliente(String path, int portExterno, String ipExterna, PublicKey publicKey, PrivateKey privateKey, Logger logger) throws IOException {
 		this.crearCarpetaDescargasPendientes();
 		this.crearCarpetaGraficos();
 		
@@ -171,14 +183,13 @@ public class Cliente implements Observable{//, Runnable {
 		this.listaThreadsClientes = new ArrayList<ThreadCliente>();
 		this.logger = logger;
 		this.pathJSONs = path;
-		this.portServer = port;
 		this.portExterno = portExterno;
 		this.ipExterna = ipExterna;
-		this.admin = admin;
 		this.kPub = publicKey;
 		this.kPriv = privateKey;
 		this.tm = new TrackerManager();
 		this.kg = new KeysGenerator();
+		this.leechersDisponibles = this.nroThreads;
 	}
 	
 	private void crearCarpetaGraficos() {
@@ -218,7 +229,7 @@ public class Cliente implements Observable{//, Runnable {
 		}
 	}
 	
-	public void salir() {
+	public void pausarDescargas() {
 		//pauso todas las descargas activas
 		for(DescargaPendiente dp : this.listaDescargasPendientes) {
 			if(dp.isActivo()) {
@@ -227,8 +238,7 @@ public class Cliente implements Observable{//, Runnable {
 			}
 		}
 		
-		this.admin.closePort(portServer);						
-		logger.info("Cliente cerrado");
+		logger.info("Descargas pausadas");
 	}
 	
 	public void archivosOfrecidos() throws Exception {

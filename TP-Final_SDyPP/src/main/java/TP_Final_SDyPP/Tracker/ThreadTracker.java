@@ -215,7 +215,7 @@ public class ThreadTracker implements Runnable {
 							//Envío ACK
 							response = new Mensaje(Mensaje.Tipo.ACK);
 							response.enviarMensaje(conexionTCP, response, kg);
-							this.tracker.logger.info("Envié ACK desde tracker para indicar que está listo para recibir el json del cliente");
+							this.tracker.logger.info("Envie ACK desde tracker para indicar que esta listo para recibir el json del cliente");
 							
 							synchronized(this.getTracker().getLock()) {
 								this.guardarArchivo(m);
@@ -490,7 +490,7 @@ public class ThreadTracker implements Runnable {
 		//Actualizo JSON de trackers
 		this.tracker.actualizarJSONTrackers();
 		
-		String listaTrackers = "Actualización de lista de Trackers: ";
+		String listaTrackers = "Actualizacion de lista de Trackers: ";
 		for(int i=0;i<lisTrackers.size();i++) {
 			listaTrackers += "\n- ("+lisTrackers.get(i).getId()+", "+lisTrackers.get(i).getIp()+":"+lisTrackers.get(i).getPort()+")";
 		}	
@@ -514,7 +514,7 @@ public class ThreadTracker implements Runnable {
 		this.tracker.actualizarJSONTrackers();
 		
 		//Imprimo lista de trackers luego de actualización
-		String listaTrackers = "Actualización de lista de trackers: ";
+		String listaTrackers = "Actualizacion de lista de trackers: ";
 		for(int i=0;i<this.getTracker().getListaTrackers().size();i++) {
 			listaTrackers += "\n- ("+this.getTracker().getListaTrackers().get(i).getId()+", "+this.getTracker().getListaTrackers().get(i).getIp()+":"+this.getTracker().getListaTrackers().get(i).getPort()+")";
 		}
@@ -559,7 +559,7 @@ public class ThreadTracker implements Runnable {
 					fileW.flush();
 					fileW.close();
 				} catch (IOException e) {
-					this.tracker.logger.error("Falló al agregar ID a JSON.");
+					this.tracker.logger.error("Fallo al agregar ID a JSON.");
 				}
 				
 				this.getTracker().almacenarEnBD(pathJSON, ipPeer, portPeer);	
@@ -569,7 +569,7 @@ public class ThreadTracker implements Runnable {
 			//intento borrar archivo si llegó a guardarse
 			File file = new File(pathJSON);
 			file.delete();
-			this.tracker.logger.error("Falló al guardar archivo.");
+			this.tracker.logger.error("Fallo al guardar archivo.");
 			e1.printStackTrace();
 		}
 		
@@ -641,7 +641,7 @@ public class ThreadTracker implements Runnable {
 		        fallo = false;
 		    }catch (IOException e) {
 		    	fallo = true;
-		    	this.tracker.logger.error("Fallo durante envío del JSON. Intento: "+intentos);
+		    	this.tracker.logger.error("Fallo durante envio del JSON. Intento: "+intentos);
 		    	e.printStackTrace();
 		    	
 		    	try {
@@ -665,7 +665,7 @@ public class ThreadTracker implements Runnable {
 		Mensaje response = null;
 		
 		if (archivosDisponibles.isEmpty()) { //Si no se encontraron archivos con el nombre solicitado, devuelvo error
-			response = new Mensaje(Mensaje.Tipo.ERROR, "No se encontró un archivo con el nombre solicitado");
+			response = new Mensaje(Mensaje.Tipo.ERROR, "No se encontro un archivo con el nombre solicitado");
 			response.enviarMensaje(conexionTCP, response, kg);
 		}else { //Si hay archivos que coinciden con el nombre buscado
 			Object obj = new Object();

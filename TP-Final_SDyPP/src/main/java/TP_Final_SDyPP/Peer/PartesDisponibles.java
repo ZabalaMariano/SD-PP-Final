@@ -32,26 +32,26 @@ public class PartesDisponibles {
 		this.kg = new KeysGenerator();
 	}
 	
-	public void start() {
-		
-		this.getNewSwarm();
-		
+	public void getPorcentajeDisponible() {
 		ArrayList<SeedTable> arraySwarm = new ArrayList<SeedTable>();
 		for(SeedTable st : this.threadCliente.getSwarm()) {
 			arraySwarm.add(st);
 		}
 		
-		int length = this.threadCliente.getMisPartes().length;
-		peersPartes = new Integer[length];
-		for(int i=0; i<length; i++) {
-    		peersPartes[i] = 0;//inicializa en 0
-    	}
+		if(arraySwarm.size() > 0) {
+			
+			int length = this.threadCliente.getMisPartes().length;
+			peersPartes = new Integer[length];
+			for(int i=0; i<length; i++) {
+	    		peersPartes[i] = 0;//inicializa en 0
+	    	}
+			
+			//Compruebo porcentaje disponible del archivo a descargar en el swarm
+			this.getPorcentajeDisponibleEnSwarm(arraySwarm);
+			if(this.calcularPorcentajeDisponibleYDescargado())//Si ya descargué todo lo que el swarm me ofrece
+				this.getNewSwarm();
 		
-		//Compruebo porcentaje disponible del archivo a descargar en el swarm
-		this.getPorcentajeDisponibleEnSwarm(arraySwarm);
-		this.calcularPorcentajeDisponibleYDescargado();
-		
-		if(swarm.size() == 0) {
+		} else {
 			log = "ThreadPartesDisponibles - se obtuvo un swarm vacio para este archivo. "
 					+ "Espero 10 seg antes de preguntar nuevamente por swarm.";
 			this.threadCliente.logger.info(log);
@@ -62,10 +62,12 @@ public class PartesDisponibles {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			
+			this.getNewSwarm();
 		}
 	}
 
-	private void getNewSwarm() {
+	public void getNewSwarm() {
 		try {
 			log = "ThreadPartesDisponibles - Estableciendo conexion con tracker para obtener nuevo swarm.";
 			this.threadCliente.logger.info(log);
@@ -92,6 +94,7 @@ public class PartesDisponibles {
 						this.threadCliente.setSwarm(swarm);
 						this.threadCliente.setPeersDisponibles(swarm);
 					}
+					this.getPorcentajeDisponible();
 				}	
 			}else {
 	        	log = "No hay trackers disponibles en este momento.";
@@ -108,9 +111,7 @@ public class PartesDisponibles {
 		}
 	}
 
-	private void calcularPorcentajeDisponibleYDescargado() {
-		//fin while por cienPorciento=true o repase todos los peers del swarm
-		//calculo % total de archivo disponible en swarm
+	private boolean calcularPorcentajeDisponibleYDescargado() {
 		porcentajeDisponible = (float) (tiene * 100) / peersPartes.length;
 		String porcentajeDisponibleS = String.format("%.2f", porcentajeDisponible);
 		
@@ -144,13 +145,20 @@ public class PartesDisponibles {
 		log = "ThreadPartesDisponibles - Del "+porcentajeDisponibleS+"% disponible en el swarm, descargo "+porcentajeDescargadoDelSwarmS+"%";
 		this.threadCliente.logger.info(log);
 		System.out.println(log);
+		
+		if(porcentajeDescargadoDelSwarm == 100)//Si descargué el 100% de las partes ofrecidas por el swarm tengo que pedir uno nuevo.
+			return true;
+		else
+			return false;
 	}
 
 	private void getPorcentajeDisponibleEnSwarm(ArrayList<SeedTable> arraySwarm) {
 		int index = 0;
 		tiene = 0;//contador partes que tienen los peers del swarm
 		cienPorciento = false;
-		
+
+		//fin while por cienPorciento=true o repase todos los peers del swarm
+		//calculo % total de archivo disponible en swarm
 		while(!cienPorciento && index<arraySwarm.size()) {
 			//recupera archivo del peer con las partes descargadas
 			String path = arraySwarm.get(index).getPath() + "/"+this.threadCliente.getName()+"Partes.json";
@@ -200,6 +208,5 @@ public class PartesDisponibles {
 			
 			index++;
 		}			
-	}
-	
+	}	
 }

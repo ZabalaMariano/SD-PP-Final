@@ -1,0 +1,841 @@
+2020-02-24T13:04:47.287-0300 INFO JSON descargado exitosamente.
+2020-02-24T13:25:12.986-0300 INFO ThreadCliente, para descargar archivo jdk-12.0.2_windows-x64_bin.exe, iniciado
+2020-02-24T13:25:12.996-0300 INFO Descarga iniciada.
+2020-02-24T13:25:12.999-0300 INFO ThreadPartesDisponibles - Estableciendo conexion con tracker para obtener nuevo swarm.
+2020-02-24T13:25:13.444-0300 INFO ThreadPartesDisponibles - Nuevo swarm obtenido.
+2020-02-24T13:25:13.459-0300 INFO Envio Check Available getsecretkey
+2020-02-24T13:25:18.130-0300 INFO Recibo ACK por Check Available getsecretkey
+2020-02-24T13:25:18.139-0300 INFO ThreadPartesDisponibles - Consulta archivo partes pendientes de 190.244.130.205:2000
+2020-02-24T13:25:18.164-0300 INFO ThreadPartesDisponibles - Recibo archivo partes pendientes de 190.244.130.205:2000
+2020-02-24T13:25:18.164-0300 INFO ThreadPartesDisponibles - El swarm posee un 100,00% del total del archivo a descargar.
+2020-02-24T13:25:18.165-0300 INFO ThreadPartesDisponibles - Del 100,00% disponible en el swarm, descargo 0,00%
+2020-02-24T13:25:18.182-0300 INFO Envio Check Available getsecretkey
+2020-02-24T13:25:18.318-0300 INFO Recibo ACK por Check Available getsecretkey
+2020-02-24T13:25:18.346-0300 INFO ThreadCliente - Conexion con peer disponible (190.244.130.205:2000) y obtencion de archivo de partes descargadas
+2020-02-24T13:25:18.347-0300 INFO ThreadCliente - Retirar al peer (190.244.130.205:2000) de peers disponibles
+2020-02-24T13:25:18.401-0300 INFO Envio Check Available getsecretkey
+2020-02-24T13:25:18.428-0300 INFO ThreadLeecher - Descargando parte numero 73 de peer 190.244.130.205:2000
+2020-02-24T13:25:18.443-0300 INFO ThreadLeecher - Guardando parte 73.
+2020-02-24T13:25:18.523-0300 INFO Recibo ACK por Check Available getsecretkey
+2020-02-24T13:25:18.556-0300 INFO ThreadCliente - Conexion con peer disponible (190.244.130.205:2000) y obtencion de archivo de partes descargadas
+2020-02-24T13:25:18.557-0300 INFO ThreadCliente - Retirar al peer (190.244.130.205:2000) de peers disponibles
+2020-02-24T13:25:18.558-0300 INFO ThreadCliente - Actualizacion de peers disponibles con swarm
+2020-02-24T13:25:18.564-0300 INFO Envio Check Available getsecretkey
+2020-02-24T13:25:18.597-0300 INFO ThreadLeecher - Descargando parte numero 89 de peer 190.244.130.205:2000
+2020-02-24T13:25:18.600-0300 INFO ThreadLeecher - Guardando parte 89.
+2020-02-24T13:25:18.714-0300 INFO Recibo ACK por Check Available getsecretkey
+2020-02-24T13:25:18.858-0300 INFO ThreadCliente - Conexion con peer disponible (190.244.130.205:2000) y obtencion de archivo de partes descargadas
+2020-02-24T13:25:18.859-0300 INFO ThreadCliente - Retirar al peer (190.244.130.205:2000) de peers disponibles
+2020-02-24T13:25:18.860-0300 ERROR No hay leechers disponibles (se estan usando los 3 del cliente). Espero 5 seg.
+2020-02-24T13:25:18.886-0300 INFO ThreadLeecher - Descargando parte numero 59 de peer 190.244.130.205:2000
+2020-02-24T13:25:18.891-0300 INFO ThreadLeecher - Guardando parte 59.
+2020-02-24T13:25:19.656-0300 INFO ThreadLeecher - Parte 73: Descargada.
+2020-02-24T13:25:19.688-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 73 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:19.699-0300 INFO ThreadLeecher - 0,63% Descargado
+2020-02-24T13:25:19.723-0300 INFO ThreadLeecher - Descargando parte numero 107 de peer 190.244.130.205:2000
+2020-02-24T13:25:19.724-0300 INFO ThreadLeecher - Guardando parte 107.
+2020-02-24T13:25:19.953-0300 INFO ThreadLeecher - Parte 59: Descargada.
+2020-02-24T13:25:19.973-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 59 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:19.982-0300 INFO ThreadLeecher - Parte 89: Descargada.
+2020-02-24T13:25:20.003-0300 INFO ThreadLeecher - 1,26% Descargado
+2020-02-24T13:25:20.010-0300 INFO ThreadLeecher - Descargando parte numero 15 de peer 190.244.130.205:2000
+2020-02-24T13:25:20.017-0300 INFO ThreadLeecher - Guardando parte 15.
+2020-02-24T13:25:20.024-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 89 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:20.055-0300 INFO ThreadLeecher - 1,89% Descargado
+2020-02-24T13:25:20.084-0300 INFO ThreadLeecher - Descargando parte numero 61 de peer 190.244.130.205:2000
+2020-02-24T13:25:20.085-0300 INFO ThreadLeecher - Guardando parte 61.
+2020-02-24T13:25:20.482-0300 INFO ThreadLeecher - Parte 15: Descargada.
+2020-02-24T13:25:20.519-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 15 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:20.538-0300 INFO ThreadLeecher - 2,52% Descargado
+2020-02-24T13:25:20.553-0300 INFO ThreadLeecher - Descargando parte numero 120 de peer 190.244.130.205:2000
+2020-02-24T13:25:20.554-0300 INFO ThreadLeecher - Guardando parte 120.
+2020-02-24T13:25:20.951-0300 INFO ThreadLeecher - Parte 61: Descargada.
+2020-02-24T13:25:21.128-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 61 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:21.135-0300 INFO ThreadLeecher - 3,14% Descargado
+2020-02-24T13:25:21.139-0300 INFO ThreadLeecher - Descargando parte numero 98 de peer 190.244.130.205:2000
+2020-02-24T13:25:21.144-0300 INFO ThreadLeecher - Guardando parte 98.
+2020-02-24T13:25:21.613-0300 INFO ThreadLeecher - Parte 107: Descargada.
+2020-02-24T13:25:21.701-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 107 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:21.712-0300 INFO ThreadLeecher - 3,77% Descargado
+2020-02-24T13:25:21.715-0300 INFO ThreadLeecher - Descargando parte numero 132 de peer 190.244.130.205:2000
+2020-02-24T13:25:21.716-0300 INFO ThreadLeecher - Guardando parte 132.
+2020-02-24T13:25:22.308-0300 INFO ThreadLeecher - Parte 120: Descargada.
+2020-02-24T13:25:22.353-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 120 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:22.361-0300 INFO ThreadLeecher - 4,40% Descargado
+2020-02-24T13:25:22.367-0300 INFO ThreadLeecher - Descargando parte numero 68 de peer 190.244.130.205:2000
+2020-02-24T13:25:22.368-0300 INFO ThreadLeecher - Guardando parte 68.
+2020-02-24T13:25:22.624-0300 INFO ThreadLeecher - Parte 132: Descargada.
+2020-02-24T13:25:22.647-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 132 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:22.654-0300 INFO ThreadLeecher - 5,03% Descargado
+2020-02-24T13:25:22.657-0300 INFO ThreadLeecher - Descargando parte numero 12 de peer 190.244.130.205:2000
+2020-02-24T13:25:22.658-0300 INFO ThreadLeecher - Guardando parte 12.
+2020-02-24T13:25:22.944-0300 INFO ThreadLeecher - Parte 12: Descargada.
+2020-02-24T13:25:23.000-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 12 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:23.007-0300 INFO ThreadLeecher - 5,66% Descargado
+2020-02-24T13:25:23.009-0300 INFO ThreadLeecher - Descargando parte numero 70 de peer 190.244.130.205:2000
+2020-02-24T13:25:23.010-0300 INFO ThreadLeecher - Guardando parte 70.
+2020-02-24T13:25:23.066-0300 INFO ThreadLeecher - Parte 98: Descargada.
+2020-02-24T13:25:23.082-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 98 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:23.088-0300 INFO ThreadLeecher - 6,29% Descargado
+2020-02-24T13:25:23.106-0300 INFO ThreadLeecher - Descargando parte numero 111 de peer 190.244.130.205:2000
+2020-02-24T13:25:23.110-0300 INFO ThreadLeecher - Guardando parte 111.
+2020-02-24T13:25:23.114-0300 INFO ThreadLeecher - Parte 68: Descargada.
+2020-02-24T13:25:23.140-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 68 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:23.163-0300 INFO ThreadLeecher - 6,92% Descargado
+2020-02-24T13:25:23.167-0300 INFO ThreadLeecher - Descargando parte numero 6 de peer 190.244.130.205:2000
+2020-02-24T13:25:23.168-0300 INFO ThreadLeecher - Guardando parte 6.
+2020-02-24T13:25:23.608-0300 INFO ThreadLeecher - Parte 6: Descargada.
+2020-02-24T13:25:23.632-0300 INFO ThreadLeecher - Parte 70: Descargada.
+2020-02-24T13:25:23.635-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 6 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:23.646-0300 INFO ThreadLeecher - 7,55% Descargado
+2020-02-24T13:25:23.649-0300 INFO ThreadLeecher - Descargando parte numero 148 de peer 190.244.130.205:2000
+2020-02-24T13:25:23.650-0300 INFO ThreadLeecher - Guardando parte 148.
+2020-02-24T13:25:23.651-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 70 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:23.656-0300 INFO ThreadLeecher - 8,18% Descargado
+2020-02-24T13:25:23.659-0300 INFO ThreadLeecher - Descargando parte numero 142 de peer 190.244.130.205:2000
+2020-02-24T13:25:23.659-0300 INFO ThreadLeecher - Guardando parte 142.
+2020-02-24T13:25:23.860-0300 ERROR No hay leechers disponibles (se estan usando los 3 del cliente). Espero 5 seg.
+2020-02-24T13:25:24.014-0300 INFO ThreadLeecher - Parte 111: Descargada.
+2020-02-24T13:25:24.075-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 111 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:24.094-0300 INFO ThreadLeecher - 8,81% Descargado
+2020-02-24T13:25:24.138-0300 INFO ThreadLeecher - Descargando parte numero 145 de peer 190.244.130.205:2000
+2020-02-24T13:25:24.141-0300 INFO ThreadLeecher - Guardando parte 145.
+2020-02-24T13:25:24.653-0300 INFO ThreadLeecher - Parte 142: Descargada.
+2020-02-24T13:25:24.673-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 142 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:24.679-0300 INFO ThreadLeecher - 9,43% Descargado
+2020-02-24T13:25:24.818-0300 INFO ThreadLeecher - Descargando parte numero 115 de peer 190.244.130.205:2000
+2020-02-24T13:25:24.834-0300 INFO ThreadLeecher - Guardando parte 115.
+2020-02-24T13:25:24.945-0300 INFO ThreadLeecher - Parte 148: Descargada.
+2020-02-24T13:25:24.977-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 148 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:25.015-0300 INFO ThreadLeecher - 10,06% Descargado
+2020-02-24T13:25:25.026-0300 INFO ThreadLeecher - Descargando parte numero 101 de peer 190.244.130.205:2000
+2020-02-24T13:25:25.026-0300 INFO ThreadLeecher - Guardando parte 101.
+2020-02-24T13:25:25.093-0300 INFO ThreadLeecher - Parte 145: Descargada.
+2020-02-24T13:25:25.126-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 145 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:25.134-0300 INFO ThreadLeecher - 10,69% Descargado
+2020-02-24T13:25:25.143-0300 INFO ThreadLeecher - Descargando parte numero 96 de peer 190.244.130.205:2000
+2020-02-24T13:25:25.147-0300 INFO ThreadLeecher - Guardando parte 96.
+2020-02-24T13:25:25.750-0300 INFO ThreadLeecher - Parte 115: Descargada.
+2020-02-24T13:25:25.816-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 115 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:25.822-0300 INFO ThreadLeecher - 11,32% Descargado
+2020-02-24T13:25:25.826-0300 INFO ThreadLeecher - Descargando parte numero 156 de peer 190.244.130.205:2000
+2020-02-24T13:25:25.827-0300 INFO ThreadLeecher - Guardando parte 156.
+2020-02-24T13:25:25.992-0300 INFO ThreadLeecher - Parte 101: Descargada.
+2020-02-24T13:25:26.028-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 101 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:26.035-0300 INFO ThreadLeecher - 11,95% Descargado
+2020-02-24T13:25:26.062-0300 INFO ThreadLeecher - Parte 96: Descargada.
+2020-02-24T13:25:26.064-0300 INFO ThreadLeecher - Descargando parte numero 26 de peer 190.244.130.205:2000
+2020-02-24T13:25:26.065-0300 INFO ThreadLeecher - Guardando parte 26.
+2020-02-24T13:25:26.141-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 96 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:26.146-0300 INFO ThreadLeecher - 12,58% Descargado
+2020-02-24T13:25:26.149-0300 INFO ThreadLeecher - Descargando parte numero 69 de peer 190.244.130.205:2000
+2020-02-24T13:25:26.153-0300 INFO ThreadLeecher - Guardando parte 69.
+2020-02-24T13:25:26.581-0300 INFO ThreadLeecher - Parte 26: Descargada.
+2020-02-24T13:25:26.623-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 26 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:26.628-0300 INFO ThreadLeecher - 13,21% Descargado
+2020-02-24T13:25:26.632-0300 INFO ThreadLeecher - Descargando parte numero 23 de peer 190.244.130.205:2000
+2020-02-24T13:25:26.633-0300 INFO ThreadLeecher - Guardando parte 23.
+2020-02-24T13:25:27.225-0300 INFO ThreadLeecher - Parte 23: Descargada.
+2020-02-24T13:25:27.249-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 23 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:27.304-0300 INFO ThreadLeecher - Parte 69: Descargada.
+2020-02-24T13:25:27.325-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 69 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:27.326-0300 INFO ThreadLeecher - 14,47% Descargado
+2020-02-24T13:25:27.331-0300 INFO ThreadLeecher - 14,47% Descargado
+2020-02-24T13:25:27.351-0300 INFO ThreadLeecher - Descargando parte numero 54 de peer 190.244.130.205:2000
+2020-02-24T13:25:27.352-0300 INFO ThreadLeecher - Guardando parte 54.
+2020-02-24T13:25:27.378-0300 INFO ThreadLeecher - Descargando parte numero 36 de peer 190.244.130.205:2000
+2020-02-24T13:25:27.382-0300 INFO ThreadLeecher - Guardando parte 36.
+2020-02-24T13:25:27.467-0300 INFO ThreadLeecher - Parte 156: Descargada.
+2020-02-24T13:25:27.502-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 156 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:27.508-0300 INFO ThreadLeecher - 15,09% Descargado
+2020-02-24T13:25:27.512-0300 INFO ThreadLeecher - Descargando parte numero 60 de peer 190.244.130.205:2000
+2020-02-24T13:25:27.516-0300 INFO ThreadLeecher - Guardando parte 60.
+2020-02-24T13:25:28.475-0300 INFO ThreadLeecher - Parte 60: Descargada.
+2020-02-24T13:25:28.494-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 60 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:28.499-0300 INFO ThreadLeecher - 15,72% Descargado
+2020-02-24T13:25:28.561-0300 INFO ThreadLeecher - Descargando parte numero 9 de peer 190.244.130.205:2000
+2020-02-24T13:25:28.562-0300 INFO ThreadLeecher - Guardando parte 9.
+2020-02-24T13:25:28.649-0300 INFO ThreadLeecher - Parte 36: Descargada.
+2020-02-24T13:25:28.656-0300 INFO ThreadLeecher - Parte 54: Descargada.
+2020-02-24T13:25:28.672-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 36 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:28.678-0300 INFO ThreadLeecher - 16,35% Descargado
+2020-02-24T13:25:28.681-0300 INFO ThreadLeecher - Descargando parte numero 3 de peer 190.244.130.205:2000
+2020-02-24T13:25:28.682-0300 INFO ThreadLeecher - Guardando parte 3.
+2020-02-24T13:25:28.695-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 54 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:28.729-0300 INFO ThreadLeecher - 16,98% Descargado
+2020-02-24T13:25:28.732-0300 INFO ThreadLeecher - Descargando parte numero 19 de peer 190.244.130.205:2000
+2020-02-24T13:25:28.735-0300 INFO ThreadLeecher - Guardando parte 19.
+2020-02-24T13:25:28.861-0300 ERROR No hay leechers disponibles (se estan usando los 3 del cliente). Espero 5 seg.
+2020-02-24T13:25:29.259-0300 INFO ThreadLeecher - Parte 9: Descargada.
+2020-02-24T13:25:29.278-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 9 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:29.284-0300 INFO ThreadLeecher - 17,61% Descargado
+2020-02-24T13:25:29.285-0300 INFO ThreadLeecher - Descargando parte numero 91 de peer 190.244.130.205:2000
+2020-02-24T13:25:29.286-0300 INFO ThreadLeecher - Guardando parte 91.
+2020-02-24T13:25:29.439-0300 INFO ThreadLeecher - Parte 19: Descargada.
+2020-02-24T13:25:29.472-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 19 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:29.484-0300 INFO ThreadLeecher - Parte 3: Descargada.
+2020-02-24T13:25:29.500-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 3 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:29.503-0300 INFO ThreadLeecher - 18,87% Descargado
+2020-02-24T13:25:29.506-0300 INFO ThreadLeecher - 18,87% Descargado
+2020-02-24T13:25:29.506-0300 INFO ThreadLeecher - Descargando parte numero 62 de peer 190.244.130.205:2000
+2020-02-24T13:25:29.507-0300 INFO ThreadLeecher - Guardando parte 62.
+2020-02-24T13:25:29.509-0300 INFO ThreadLeecher - Descargando parte numero 45 de peer 190.244.130.205:2000
+2020-02-24T13:25:29.509-0300 INFO ThreadLeecher - Guardando parte 45.
+2020-02-24T13:25:29.819-0300 INFO ThreadLeecher - Parte 91: Descargada.
+2020-02-24T13:25:29.861-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 91 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:29.910-0300 INFO ThreadLeecher - 19,50% Descargado
+2020-02-24T13:25:29.913-0300 INFO ThreadLeecher - Descargando parte numero 29 de peer 190.244.130.205:2000
+2020-02-24T13:25:29.914-0300 INFO ThreadLeecher - Guardando parte 29.
+2020-02-24T13:25:30.323-0300 INFO ThreadLeecher - Parte 45: Descargada.
+2020-02-24T13:25:30.343-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 45 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:30.350-0300 INFO ThreadLeecher - 20,13% Descargado
+2020-02-24T13:25:30.353-0300 INFO ThreadLeecher - Descargando parte numero 117 de peer 190.244.130.205:2000
+2020-02-24T13:25:30.354-0300 INFO ThreadLeecher - Guardando parte 117.
+2020-02-24T13:25:30.405-0300 INFO ThreadLeecher - Parte 29: Descargada.
+2020-02-24T13:25:30.434-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 29 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:30.464-0300 INFO ThreadLeecher - 20,75% Descargado
+2020-02-24T13:25:30.469-0300 INFO ThreadLeecher - Descargando parte numero 118 de peer 190.244.130.205:2000
+2020-02-24T13:25:30.475-0300 INFO ThreadLeecher - Guardando parte 118.
+2020-02-24T13:25:30.591-0300 INFO ThreadLeecher - Parte 62: Descargada.
+2020-02-24T13:25:30.617-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 62 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:30.622-0300 INFO ThreadLeecher - 21,38% Descargado
+2020-02-24T13:25:30.625-0300 INFO ThreadLeecher - Descargando parte numero 152 de peer 190.244.130.205:2000
+2020-02-24T13:25:30.629-0300 INFO ThreadLeecher - Guardando parte 152.
+2020-02-24T13:25:31.456-0300 INFO ThreadLeecher - Parte 118: Descargada.
+2020-02-24T13:25:31.474-0300 INFO ThreadLeecher - Parte 117: Descargada.
+2020-02-24T13:25:31.489-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 118 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:31.495-0300 INFO ThreadLeecher - 22,01% Descargado
+2020-02-24T13:25:31.496-0300 INFO ThreadLeecher - Descargando parte numero 102 de peer 190.244.130.205:2000
+2020-02-24T13:25:31.497-0300 INFO ThreadLeecher - Guardando parte 102.
+2020-02-24T13:25:31.531-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 117 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:31.539-0300 INFO ThreadLeecher - 22,64% Descargado
+2020-02-24T13:25:31.570-0300 INFO ThreadLeecher - Descargando parte numero 79 de peer 190.244.130.205:2000
+2020-02-24T13:25:31.571-0300 INFO ThreadLeecher - Guardando parte 79.
+2020-02-24T13:25:31.986-0300 INFO ThreadLeecher - Parte 152: Descargada.
+2020-02-24T13:25:32.033-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 152 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:32.065-0300 INFO ThreadLeecher - 23,27% Descargado
+2020-02-24T13:25:32.082-0300 INFO ThreadLeecher - Descargando parte numero 13 de peer 190.244.130.205:2000
+2020-02-24T13:25:32.084-0300 INFO ThreadLeecher - Guardando parte 13.
+2020-02-24T13:25:32.541-0300 INFO ThreadLeecher - Parte 13: Descargada.
+2020-02-24T13:25:32.563-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 13 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:32.569-0300 INFO ThreadLeecher - 23,90% Descargado
+2020-02-24T13:25:32.572-0300 INFO ThreadLeecher - Descargando parte numero 158 de peer 190.244.130.205:2000
+2020-02-24T13:25:32.573-0300 INFO ThreadLeecher - Guardando parte 158.
+2020-02-24T13:25:32.682-0300 INFO ThreadLeecher - Parte 102: Descargada.
+2020-02-24T13:25:32.782-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 102 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:32.789-0300 INFO ThreadLeecher - 24,53% Descargado
+2020-02-24T13:25:32.792-0300 INFO ThreadLeecher - Descargando parte numero 74 de peer 190.244.130.205:2000
+2020-02-24T13:25:32.793-0300 INFO ThreadLeecher - Guardando parte 74.
+2020-02-24T13:25:32.825-0300 INFO ThreadLeecher - Parte 79: Descargada.
+2020-02-24T13:25:32.927-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 79 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:32.951-0300 INFO ThreadLeecher - 25,16% Descargado
+2020-02-24T13:25:32.966-0300 INFO ThreadLeecher - Descargando parte numero 135 de peer 190.244.130.205:2000
+2020-02-24T13:25:32.970-0300 INFO ThreadLeecher - Guardando parte 135.
+2020-02-24T13:25:33.793-0300 INFO ThreadLeecher - Parte 74: Descargada.
+2020-02-24T13:25:33.813-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 74 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:33.818-0300 INFO ThreadLeecher - 25,79% Descargado
+2020-02-24T13:25:33.821-0300 INFO ThreadLeecher - Descargando parte numero 48 de peer 190.244.130.205:2000
+2020-02-24T13:25:33.822-0300 INFO ThreadLeecher - Guardando parte 48.
+2020-02-24T13:25:33.861-0300 ERROR No hay leechers disponibles (se estan usando los 3 del cliente). Espero 5 seg.
+2020-02-24T13:25:33.902-0300 INFO ThreadLeecher - Parte 135: Descargada.
+2020-02-24T13:25:33.980-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 135 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:33.985-0300 INFO ThreadLeecher - 26,42% Descargado
+2020-02-24T13:25:33.988-0300 INFO ThreadLeecher - Descargando parte numero 121 de peer 190.244.130.205:2000
+2020-02-24T13:25:33.989-0300 INFO ThreadLeecher - Guardando parte 121.
+2020-02-24T13:25:34.184-0300 INFO ThreadLeecher - Parte 158: Descargada.
+2020-02-24T13:25:34.198-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 158 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:34.204-0300 INFO ThreadLeecher - 27,04% Descargado
+2020-02-24T13:25:34.207-0300 INFO ThreadLeecher - Descargando parte numero 125 de peer 190.244.130.205:2000
+2020-02-24T13:25:34.208-0300 INFO ThreadLeecher - Guardando parte 125.
+2020-02-24T13:25:34.495-0300 INFO ThreadLeecher - Parte 48: Descargada.
+2020-02-24T13:25:34.513-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 48 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:34.517-0300 INFO ThreadLeecher - 27,67% Descargado
+2020-02-24T13:25:34.521-0300 INFO ThreadLeecher - Descargando parte numero 137 de peer 190.244.130.205:2000
+2020-02-24T13:25:34.522-0300 INFO ThreadLeecher - Guardando parte 137.
+2020-02-24T13:25:35.115-0300 INFO ThreadLeecher - Parte 121: Descargada.
+2020-02-24T13:25:35.135-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 121 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:35.144-0300 INFO ThreadLeecher - 28,30% Descargado
+2020-02-24T13:25:35.146-0300 INFO ThreadLeecher - Descargando parte numero 127 de peer 190.244.130.205:2000
+2020-02-24T13:25:35.147-0300 INFO ThreadLeecher - Guardando parte 127.
+2020-02-24T13:25:35.217-0300 INFO ThreadLeecher - Parte 137: Descargada.
+2020-02-24T13:25:35.226-0300 INFO ThreadLeecher - Parte 125: Descargada.
+2020-02-24T13:25:35.236-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 137 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:35.241-0300 INFO ThreadLeecher - 28,93% Descargado
+2020-02-24T13:25:35.245-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 125 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:35.289-0300 INFO ThreadLeecher - Descargando parte numero 77 de peer 190.244.130.205:2000
+2020-02-24T13:25:35.293-0300 INFO ThreadLeecher - Guardando parte 77.
+2020-02-24T13:25:35.323-0300 INFO ThreadLeecher - 29,56% Descargado
+2020-02-24T13:25:35.326-0300 INFO ThreadLeecher - Descargando parte numero 17 de peer 190.244.130.205:2000
+2020-02-24T13:25:35.327-0300 INFO ThreadLeecher - Guardando parte 17.
+2020-02-24T13:25:35.620-0300 INFO ThreadLeecher - Parte 17: Descargada.
+2020-02-24T13:25:35.639-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 17 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:35.644-0300 INFO ThreadLeecher - 30,19% Descargado
+2020-02-24T13:25:35.708-0300 INFO ThreadLeecher - Descargando parte numero 100 de peer 190.244.130.205:2000
+2020-02-24T13:25:35.712-0300 INFO ThreadLeecher - Guardando parte 100.
+2020-02-24T13:25:36.294-0300 INFO ThreadLeecher - Parte 127: Descargada.
+2020-02-24T13:25:36.301-0300 INFO ThreadLeecher - Parte 77: Descargada.
+2020-02-24T13:25:36.313-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 127 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:36.318-0300 INFO ThreadLeecher - 30,82% Descargado
+2020-02-24T13:25:36.319-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 77 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:36.321-0300 INFO ThreadLeecher - Descargando parte numero 112 de peer 190.244.130.205:2000
+2020-02-24T13:25:36.322-0300 INFO ThreadLeecher - Guardando parte 112.
+2020-02-24T13:25:36.325-0300 INFO ThreadLeecher - 31,45% Descargado
+2020-02-24T13:25:36.328-0300 INFO ThreadLeecher - Descargando parte numero 116 de peer 190.244.130.205:2000
+2020-02-24T13:25:36.329-0300 INFO ThreadLeecher - Guardando parte 116.
+2020-02-24T13:25:36.361-0300 INFO ThreadLeecher - Parte 100: Descargada.
+2020-02-24T13:25:36.384-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 100 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:36.422-0300 INFO ThreadLeecher - 32,08% Descargado
+2020-02-24T13:25:36.425-0300 INFO ThreadLeecher - Descargando parte numero 28 de peer 190.244.130.205:2000
+2020-02-24T13:25:36.427-0300 INFO ThreadLeecher - Guardando parte 28.
+2020-02-24T13:25:36.999-0300 INFO ThreadLeecher - Parte 28: Descargada.
+2020-02-24T13:25:37.019-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 28 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:37.024-0300 INFO ThreadLeecher - 32,70% Descargado
+2020-02-24T13:25:37.028-0300 INFO ThreadLeecher - Descargando parte numero 84 de peer 190.244.130.205:2000
+2020-02-24T13:25:37.029-0300 INFO ThreadLeecher - Guardando parte 84.
+2020-02-24T13:25:37.057-0300 INFO ThreadLeecher - Parte 116: Descargada.
+2020-02-24T13:25:37.085-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 116 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:37.098-0300 INFO ThreadLeecher - 33,33% Descargado
+2020-02-24T13:25:37.101-0300 INFO ThreadLeecher - Descargando parte numero 2 de peer 190.244.130.205:2000
+2020-02-24T13:25:37.102-0300 INFO ThreadLeecher - Guardando parte 2.
+2020-02-24T13:25:37.130-0300 INFO ThreadLeecher - Parte 112: Descargada.
+2020-02-24T13:25:37.221-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 112 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:37.232-0300 INFO ThreadLeecher - 33,96% Descargado
+2020-02-24T13:25:37.235-0300 INFO ThreadLeecher - Descargando parte numero 154 de peer 190.244.130.205:2000
+2020-02-24T13:25:37.236-0300 INFO ThreadLeecher - Guardando parte 154.
+2020-02-24T13:25:37.369-0300 INFO ThreadLeecher - Parte 2: Descargada.
+2020-02-24T13:25:37.487-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 2 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:37.530-0300 INFO ThreadLeecher - 34,59% Descargado
+2020-02-24T13:25:37.531-0300 INFO ThreadLeecher - Parte 84: Descargada.
+2020-02-24T13:25:37.551-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 84 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:37.556-0300 INFO ThreadLeecher - 35,22% Descargado
+2020-02-24T13:25:37.583-0300 INFO ThreadLeecher - Descargando parte numero 95 de peer 190.244.130.205:2000
+2020-02-24T13:25:37.584-0300 INFO ThreadLeecher - Guardando parte 95.
+2020-02-24T13:25:37.586-0300 INFO ThreadLeecher - Descargando parte numero 56 de peer 190.244.130.205:2000
+2020-02-24T13:25:37.588-0300 INFO ThreadLeecher - Guardando parte 56.
+2020-02-24T13:25:37.734-0300 INFO ThreadLeecher - Parte 154: Descargada.
+2020-02-24T13:25:37.803-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 154 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:37.810-0300 INFO ThreadLeecher - 35,85% Descargado
+2020-02-24T13:25:37.827-0300 INFO ThreadLeecher - Descargando parte numero 55 de peer 190.244.130.205:2000
+2020-02-24T13:25:37.831-0300 INFO ThreadLeecher - Guardando parte 55.
+2020-02-24T13:25:38.034-0300 INFO ThreadLeecher - Parte 56: Descargada.
+2020-02-24T13:25:38.052-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 56 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:38.057-0300 INFO ThreadLeecher - 36,48% Descargado
+2020-02-24T13:25:38.061-0300 INFO ThreadLeecher - Descargando parte numero 46 de peer 190.244.130.205:2000
+2020-02-24T13:25:38.062-0300 INFO ThreadLeecher - Guardando parte 46.
+2020-02-24T13:25:38.226-0300 INFO ThreadLeecher - Parte 95: Descargada.
+2020-02-24T13:25:38.250-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 95 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:38.264-0300 INFO ThreadLeecher - 37,11% Descargado
+2020-02-24T13:25:38.281-0300 INFO ThreadLeecher - Descargando parte numero 37 de peer 190.244.130.205:2000
+2020-02-24T13:25:38.282-0300 INFO ThreadLeecher - Guardando parte 37.
+2020-02-24T13:25:38.332-0300 INFO ThreadLeecher - Parte 55: Descargada.
+2020-02-24T13:25:38.390-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 55 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:38.395-0300 INFO ThreadLeecher - 37,74% Descargado
+2020-02-24T13:25:38.404-0300 INFO ThreadLeecher - Descargando parte numero 65 de peer 190.244.130.205:2000
+2020-02-24T13:25:38.405-0300 INFO ThreadLeecher - Guardando parte 65.
+2020-02-24T13:25:38.444-0300 INFO ThreadLeecher - Parte 46: Descargada.
+2020-02-24T13:25:38.470-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 46 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:38.477-0300 INFO ThreadLeecher - 38,36% Descargado
+2020-02-24T13:25:38.481-0300 INFO ThreadLeecher - Descargando parte numero 105 de peer 190.244.130.205:2000
+2020-02-24T13:25:38.482-0300 INFO ThreadLeecher - Guardando parte 105.
+2020-02-24T13:25:38.791-0300 INFO ThreadLeecher - Parte 37: Descargada.
+2020-02-24T13:25:38.811-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 37 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:38.825-0300 INFO ThreadLeecher - 38,99% Descargado
+2020-02-24T13:25:38.827-0300 INFO ThreadLeecher - Descargando parte numero 4 de peer 190.244.130.205:2000
+2020-02-24T13:25:38.827-0300 INFO ThreadLeecher - Guardando parte 4.
+2020-02-24T13:25:38.862-0300 ERROR No hay leechers disponibles (se estan usando los 3 del cliente). Espero 5 seg.
+2020-02-24T13:25:38.980-0300 INFO ThreadLeecher - Parte 65: Descargada.
+2020-02-24T13:25:39.038-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 65 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:39.048-0300 INFO ThreadLeecher - 39,62% Descargado
+2020-02-24T13:25:39.052-0300 INFO ThreadLeecher - Descargando parte numero 114 de peer 190.244.130.205:2000
+2020-02-24T13:25:39.052-0300 INFO ThreadLeecher - Guardando parte 114.
+2020-02-24T13:25:39.108-0300 INFO ThreadLeecher - Parte 105: Descargada.
+2020-02-24T13:25:39.139-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 105 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:39.161-0300 INFO ThreadLeecher - Parte 4: Descargada.
+2020-02-24T13:25:39.171-0300 INFO ThreadLeecher - 40,25% Descargado
+2020-02-24T13:25:39.175-0300 INFO ThreadLeecher - Descargando parte numero 66 de peer 190.244.130.205:2000
+2020-02-24T13:25:39.178-0300 INFO ThreadLeecher - Guardando parte 66.
+2020-02-24T13:25:39.277-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 4 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:39.282-0300 INFO ThreadLeecher - 40,88% Descargado
+2020-02-24T13:25:39.287-0300 INFO ThreadLeecher - Descargando parte numero 76 de peer 190.244.130.205:2000
+2020-02-24T13:25:39.291-0300 INFO ThreadLeecher - Guardando parte 76.
+2020-02-24T13:25:39.771-0300 INFO ThreadLeecher - Parte 66: Descargada.
+2020-02-24T13:25:39.797-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 66 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:39.804-0300 INFO ThreadLeecher - 41,51% Descargado
+2020-02-24T13:25:39.810-0300 INFO ThreadLeecher - Descargando parte numero 157 de peer 190.244.130.205:2000
+2020-02-24T13:25:39.811-0300 INFO ThreadLeecher - Guardando parte 157.
+2020-02-24T13:25:39.911-0300 INFO ThreadLeecher - Parte 76: Descargada.
+2020-02-24T13:25:40.008-0300 INFO ThreadLeecher - Parte 114: Descargada.
+2020-02-24T13:25:40.023-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 76 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:40.046-0300 INFO ThreadLeecher - 42,14% Descargado
+2020-02-24T13:25:40.049-0300 INFO ThreadLeecher - Descargando parte numero 7 de peer 190.244.130.205:2000
+2020-02-24T13:25:40.049-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 114 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:40.052-0300 INFO ThreadLeecher - Guardando parte 7.
+2020-02-24T13:25:40.057-0300 INFO ThreadLeecher - 42,77% Descargado
+2020-02-24T13:25:40.060-0300 INFO ThreadLeecher - Descargando parte numero 86 de peer 190.244.130.205:2000
+2020-02-24T13:25:40.061-0300 INFO ThreadLeecher - Guardando parte 86.
+2020-02-24T13:25:40.313-0300 INFO ThreadLeecher - Parte 7: Descargada.
+2020-02-24T13:25:40.346-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 7 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:40.359-0300 INFO ThreadLeecher - 43,40% Descargado
+2020-02-24T13:25:40.440-0300 INFO ThreadLeecher - Descargando parte numero 140 de peer 190.244.130.205:2000
+2020-02-24T13:25:40.441-0300 INFO ThreadLeecher - Guardando parte 140.
+2020-02-24T13:25:40.576-0300 INFO ThreadLeecher - Parte 157: Descargada.
+2020-02-24T13:25:40.630-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 157 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:40.635-0300 INFO ThreadLeecher - 44,03% Descargado
+2020-02-24T13:25:40.637-0300 INFO ThreadLeecher - Parte 86: Descargada.
+2020-02-24T13:25:40.640-0300 INFO ThreadLeecher - Descargando parte numero 149 de peer 190.244.130.205:2000
+2020-02-24T13:25:40.641-0300 INFO ThreadLeecher - Guardando parte 149.
+2020-02-24T13:25:40.688-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 86 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:40.699-0300 INFO ThreadLeecher - 44,65% Descargado
+2020-02-24T13:25:40.707-0300 INFO ThreadLeecher - Descargando parte numero 80 de peer 190.244.130.205:2000
+2020-02-24T13:25:40.708-0300 INFO ThreadLeecher - Guardando parte 80.
+2020-02-24T13:25:41.347-0300 INFO ThreadLeecher - Parte 140: Descargada.
+2020-02-24T13:25:41.377-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 140 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:41.382-0300 INFO ThreadLeecher - 45,28% Descargado
+2020-02-24T13:25:41.401-0300 INFO ThreadLeecher - Descargando parte numero 53 de peer 190.244.130.205:2000
+2020-02-24T13:25:41.401-0300 INFO ThreadLeecher - Guardando parte 53.
+2020-02-24T13:25:41.429-0300 INFO ThreadLeecher - Parte 80: Descargada.
+2020-02-24T13:25:41.475-0300 INFO ThreadLeecher - Parte 149: Descargada.
+2020-02-24T13:25:41.511-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 149 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:41.515-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 80 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:41.525-0300 INFO ThreadLeecher - 46,54% Descargado
+2020-02-24T13:25:41.532-0300 INFO ThreadLeecher - 46,54% Descargado
+2020-02-24T13:25:41.544-0300 INFO ThreadLeecher - Descargando parte numero 151 de peer 190.244.130.205:2000
+2020-02-24T13:25:41.546-0300 INFO ThreadLeecher - Guardando parte 151.
+2020-02-24T13:25:41.567-0300 INFO ThreadLeecher - Descargando parte numero 78 de peer 190.244.130.205:2000
+2020-02-24T13:25:41.571-0300 INFO ThreadLeecher - Guardando parte 78.
+2020-02-24T13:25:41.846-0300 INFO ThreadLeecher - Parte 53: Descargada.
+2020-02-24T13:25:41.883-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 53 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:41.888-0300 INFO ThreadLeecher - 47,17% Descargado
+2020-02-24T13:25:41.999-0300 INFO ThreadLeecher - Descargando parte numero 150 de peer 190.244.130.205:2000
+2020-02-24T13:25:42.000-0300 INFO ThreadLeecher - Guardando parte 150.
+2020-02-24T13:25:42.171-0300 INFO ThreadLeecher - Parte 78: Descargada.
+2020-02-24T13:25:42.194-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 78 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:42.213-0300 INFO ThreadLeecher - 47,80% Descargado
+2020-02-24T13:25:42.246-0300 INFO ThreadLeecher - Descargando parte numero 139 de peer 190.244.130.205:2000
+2020-02-24T13:25:42.246-0300 INFO ThreadLeecher - Guardando parte 139.
+2020-02-24T13:25:42.248-0300 INFO ThreadLeecher - Parte 151: Descargada.
+2020-02-24T13:25:42.299-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 151 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:42.304-0300 INFO ThreadLeecher - 48,43% Descargado
+2020-02-24T13:25:42.309-0300 INFO ThreadLeecher - Descargando parte numero 103 de peer 190.244.130.205:2000
+2020-02-24T13:25:42.310-0300 INFO ThreadLeecher - Guardando parte 103.
+2020-02-24T13:25:42.869-0300 INFO ThreadLeecher - Parte 150: Descargada.
+2020-02-24T13:25:42.939-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 150 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:42.954-0300 INFO ThreadLeecher - 49,06% Descargado
+2020-02-24T13:25:42.959-0300 INFO ThreadLeecher - Descargando parte numero 82 de peer 190.244.130.205:2000
+2020-02-24T13:25:42.960-0300 INFO ThreadLeecher - Guardando parte 82.
+2020-02-24T13:25:42.996-0300 INFO ThreadLeecher - Parte 103: Descargada.
+2020-02-24T13:25:43.015-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 103 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:43.021-0300 INFO ThreadLeecher - 49,69% Descargado
+2020-02-24T13:25:43.026-0300 INFO ThreadLeecher - Descargando parte numero 88 de peer 190.244.130.205:2000
+2020-02-24T13:25:43.029-0300 INFO ThreadLeecher - Guardando parte 88.
+2020-02-24T13:25:43.044-0300 INFO ThreadLeecher - Parte 139: Descargada.
+2020-02-24T13:25:43.127-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 139 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:43.132-0300 INFO ThreadLeecher - 50,31% Descargado
+2020-02-24T13:25:43.261-0300 INFO ThreadLeecher - Descargando parte numero 81 de peer 190.244.130.205:2000
+2020-02-24T13:25:43.262-0300 INFO ThreadLeecher - Guardando parte 81.
+2020-02-24T13:25:43.493-0300 INFO ThreadLeecher - Parte 82: Descargada.
+2020-02-24T13:25:43.510-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 82 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:43.528-0300 INFO ThreadLeecher - Parte 88: Descargada.
+2020-02-24T13:25:43.530-0300 INFO ThreadLeecher - 50,94% Descargado
+2020-02-24T13:25:43.533-0300 INFO ThreadLeecher - Descargando parte numero 47 de peer 190.244.130.205:2000
+2020-02-24T13:25:43.534-0300 INFO ThreadLeecher - Guardando parte 47.
+2020-02-24T13:25:43.610-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 88 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:43.631-0300 INFO ThreadLeecher - 51,57% Descargado
+2020-02-24T13:25:43.635-0300 INFO ThreadLeecher - Descargando parte numero 31 de peer 190.244.130.205:2000
+2020-02-24T13:25:43.636-0300 INFO ThreadLeecher - Guardando parte 31.
+2020-02-24T13:25:43.705-0300 INFO ThreadLeecher - Parte 81: Descargada.
+2020-02-24T13:25:43.731-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 81 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:43.759-0300 INFO ThreadLeecher - 52,20% Descargado
+2020-02-24T13:25:43.765-0300 INFO ThreadLeecher - Descargando parte numero 5 de peer 190.244.130.205:2000
+2020-02-24T13:25:43.766-0300 INFO ThreadLeecher - Guardando parte 5.
+2020-02-24T13:25:43.863-0300 ERROR No hay leechers disponibles (se estan usando los 3 del cliente). Espero 5 seg.
+2020-02-24T13:25:44.159-0300 INFO ThreadLeecher - Parte 47: Descargada.
+2020-02-24T13:25:44.178-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 47 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:44.187-0300 INFO ThreadLeecher - 52,83% Descargado
+2020-02-24T13:25:44.203-0300 INFO ThreadLeecher - Descargando parte numero 57 de peer 190.244.130.205:2000
+2020-02-24T13:25:44.208-0300 INFO ThreadLeecher - Guardando parte 57.
+2020-02-24T13:25:44.245-0300 INFO ThreadLeecher - Parte 31: Descargada.
+2020-02-24T13:25:44.261-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 31 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:44.273-0300 INFO ThreadLeecher - 53,46% Descargado
+2020-02-24T13:25:44.279-0300 INFO ThreadLeecher - Descargando parte numero 49 de peer 190.244.130.205:2000
+2020-02-24T13:25:44.279-0300 INFO ThreadLeecher - Guardando parte 49.
+2020-02-24T13:25:44.295-0300 INFO ThreadLeecher - Parte 5: Descargada.
+2020-02-24T13:25:44.351-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 5 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:44.357-0300 INFO ThreadLeecher - 54,09% Descargado
+2020-02-24T13:25:44.362-0300 INFO ThreadLeecher - Descargando parte numero 141 de peer 190.244.130.205:2000
+2020-02-24T13:25:44.363-0300 INFO ThreadLeecher - Guardando parte 141.
+2020-02-24T13:25:44.709-0300 INFO ThreadLeecher - Parte 57: Descargada.
+2020-02-24T13:25:44.727-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 57 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:44.732-0300 INFO ThreadLeecher - 54,72% Descargado
+2020-02-24T13:25:44.753-0300 INFO ThreadLeecher - Descargando parte numero 8 de peer 190.244.130.205:2000
+2020-02-24T13:25:44.754-0300 INFO ThreadLeecher - Guardando parte 8.
+2020-02-24T13:25:45.010-0300 INFO ThreadLeecher - Parte 49: Descargada.
+2020-02-24T13:25:45.029-0300 INFO ThreadLeecher - Parte 141: Descargada.
+2020-02-24T13:25:45.030-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 49 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:45.044-0300 INFO ThreadLeecher - 55,35% Descargado
+2020-02-24T13:25:45.046-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 141 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:45.052-0300 INFO ThreadLeecher - Descargando parte numero 30 de peer 190.244.130.205:2000
+2020-02-24T13:25:45.052-0300 INFO ThreadLeecher - Guardando parte 30.
+2020-02-24T13:25:45.067-0300 INFO ThreadLeecher - 55,97% Descargado
+2020-02-24T13:25:45.073-0300 INFO ThreadLeecher - Descargando parte numero 22 de peer 190.244.130.205:2000
+2020-02-24T13:25:45.086-0300 INFO ThreadLeecher - Guardando parte 22.
+2020-02-24T13:25:45.108-0300 INFO ThreadLeecher - Parte 8: Descargada.
+2020-02-24T13:25:45.129-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 8 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:45.134-0300 INFO ThreadLeecher - 56,60% Descargado
+2020-02-24T13:25:45.137-0300 INFO ThreadLeecher - Descargando parte numero 21 de peer 190.244.130.205:2000
+2020-02-24T13:25:45.137-0300 INFO ThreadLeecher - Guardando parte 21.
+2020-02-24T13:25:45.573-0300 INFO ThreadLeecher - Parte 21: Descargada.
+2020-02-24T13:25:45.592-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 21 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:45.596-0300 INFO ThreadLeecher - 57,23% Descargado
+2020-02-24T13:25:45.601-0300 INFO ThreadLeecher - Descargando parte numero 90 de peer 190.244.130.205:2000
+2020-02-24T13:25:45.603-0300 INFO ThreadLeecher - Guardando parte 90.
+2020-02-24T13:25:45.645-0300 INFO ThreadLeecher - Parte 22: Descargada.
+2020-02-24T13:25:45.664-0300 INFO ThreadLeecher - Parte 30: Descargada.
+2020-02-24T13:25:45.686-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 30 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:45.691-0300 INFO ThreadLeecher - 57,86% Descargado
+2020-02-24T13:25:45.693-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 22 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:45.697-0300 INFO ThreadLeecher - Descargando parte numero 93 de peer 190.244.130.205:2000
+2020-02-24T13:25:45.698-0300 INFO ThreadLeecher - Guardando parte 93.
+2020-02-24T13:25:45.736-0300 INFO ThreadLeecher - 58,49% Descargado
+2020-02-24T13:25:45.745-0300 INFO ThreadLeecher - Descargando parte numero 50 de peer 190.244.130.205:2000
+2020-02-24T13:25:45.746-0300 INFO ThreadLeecher - Guardando parte 50.
+2020-02-24T13:25:46.119-0300 INFO ThreadLeecher - Parte 50: Descargada.
+2020-02-24T13:25:46.135-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 50 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:46.220-0300 INFO ThreadLeecher - 59,12% Descargado
+2020-02-24T13:25:46.221-0300 INFO ThreadLeecher - Descargando parte numero 14 de peer 190.244.130.205:2000
+2020-02-24T13:25:46.222-0300 INFO ThreadLeecher - Guardando parte 14.
+2020-02-24T13:25:46.333-0300 INFO ThreadLeecher - Parte 90: Descargada.
+2020-02-24T13:25:46.389-0300 INFO ThreadLeecher - Parte 93: Descargada.
+2020-02-24T13:25:46.405-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 90 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:46.411-0300 INFO ThreadLeecher - 59,75% Descargado
+2020-02-24T13:25:46.414-0300 INFO ThreadLeecher - Descargando parte numero 138 de peer 190.244.130.205:2000
+2020-02-24T13:25:46.417-0300 INFO ThreadLeecher - Guardando parte 138.
+2020-02-24T13:25:46.436-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 93 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:46.482-0300 INFO ThreadLeecher - 60,38% Descargado
+2020-02-24T13:25:46.486-0300 INFO ThreadLeecher - Descargando parte numero 155 de peer 190.244.130.205:2000
+2020-02-24T13:25:46.486-0300 INFO ThreadLeecher - Guardando parte 155.
+2020-02-24T13:25:46.529-0300 INFO ThreadLeecher - Parte 14: Descargada.
+2020-02-24T13:25:46.551-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 14 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:46.569-0300 INFO ThreadLeecher - 61,01% Descargado
+2020-02-24T13:25:46.580-0300 INFO ThreadLeecher - Descargando parte numero 25 de peer 190.244.130.205:2000
+2020-02-24T13:25:46.584-0300 INFO ThreadLeecher - Guardando parte 25.
+2020-02-24T13:25:46.882-0300 INFO ThreadLeecher - Parte 25: Descargada.
+2020-02-24T13:25:46.916-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 25 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:46.942-0300 INFO ThreadLeecher - 61,64% Descargado
+2020-02-24T13:25:46.949-0300 INFO ThreadLeecher - Descargando parte numero 18 de peer 190.244.130.205:2000
+2020-02-24T13:25:46.950-0300 INFO ThreadLeecher - Guardando parte 18.
+2020-02-24T13:25:47.062-0300 INFO ThreadLeecher - Parte 138: Descargada.
+2020-02-24T13:25:47.082-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 138 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:47.095-0300 INFO ThreadLeecher - 62,26% Descargado
+2020-02-24T13:25:47.098-0300 INFO ThreadLeecher - Descargando parte numero 1 de peer 190.244.130.205:2000
+2020-02-24T13:25:47.099-0300 INFO ThreadLeecher - Guardando parte 1.
+2020-02-24T13:25:47.462-0300 INFO ThreadLeecher - Parte 18: Descargada.
+2020-02-24T13:25:47.462-0300 INFO ThreadLeecher - Parte 155: Descargada.
+2020-02-24T13:25:47.498-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 18 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:47.502-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 155 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:47.509-0300 INFO ThreadLeecher - 63,52% Descargado
+2020-02-24T13:25:47.512-0300 INFO ThreadLeecher - Descargando parte numero 106 de peer 190.244.130.205:2000
+2020-02-24T13:25:47.516-0300 INFO ThreadLeecher - Guardando parte 106.
+2020-02-24T13:25:47.534-0300 INFO ThreadLeecher - 63,52% Descargado
+2020-02-24T13:25:47.537-0300 INFO ThreadLeecher - Descargando parte numero 38 de peer 190.244.130.205:2000
+2020-02-24T13:25:47.538-0300 INFO ThreadLeecher - Guardando parte 38.
+2020-02-24T13:25:47.962-0300 INFO ThreadLeecher - Parte 38: Descargada.
+2020-02-24T13:25:47.990-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 38 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:47.997-0300 INFO ThreadLeecher - 64,15% Descargado
+2020-02-24T13:25:48.008-0300 INFO ThreadLeecher - Descargando parte numero 144 de peer 190.244.130.205:2000
+2020-02-24T13:25:48.012-0300 INFO ThreadLeecher - Guardando parte 144.
+2020-02-24T13:25:48.049-0300 INFO ThreadLeecher - Parte 106: Descargada.
+2020-02-24T13:25:48.052-0300 INFO ThreadLeecher - Parte 1: Descargada.
+2020-02-24T13:25:48.064-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 106 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:48.069-0300 INFO ThreadLeecher - 64,78% Descargado
+2020-02-24T13:25:48.073-0300 INFO ThreadLeecher - Descargando parte numero 124 de peer 190.244.130.205:2000
+2020-02-24T13:25:48.073-0300 INFO ThreadLeecher - Guardando parte 124.
+2020-02-24T13:25:48.087-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 1 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:48.094-0300 INFO ThreadLeecher - 65,41% Descargado
+2020-02-24T13:25:48.097-0300 INFO ThreadLeecher - Descargando parte numero 108 de peer 190.244.130.205:2000
+2020-02-24T13:25:48.098-0300 INFO ThreadLeecher - Guardando parte 108.
+2020-02-24T13:25:48.846-0300 INFO ThreadLeecher - Parte 144: Descargada.
+2020-02-24T13:25:48.866-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 144 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:48.871-0300 INFO ThreadLeecher - Parte 124: Descargada.
+2020-02-24T13:25:48.872-0300 INFO ThreadLeecher - 66,04% Descargado
+2020-02-24T13:25:48.875-0300 INFO ThreadLeecher - Descargando parte numero 0 de peer 190.244.130.205:2000
+2020-02-24T13:25:48.875-0300 INFO ThreadLeecher - Guardando parte 0.
+2020-02-24T13:25:48.892-0300 ERROR No hay leechers disponibles (se estan usando los 3 del cliente). Espero 5 seg.
+2020-02-24T13:25:48.906-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 124 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:48.952-0300 INFO ThreadLeecher - Parte 108: Descargada.
+2020-02-24T13:25:48.979-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 108 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:48.979-0300 INFO ThreadLeecher - 66,67% Descargado
+2020-02-24T13:25:48.986-0300 INFO ThreadLeecher - Descargando parte numero 58 de peer 190.244.130.205:2000
+2020-02-24T13:25:48.987-0300 INFO ThreadLeecher - 67,30% Descargado
+2020-02-24T13:25:48.988-0300 INFO ThreadLeecher - Guardando parte 58.
+2020-02-24T13:25:49.010-0300 INFO ThreadLeecher - Descargando parte numero 94 de peer 190.244.130.205:2000
+2020-02-24T13:25:49.014-0300 INFO ThreadLeecher - Guardando parte 94.
+2020-02-24T13:25:49.153-0300 INFO ThreadLeecher - Parte 0: Descargada.
+2020-02-24T13:25:49.436-0300 INFO ThreadLeecher - Parte 58: Descargada.
+2020-02-24T13:25:49.468-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 58 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:49.472-0300 INFO ThreadLeecher - 67,92% Descargado
+2020-02-24T13:25:49.475-0300 INFO ThreadLeecher - Descargando parte numero 33 de peer 190.244.130.205:2000
+2020-02-24T13:25:49.476-0300 INFO ThreadLeecher - Guardando parte 33.
+2020-02-24T13:25:49.533-0300 INFO ThreadLeecher - Parte 94: Descargada.
+2020-02-24T13:25:49.548-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 94 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:49.551-0300 INFO ThreadLeecher - 68,55% Descargado
+2020-02-24T13:25:49.554-0300 INFO ThreadLeecher - Descargando parte numero 34 de peer 190.244.130.205:2000
+2020-02-24T13:25:49.555-0300 INFO ThreadLeecher - Guardando parte 34.
+2020-02-24T13:25:49.592-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 0 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:49.639-0300 INFO ThreadLeecher - 69,18% Descargado
+2020-02-24T13:25:49.645-0300 INFO ThreadLeecher - Descargando parte numero 153 de peer 190.244.130.205:2000
+2020-02-24T13:25:49.646-0300 INFO ThreadLeecher - Guardando parte 153.
+2020-02-24T13:25:49.822-0300 INFO ThreadLeecher - Parte 33: Descargada.
+2020-02-24T13:25:49.852-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 33 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:49.859-0300 INFO ThreadLeecher - 69,81% Descargado
+2020-02-24T13:25:49.867-0300 INFO ThreadLeecher - Descargando parte numero 146 de peer 190.244.130.205:2000
+2020-02-24T13:25:49.868-0300 INFO ThreadLeecher - Guardando parte 146.
+2020-02-24T13:25:49.950-0300 INFO ThreadLeecher - Parte 34: Descargada.
+2020-02-24T13:25:49.972-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 34 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:49.987-0300 INFO ThreadLeecher - 70,44% Descargado
+2020-02-24T13:25:49.993-0300 INFO ThreadLeecher - Descargando parte numero 128 de peer 190.244.130.205:2000
+2020-02-24T13:25:49.997-0300 INFO ThreadLeecher - Guardando parte 128.
+2020-02-24T13:25:50.266-0300 INFO ThreadLeecher - Parte 153: Descargada.
+2020-02-24T13:25:50.348-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 153 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:50.353-0300 INFO ThreadLeecher - 71,07% Descargado
+2020-02-24T13:25:50.358-0300 INFO ThreadLeecher - Descargando parte numero 51 de peer 190.244.130.205:2000
+2020-02-24T13:25:50.359-0300 INFO ThreadLeecher - Guardando parte 51.
+2020-02-24T13:25:50.612-0300 INFO ThreadLeecher - Parte 146: Descargada.
+2020-02-24T13:25:50.656-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 146 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:50.662-0300 INFO ThreadLeecher - 71,70% Descargado
+2020-02-24T13:25:50.665-0300 INFO ThreadLeecher - Descargando parte numero 113 de peer 190.244.130.205:2000
+2020-02-24T13:25:50.666-0300 INFO ThreadLeecher - Guardando parte 113.
+2020-02-24T13:25:50.755-0300 INFO ThreadLeecher - Parte 128: Descargada.
+2020-02-24T13:25:50.829-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 128 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:50.829-0300 INFO ThreadLeecher - Parte 51: Descargada.
+2020-02-24T13:25:50.849-0300 INFO ThreadLeecher - 72,33% Descargado
+2020-02-24T13:25:50.857-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 51 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:50.865-0300 INFO ThreadLeecher - 72,96% Descargado
+2020-02-24T13:25:50.867-0300 INFO ThreadLeecher - Descargando parte numero 131 de peer 190.244.130.205:2000
+2020-02-24T13:25:50.870-0300 INFO ThreadLeecher - Descargando parte numero 109 de peer 190.244.130.205:2000
+2020-02-24T13:25:50.870-0300 INFO ThreadLeecher - Guardando parte 109.
+2020-02-24T13:25:50.884-0300 INFO ThreadLeecher - Guardando parte 131.
+2020-02-24T13:25:51.169-0300 INFO ThreadLeecher - Parte 113: Descargada.
+2020-02-24T13:25:51.215-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 113 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:51.244-0300 INFO ThreadLeecher - 73,58% Descargado
+2020-02-24T13:25:51.247-0300 INFO ThreadLeecher - Descargando parte numero 32 de peer 190.244.130.205:2000
+2020-02-24T13:25:51.251-0300 INFO ThreadLeecher - Guardando parte 32.
+2020-02-24T13:25:51.474-0300 INFO ThreadLeecher - Parte 131: Descargada.
+2020-02-24T13:25:51.491-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 131 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:51.510-0300 INFO ThreadLeecher - 74,21% Descargado
+2020-02-24T13:25:51.520-0300 INFO ThreadLeecher - Descargando parte numero 52 de peer 190.244.130.205:2000
+2020-02-24T13:25:51.521-0300 INFO ThreadLeecher - Guardando parte 52.
+2020-02-24T13:25:51.651-0300 INFO ThreadLeecher - Parte 109: Descargada.
+2020-02-24T13:25:51.666-0300 INFO ThreadLeecher - Parte 32: Descargada.
+2020-02-24T13:25:51.679-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 109 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:51.699-0300 INFO ThreadLeecher - 74,84% Descargado
+2020-02-24T13:25:51.702-0300 INFO ThreadLeecher - Descargando parte numero 147 de peer 190.244.130.205:2000
+2020-02-24T13:25:51.707-0300 INFO ThreadLeecher - Guardando parte 147.
+2020-02-24T13:25:51.718-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 32 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:51.728-0300 INFO ThreadLeecher - 75,47% Descargado
+2020-02-24T13:25:51.731-0300 INFO ThreadLeecher - Descargando parte numero 27 de peer 190.244.130.205:2000
+2020-02-24T13:25:51.732-0300 INFO ThreadLeecher - Guardando parte 27.
+2020-02-24T13:25:51.903-0300 INFO ThreadLeecher - Parte 52: Descargada.
+2020-02-24T13:25:51.946-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 52 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:51.952-0300 INFO ThreadLeecher - 76,10% Descargado
+2020-02-24T13:25:51.956-0300 INFO ThreadLeecher - Descargando parte numero 134 de peer 190.244.130.205:2000
+2020-02-24T13:25:51.956-0300 INFO ThreadLeecher - Guardando parte 134.
+2020-02-24T13:25:52.049-0300 INFO ThreadLeecher - Parte 27: Descargada.
+2020-02-24T13:25:52.120-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 27 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:52.130-0300 INFO ThreadLeecher - 76,73% Descargado
+2020-02-24T13:25:52.190-0300 INFO ThreadLeecher - Descargando parte numero 40 de peer 190.244.130.205:2000
+2020-02-24T13:25:52.191-0300 INFO ThreadLeecher - Guardando parte 40.
+2020-02-24T13:25:52.204-0300 INFO ThreadLeecher - Parte 147: Descargada.
+2020-02-24T13:25:52.227-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 147 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:52.236-0300 INFO ThreadLeecher - 77,36% Descargado
+2020-02-24T13:25:52.249-0300 INFO ThreadLeecher - Descargando parte numero 87 de peer 190.244.130.205:2000
+2020-02-24T13:25:52.249-0300 INFO ThreadLeecher - Guardando parte 87.
+2020-02-24T13:25:52.640-0300 INFO ThreadLeecher - Parte 40: Descargada.
+2020-02-24T13:25:52.655-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 40 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:52.659-0300 INFO ThreadLeecher - 77,99% Descargado
+2020-02-24T13:25:52.664-0300 INFO ThreadLeecher - Descargando parte numero 123 de peer 190.244.130.205:2000
+2020-02-24T13:25:52.664-0300 INFO ThreadLeecher - Guardando parte 123.
+2020-02-24T13:25:52.822-0300 INFO ThreadLeecher - Parte 134: Descargada.
+2020-02-24T13:25:52.834-0300 INFO ThreadLeecher - Parte 87: Descargada.
+2020-02-24T13:25:52.874-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 134 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:52.880-0300 INFO ThreadLeecher - 78,62% Descargado
+2020-02-24T13:25:52.883-0300 INFO ThreadLeecher - Descargando parte numero 104 de peer 190.244.130.205:2000
+2020-02-24T13:25:52.884-0300 INFO ThreadLeecher - Guardando parte 104.
+2020-02-24T13:25:52.900-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 87 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:52.906-0300 INFO ThreadLeecher - 79,25% Descargado
+2020-02-24T13:25:52.929-0300 INFO ThreadLeecher - Descargando parte numero 42 de peer 190.244.130.205:2000
+2020-02-24T13:25:52.930-0300 INFO ThreadLeecher - Guardando parte 42.
+2020-02-24T13:25:53.363-0300 INFO ThreadLeecher - Parte 42: Descargada.
+2020-02-24T13:25:53.380-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 42 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:53.386-0300 INFO ThreadLeecher - 79,87% Descargado
+2020-02-24T13:25:53.388-0300 INFO ThreadLeecher - Descargando parte numero 10 de peer 190.244.130.205:2000
+2020-02-24T13:25:53.388-0300 INFO ThreadLeecher - Guardando parte 10.
+2020-02-24T13:25:53.457-0300 INFO ThreadLeecher - Parte 123: Descargada.
+2020-02-24T13:25:53.487-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 123 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:53.500-0300 INFO ThreadLeecher - 80,50% Descargado
+2020-02-24T13:25:53.514-0300 INFO ThreadLeecher - Descargando parte numero 16 de peer 190.244.130.205:2000
+2020-02-24T13:25:53.514-0300 INFO ThreadLeecher - Guardando parte 16.
+2020-02-24T13:25:53.559-0300 INFO ThreadLeecher - Parte 104: Descargada.
+2020-02-24T13:25:53.596-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 104 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:53.601-0300 INFO ThreadLeecher - 81,13% Descargado
+2020-02-24T13:25:53.607-0300 INFO ThreadLeecher - Descargando parte numero 136 de peer 190.244.130.205:2000
+2020-02-24T13:25:53.608-0300 INFO ThreadLeecher - Guardando parte 136.
+2020-02-24T13:25:53.715-0300 INFO ThreadLeecher - Parte 10: Descargada.
+2020-02-24T13:25:53.734-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 10 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:53.739-0300 INFO ThreadLeecher - 81,76% Descargado
+2020-02-24T13:25:53.759-0300 INFO ThreadLeecher - Descargando parte numero 39 de peer 190.244.130.205:2000
+2020-02-24T13:25:53.763-0300 INFO ThreadLeecher - Guardando parte 39.
+2020-02-24T13:25:53.824-0300 INFO ThreadLeecher - Parte 16: Descargada.
+2020-02-24T13:25:53.869-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 16 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:53.875-0300 INFO ThreadLeecher - 82,39% Descargado
+2020-02-24T13:25:53.880-0300 INFO ThreadLeecher - Descargando parte numero 122 de peer 190.244.130.205:2000
+2020-02-24T13:25:53.881-0300 INFO ThreadLeecher - Guardando parte 122.
+2020-02-24T13:25:53.950-0300 ERROR No hay leechers disponibles (se estan usando los 3 del cliente). Espero 5 seg.
+2020-02-24T13:25:54.171-0300 INFO ThreadLeecher - Parte 39: Descargada.
+2020-02-24T13:25:54.191-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 39 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:54.202-0300 INFO ThreadLeecher - 83,02% Descargado
+2020-02-24T13:25:54.226-0300 INFO ThreadLeecher - Descargando parte numero 63 de peer 190.244.130.205:2000
+2020-02-24T13:25:54.227-0300 INFO ThreadLeecher - Guardando parte 63.
+2020-02-24T13:25:54.372-0300 INFO ThreadLeecher - Parte 136: Descargada.
+2020-02-24T13:25:54.392-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 136 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:54.404-0300 INFO ThreadLeecher - 83,65% Descargado
+2020-02-24T13:25:54.408-0300 INFO ThreadLeecher - Descargando parte numero 129 de peer 190.244.130.205:2000
+2020-02-24T13:25:54.409-0300 INFO ThreadLeecher - Guardando parte 129.
+2020-02-24T13:25:54.443-0300 INFO ThreadLeecher - Parte 122: Descargada.
+2020-02-24T13:25:54.458-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 122 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:54.498-0300 INFO ThreadLeecher - 84,28% Descargado
+2020-02-24T13:25:54.519-0300 INFO ThreadLeecher - Descargando parte numero 35 de peer 190.244.130.205:2000
+2020-02-24T13:25:54.520-0300 INFO ThreadLeecher - Guardando parte 35.
+2020-02-24T13:25:54.643-0300 INFO ThreadLeecher - Parte 63: Descargada.
+2020-02-24T13:25:54.661-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 63 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:54.668-0300 INFO ThreadLeecher - 84,91% Descargado
+2020-02-24T13:25:54.674-0300 INFO ThreadLeecher - Descargando parte numero 110 de peer 190.244.130.205:2000
+2020-02-24T13:25:54.678-0300 INFO ThreadLeecher - Guardando parte 110.
+2020-02-24T13:25:55.010-0300 INFO ThreadLeecher - Parte 35: Descargada.
+2020-02-24T13:25:55.073-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 35 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:55.078-0300 INFO ThreadLeecher - 85,53% Descargado
+2020-02-24T13:25:55.082-0300 INFO ThreadLeecher - Descargando parte numero 24 de peer 190.244.130.205:2000
+2020-02-24T13:25:55.082-0300 INFO ThreadLeecher - Guardando parte 24.
+2020-02-24T13:25:55.235-0300 INFO ThreadLeecher - Parte 129: Descargada.
+2020-02-24T13:25:55.269-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 129 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:55.274-0300 INFO ThreadLeecher - 86,16% Descargado
+2020-02-24T13:25:55.278-0300 INFO ThreadLeecher - Parte 110: Descargada.
+2020-02-24T13:25:55.278-0300 INFO ThreadLeecher - Descargando parte numero 72 de peer 190.244.130.205:2000
+2020-02-24T13:25:55.278-0300 INFO ThreadLeecher - Guardando parte 72.
+2020-02-24T13:25:55.298-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 110 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:55.314-0300 INFO ThreadLeecher - 86,79% Descargado
+2020-02-24T13:25:55.318-0300 INFO ThreadLeecher - Descargando parte numero 64 de peer 190.244.130.205:2000
+2020-02-24T13:25:55.319-0300 INFO ThreadLeecher - Guardando parte 64.
+2020-02-24T13:25:55.412-0300 INFO ThreadLeecher - Parte 24: Descargada.
+2020-02-24T13:25:55.427-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 24 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:55.433-0300 INFO ThreadLeecher - 87,42% Descargado
+2020-02-24T13:25:55.436-0300 INFO ThreadLeecher - Descargando parte numero 85 de peer 190.244.130.205:2000
+2020-02-24T13:25:55.437-0300 INFO ThreadLeecher - Guardando parte 85.
+2020-02-24T13:25:55.955-0300 INFO ThreadLeecher - Parte 72: Descargada.
+2020-02-24T13:25:55.997-0300 INFO ThreadLeecher - Parte 64: Descargada.
+2020-02-24T13:25:56.012-0300 INFO ThreadLeecher - Parte 85: Descargada.
+2020-02-24T13:25:56.064-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 72 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:56.068-0300 INFO ThreadLeecher - 88,05% Descargado
+2020-02-24T13:25:56.070-0300 INFO ThreadLeecher - Descargando parte numero 71 de peer 190.244.130.205:2000
+2020-02-24T13:25:56.070-0300 INFO ThreadLeecher - Guardando parte 71.
+2020-02-24T13:25:56.080-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 64 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:56.086-0300 INFO ThreadLeecher - 88,68% Descargado
+2020-02-24T13:25:56.089-0300 INFO ThreadLeecher - Descargando parte numero 119 de peer 190.244.130.205:2000
+2020-02-24T13:25:56.090-0300 INFO ThreadLeecher - Guardando parte 119.
+2020-02-24T13:25:56.094-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 85 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:56.100-0300 INFO ThreadLeecher - 89,31% Descargado
+2020-02-24T13:25:56.103-0300 INFO ThreadLeecher - Descargando parte numero 97 de peer 190.244.130.205:2000
+2020-02-24T13:25:56.104-0300 INFO ThreadLeecher - Guardando parte 97.
+2020-02-24T13:25:56.810-0300 INFO ThreadLeecher - Parte 97: Descargada.
+2020-02-24T13:25:56.827-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 97 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:56.832-0300 INFO ThreadLeecher - 89,94% Descargado
+2020-02-24T13:25:56.834-0300 INFO ThreadLeecher - Descargando parte numero 99 de peer 190.244.130.205:2000
+2020-02-24T13:25:56.838-0300 INFO ThreadLeecher - Guardando parte 99.
+2020-02-24T13:25:56.862-0300 INFO ThreadLeecher - Parte 119: Descargada.
+2020-02-24T13:25:56.880-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 119 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:56.885-0300 INFO ThreadLeecher - 90,57% Descargado
+2020-02-24T13:25:56.888-0300 INFO ThreadLeecher - Parte 71: Descargada.
+2020-02-24T13:25:56.889-0300 INFO ThreadLeecher - Descargando parte numero 20 de peer 190.244.130.205:2000
+2020-02-24T13:25:56.889-0300 INFO ThreadLeecher - Guardando parte 20.
+2020-02-24T13:25:56.925-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 71 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:56.931-0300 INFO ThreadLeecher - 91,19% Descargado
+2020-02-24T13:25:56.934-0300 INFO ThreadLeecher - Descargando parte numero 126 de peer 190.244.130.205:2000
+2020-02-24T13:25:56.934-0300 INFO ThreadLeecher - Guardando parte 126.
+2020-02-24T13:25:57.469-0300 INFO ThreadLeecher - Parte 99: Descargada.
+2020-02-24T13:25:57.489-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 99 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:57.495-0300 INFO ThreadLeecher - 91,82% Descargado
+2020-02-24T13:25:57.500-0300 INFO ThreadLeecher - Descargando parte numero 143 de peer 190.244.130.205:2000
+2020-02-24T13:25:57.500-0300 INFO ThreadLeecher - Guardando parte 143.
+2020-02-24T13:25:57.514-0300 INFO ThreadLeecher - Parte 20: Descargada.
+2020-02-24T13:25:57.534-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 20 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:57.539-0300 INFO ThreadLeecher - 92,45% Descargado
+2020-02-24T13:25:57.545-0300 INFO ThreadLeecher - Descargando parte numero 83 de peer 190.244.130.205:2000
+2020-02-24T13:25:57.545-0300 INFO ThreadLeecher - Guardando parte 83.
+2020-02-24T13:25:57.609-0300 INFO ThreadLeecher - Parte 126: Descargada.
+2020-02-24T13:25:57.629-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 126 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:57.634-0300 INFO ThreadLeecher - 93,08% Descargado
+2020-02-24T13:25:57.637-0300 INFO ThreadLeecher - Descargando parte numero 11 de peer 190.244.130.205:2000
+2020-02-24T13:25:57.656-0300 INFO ThreadLeecher - Guardando parte 11.
+2020-02-24T13:25:57.932-0300 INFO ThreadLeecher - Parte 11: Descargada.
+2020-02-24T13:25:57.949-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 11 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:57.955-0300 INFO ThreadLeecher - 93,71% Descargado
+2020-02-24T13:25:57.972-0300 INFO ThreadLeecher - Descargando parte numero 43 de peer 190.244.130.205:2000
+2020-02-24T13:25:57.973-0300 INFO ThreadLeecher - Guardando parte 43.
+2020-02-24T13:25:58.212-0300 INFO ThreadLeecher - Parte 143: Descargada.
+2020-02-24T13:25:58.228-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 143 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:58.233-0300 INFO ThreadLeecher - 94,34% Descargado
+2020-02-24T13:25:58.237-0300 INFO ThreadLeecher - Descargando parte numero 75 de peer 190.244.130.205:2000
+2020-02-24T13:25:58.238-0300 INFO ThreadLeecher - Guardando parte 75.
+2020-02-24T13:25:58.319-0300 INFO ThreadLeecher - Parte 83: Descargada.
+2020-02-24T13:25:58.346-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 83 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:58.351-0300 INFO ThreadLeecher - 94,97% Descargado
+2020-02-24T13:25:58.353-0300 INFO ThreadLeecher - Descargando parte numero 92 de peer 190.244.130.205:2000
+2020-02-24T13:25:58.353-0300 INFO ThreadLeecher - Guardando parte 92.
+2020-02-24T13:25:58.402-0300 INFO ThreadLeecher - Parte 43: Descargada.
+2020-02-24T13:25:58.430-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 43 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:58.435-0300 INFO ThreadLeecher - 95,60% Descargado
+2020-02-24T13:25:58.438-0300 INFO ThreadLeecher - Descargando parte numero 67 de peer 190.244.130.205:2000
+2020-02-24T13:25:58.439-0300 INFO ThreadLeecher - Guardando parte 67.
+2020-02-24T13:25:58.951-0300 ERROR No hay leechers disponibles (se estan usando los 3 del cliente). Espero 5 seg.
+2020-02-24T13:25:59.058-0300 INFO ThreadLeecher - Parte 75: Descargada.
+2020-02-24T13:25:59.073-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 75 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:59.078-0300 INFO ThreadLeecher - 96,23% Descargado
+2020-02-24T13:25:59.080-0300 INFO ThreadLeecher - Descargando parte numero 133 de peer 190.244.130.205:2000
+2020-02-24T13:25:59.084-0300 INFO ThreadLeecher - Guardando parte 133.
+2020-02-24T13:25:59.104-0300 INFO ThreadLeecher - Parte 67: Descargada.
+2020-02-24T13:25:59.122-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 67 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:59.141-0300 INFO ThreadLeecher - Parte 92: Descargada.
+2020-02-24T13:25:59.156-0300 INFO ThreadLeecher - 96,86% Descargado
+2020-02-24T13:25:59.161-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 92 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:59.166-0300 INFO ThreadLeecher - 97,48% Descargado
+2020-02-24T13:25:59.170-0300 INFO ThreadLeecher - Descargando parte numero 44 de peer 190.244.130.205:2000
+2020-02-24T13:25:59.172-0300 INFO ThreadLeecher - Guardando parte 44.
+2020-02-24T13:25:59.198-0300 INFO ThreadLeecher - Descargando parte numero 41 de peer 190.244.130.205:2000
+2020-02-24T13:25:59.199-0300 INFO ThreadLeecher - Guardando parte 41.
+2020-02-24T13:25:59.736-0300 INFO ThreadLeecher - Parte 44: Descargada.
+2020-02-24T13:25:59.739-0300 INFO ThreadLeecher - Parte 41: Descargada.
+2020-02-24T13:25:59.755-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 44 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:59.759-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 41 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:59.761-0300 INFO ThreadLeecher - 98,74% Descargado
+2020-02-24T13:25:59.766-0300 INFO ThreadLeecher - Descargando parte numero 130 de peer 190.244.130.205:2000
+2020-02-24T13:25:59.766-0300 INFO ThreadLeecher - 98,74% Descargado
+2020-02-24T13:25:59.766-0300 INFO ThreadLeecher - Guardando parte 130.
+2020-02-24T13:25:59.784-0300 INFO ThreadLeecher - Parte 133: Descargada.
+2020-02-24T13:25:59.809-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 133 descargada de peer 190.244.130.205:2000
+2020-02-24T13:25:59.813-0300 INFO ThreadLeecher - 99,37% Descargado
+2020-02-24T13:25:59.839-0300 INFO ThreadLeecher - peer 190.244.130.205:2000 No posee ninguna parte que nos falte descargar.
+2020-02-24T13:25:59.843-0300 INFO ThreadLeecher - peer 190.244.130.205:2000 No posee ninguna parte que nos falte descargar.
+2020-02-24T13:25:59.848-0300 ERROR ThreadCliente - Retiro peer de swarm permanentemente (190.244.130.205:2000)
+2020-02-24T13:25:59.848-0300 INFO ThreadLeecher - LOADDOWN peer 190.244.130.205:2000
+2020-02-24T13:25:59.848-0300 ERROR ThreadCliente - Retiro peer de swarm permanentemente (190.244.130.205:2000)
+2020-02-24T13:25:59.849-0300 INFO ThreadLeecher - LOADDOWN peer 190.244.130.205:2000
+2020-02-24T13:26:00.288-0300 INFO ThreadLeecher - Parte 130: Descargada.
+2020-02-24T13:26:00.308-0300 INFO jdk-12.0.2_windows-x64_bin.exe - ThreadLeecher - Parte numero 130 descargada de peer 190.244.130.205:2000
+2020-02-24T13:26:00.311-0300 INFO ThreadLeecher - 100,00% Descargado
+2020-02-24T13:26:00.313-0300 INFO ThreadLeecher - LOADDOWN peer 190.244.130.205:2000
+2020-02-24T13:26:04.732-0300 INFO Velocidad de descarga promedio: 11,04 Mbps
+2020-02-24T13:26:04.928-0300 INFO Tiempo minimo para descargar parte: 00:00:00.267
+2020-02-24T13:26:04.929-0300 INFO Tiempo maximo para descargar parte: 00:00:01.930
+2020-02-24T13:26:04.929-0300 INFO Tiempo promedio por parte: 00:00:00.723
+2020-02-24T13:26:04.929-0300 INFO Desvio estandar: 00:00:00.313
+2020-02-24T13:26:04.931-0300 INFO Descarga finalizada. Tiempo total: 00:00:50.956

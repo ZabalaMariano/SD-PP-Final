@@ -69,9 +69,17 @@
                   <Insets bottom="15.0" />
                </VBox.margin>
             </Button>
+            <Button alignment="CENTER" minHeight="50.0" minWidth="200.0" mnemonicParsing="false" onAction="#cambiarNroThreads" text="Nro. Threads" textAlignment="CENTER">
+               <VBox.margin>
+                  <Insets bottom="15.0" />
+               </VBox.margin>
+               <tooltip>
+                  <Tooltip text="Si su PC se ralentiza, disminuir el número de threads" />
+               </tooltip>
+            </Button>
             <Button fx:id="btnSalir" alignment="CENTER" minHeight="50.0" minWidth="200.0" mnemonicParsing="false" onAction="#salir" text="Salir" textAlignment="CENTER">
                <VBox.margin>
-                  <Insets top="115.0" />
+                  <Insets top="85.0" />
                </VBox.margin>
             </Button>
          </children>

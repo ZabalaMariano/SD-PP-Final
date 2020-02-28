@@ -1,0 +1,344 @@
+2020-02-24T13:25:18.072-0300 INFO Conexion establecida con cliente: (190.244.130.205:15927)
+2020-02-24T13:25:18.080-0300 INFO Recibi mensaje CHECK AVAILABLE
+2020-02-24T13:25:18.087-0300 INFO Respondi a mensaje CHECK AVAILABLE con ACK
+2020-02-24T13:25:18.147-0300 INFO Recibi mensaje PIECES_AVAILABLE_CLOSE
+2020-02-24T13:25:18.147-0300 INFO Nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exePartes.json
+2020-02-24T13:25:18.212-0300 INFO Conexion establecida con cliente: (190.244.130.205:15960)
+2020-02-24T13:25:18.268-0300 INFO Recibi mensaje CHECK AVAILABLE
+2020-02-24T13:25:18.271-0300 INFO Respondi a mensaje CHECK AVAILABLE con ACK
+2020-02-24T13:25:18.330-0300 INFO Recibi mensaje PIECES_AVAILABLE
+2020-02-24T13:25:18.330-0300 INFO Nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exePartes.json
+2020-02-24T13:25:18.403-0300 INFO Conexion establecida con cliente: (190.244.130.205:15964)
+2020-02-24T13:25:18.451-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:18.474-0300 INFO Recibi mensaje CHECK AVAILABLE
+2020-02-24T13:25:18.479-0300 INFO Respondi a mensaje CHECK AVAILABLE con ACK
+2020-02-24T13:25:18.542-0300 INFO Recibi mensaje PIECES_AVAILABLE
+2020-02-24T13:25:18.543-0300 INFO Nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exePartes.json
+2020-02-24T13:25:18.566-0300 INFO Conexion establecida con cliente: (190.244.130.205:15966)
+2020-02-24T13:25:18.588-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:18.665-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:18.668-0300 INFO Recibi mensaje CHECK AVAILABLE
+2020-02-24T13:25:18.670-0300 INFO Respondi a mensaje CHECK AVAILABLE con ACK
+2020-02-24T13:25:18.767-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:18.770-0300 INFO Recibi mensaje PIECES_AVAILABLE
+2020-02-24T13:25:18.771-0300 INFO Nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exePartes.json
+2020-02-24T13:25:18.899-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:19.037-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:19.830-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:19.932-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:20.116-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:20.122-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:20.232-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:20.324-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:20.674-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:20.780-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:21.142-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:21.292-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:21.721-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:21.846-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:22.451-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:22.554-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:22.664-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:22.766-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:23.016-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:23.172-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:23.214-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:23.285-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:23.290-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:23.324-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:23.710-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:23.721-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:23.811-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:23.912-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:24.158-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:24.268-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:24.877-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:25.047-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:25.047-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:25.215-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:25.301-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:25.326-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:25.908-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:26.127-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:26.149-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:26.345-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:26.348-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:26.453-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:26.716-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:26.825-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:27.427-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:27.596-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:27.599-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:27.737-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:27.833-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:28.026-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:28.603-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:28.786-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:28.791-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:28.792-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:28.906-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:28.996-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:29.331-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:29.431-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:29.590-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:29.592-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:29.691-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:29.734-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:29.973-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:30.099-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:30.419-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:30.537-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:30.537-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:30.631-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:30.785-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:30.804-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:31.533-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:31.614-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:31.640-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:31.737-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:32.128-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:32.253-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:32.603-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:32.758-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:32.831-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:32.956-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:33.066-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:33.178-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:33.878-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:34.001-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:34.109-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:34.133-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:34.246-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:34.347-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:34.574-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:34.674-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:35.188-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:35.290-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:35.319-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:35.329-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:35.429-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:35.432-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:35.711-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:35.812-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:36.324-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:36.348-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:36.426-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:36.428-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:36.453-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:36.528-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:37.051-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:37.107-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:37.173-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:37.212-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:37.248-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:37.349-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:37.593-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:37.594-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:37.695-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:37.695-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:37.833-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:37.934-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:38.074-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:38.175-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:38.293-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:38.398-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:38.416-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:38.485-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:38.519-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:38.586-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:38.845-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:38.946-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:39.067-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:39.180-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:39.193-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:39.281-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:39.291-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:39.392-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:39.827-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:39.927-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:40.052-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:40.062-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:40.153-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:40.164-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:40.458-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:40.559-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:40.643-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:40.710-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:40.744-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:40.811-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:41.408-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:41.510-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:41.548-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:41.571-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:41.650-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:41.687-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:42.010-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:42.110-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:42.250-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:42.312-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:42.350-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:42.413-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:42.976-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:43.035-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:43.077-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:43.136-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:43.279-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:43.380-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:43.539-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:43.643-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:43.665-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:43.744-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:43.768-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:43.869-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:44.206-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:44.281-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:44.335-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:44.364-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:44.394-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:44.465-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:44.769-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:44.870-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:45.058-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:45.078-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:45.139-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:45.159-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:45.195-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:45.240-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:45.613-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:45.699-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:45.713-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:45.748-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:45.800-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:45.849-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:46.236-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:46.336-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:46.432-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:46.500-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:46.533-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:46.583-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:46.601-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:46.685-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:46.960-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:47.062-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:47.124-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:47.226-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:47.518-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:47.540-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:47.619-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:47.641-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:48.025-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:48.075-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:48.099-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:48.126-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:48.176-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:48.200-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:48.883-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:48.983-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:49.000-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:49.014-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:49.101-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:49.123-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:49.477-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:49.559-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:49.578-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:49.660-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:49.663-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:49.763-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:49.875-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:49.976-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:49.997-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:50.098-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:50.361-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:50.462-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:50.685-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:50.786-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:50.870-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:50.872-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:50.971-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:50.973-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:51.253-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:51.355-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:51.533-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:51.633-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:51.707-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:51.733-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:51.808-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:51.834-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:51.964-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:52.064-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:52.199-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:52.251-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:52.302-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:52.351-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:52.682-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:52.782-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:52.885-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:52.931-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:52.987-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:53.033-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:53.404-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:53.504-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:53.521-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:53.621-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:53.623-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:53.722-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:53.774-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:53.875-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:53.882-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:53.983-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:54.250-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:54.351-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:54.421-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:54.522-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:54.528-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:54.628-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:54.678-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:54.780-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:55.106-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:55.207-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:55.297-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:55.336-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:55.398-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:55.437-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:55.439-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:55.540-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:56.072-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:56.091-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:56.106-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:56.172-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:56.199-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:56.206-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:56.848-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:56.891-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:56.936-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:56.948-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:56.992-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:57.037-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:57.518-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:57.554-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:57.618-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:57.640-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:57.662-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:57.751-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:57.978-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:58.078-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:58.259-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:58.361-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:58.363-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:58.440-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:58.462-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:58.541-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:59.094-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:59.174-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:59.201-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:59.211-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:59.278-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:59.302-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:25:59.770-0300 INFO Recibi mensaje GET_PIECE
+2020-02-24T13:25:59.850-0300 INFO Recibi mensaje LOADDOWN
+2020-02-24T13:25:59.851-0300 INFO Recibi mensaje LOADDOWN
+2020-02-24T13:25:59.870-0300 INFO m.pathAParte: nombre del archivo buscado en peer servidor:C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\archivos/jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T13:26:00.315-0300 INFO Recibi mensaje LOADDOWN
+2020-02-24T13:32:18.217-0300 ERROR Fallo al crear ConexionTCP con socket cliente en servidor
+2020-02-24T13:32:18.230-0300 INFO Conexion establecida con cliente: (localhost:52117)
+2020-02-24T13:32:18.232-0300 INFO Servidor cerrado

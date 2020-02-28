@@ -19,7 +19,7 @@ public class MainTracker {
 		Scanner scanner = new Scanner(System.in);
 		
 		//Path donde guardar JSON creados y descargados
-    	System.out.print("Ingrese el path donde se guardarán los META-Archivos publicados por peers: ");
+    	System.out.print("Ingrese el path donde se guardaran los META-Archivos publicados por peers: ");
 		
 		String path = "";
 		File sharedPath;
@@ -32,9 +32,9 @@ public class MainTracker {
 	    		if(sharedPath.isDirectory())
 	    			pathCorrecto = true;
 	    		else
-	    			System.err.println("El path es inválido, debe elegir una carpeta. Pruebe nuevamente:");
+	    			System.err.println("El path es invalido, debe elegir una carpeta. Pruebe nuevamente:");
 	    	}catch(NumberFormatException  e){
-	    		System.err.println("El path es inválido, debe elegir una carpeta. Pruebe nuevamente:");
+	    		System.err.println("El path es invalido, debe elegir una carpeta. Pruebe nuevamente:");
 	    	}
     	}while(!pathCorrecto);
 		
@@ -72,7 +72,7 @@ public class MainTracker {
 		}
 		logger = LogManager.getLogger(Tracker.class.getName());
 		logger.info("Tracker "+idTracker+" iniciado");
-    	logger.info("Path donde se guardarán los META-Archivos: "+path);
+    	logger.info("Path donde se guardaran los META-Archivos: "+path);
 		
 		Tracker mp = new Tracker(idInt, path, kg.publicKey, kg.privateKey, logger);
 	}

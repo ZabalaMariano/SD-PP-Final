@@ -345,7 +345,7 @@ public class Tracker {
 				t.start(); //inicio el thread
 			}
 			
-			logger.info("ME REGISTRÉ Y ACTUALICÉ CON EXITO");
+			logger.info("ME REGISTRE Y ACTUALICE CON EXITO");
 		}else { //Si se recibe otro mensaje de respuesta, cierro la conexión
 			logger.error("NO PUDE REGISTRARME");
 		}
@@ -495,7 +495,7 @@ public class Tracker {
 		      
 		        return true;
 		    }catch(IOException ex) {
-		    	logger.error("Falló guardar JSON.");
+		    	logger.error("Fallo guardar JSON.");
 		    	ex.printStackTrace();
 		    	return false;
 		    }
@@ -554,7 +554,7 @@ public class Tracker {
 	public void getNuevoPrimario() throws Exception {
 		synchronized(this) {
 			this.pingTrackers(null); //Actualizo mi lista de trackers (si alguno no contesta lo elimino de la lista)
-			logger.info("Se cayó el Tracker Primario... Buscando su reemplazo...");
+			logger.info("Se cayo el Tracker Primario... Buscando su reemplazo...");
 			this.elegirNuevoPrimario(); //Se selecciona el nuevo tracker primario
 		}
 	}
@@ -575,7 +575,6 @@ public class Tracker {
 		TrackerInfo yo = new TrackerInfo(this.getId(),this.getIp(),this.getPort());
 		if (idMenor == this.getId()) { //Si soy el más pequeño de la lista, me defino como primario y aviso a todos que soy el nuevo primario
 			this.setTrackerPrimario(yo); //Me defino como primario
-			logger.info("Llamo informarSoyPrimario línea 598");
 			this.informarSoyPrimario(yo); //informo a los demás trackers que soy el nuevo primario
 			this.replicar(null); //Replico mi información a los demás trackers activos
 			
@@ -686,7 +685,7 @@ public class Tracker {
 			while (true) {
 				//Quedamos a la espera de conexiones por algún peer o tracker
 				Socket socketConexion = socketTracker.accept();
-				logger.info("Conexión establecida con: ("+socketConexion.getInetAddress().getCanonicalHostName()+":"+socketConexion.getPort()+")");
+				logger.info("Conexion establecida con: ("+socketConexion.getInetAddress().getCanonicalHostName()+":"+socketConexion.getPort()+")");
 				ThreadTracker tt = new ThreadTracker(socketConexion, this);
 				Thread t = new Thread (tt); //Atiendo la petición en un nuevo thread
 				t.start(); //inicio el thread	

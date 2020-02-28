@@ -1,0 +1,29 @@
+2020-02-24T11:47:14.725-0300 INFO Tracker 0 iniciado
+2020-02-24T11:47:14.726-0300 INFO Path donde se guardarán los META-Archivos: C:\Users\Mariano Zabala\workspace\Git-SDyPP-Final\Git-SDyPP-Final\Jars\jsons tracker
+2020-02-24T11:47:16.876-0300 INFO id primario: 0, Mi id: 0
+2020-02-24T11:47:16.876-0300 INFO Mi ID es: 0
+Mi IP es: localhost
+Mi PUERTO es: 7000
+Mi Tracker Primario es: 0, (localhost:7000)
+2020-02-24T11:47:16.876-0300 INFO Mi lista de trackers es: 
+- 0, (localhost:7000)
+2020-02-24T12:48:18.476-0300 INFO Conexión establecida con: (localhost:52070)
+2020-02-24T12:48:19.944-0300 INFO Conexión establecida con: (localhost:52071)
+2020-02-24T12:48:19.985-0300 INFO Envié ACK desde tracker para indicar que está listo para recibir el json del cliente
+2020-02-24T12:48:19.989-0300 INFO guardarArchivoBuffer tracker secundario
+2020-02-24T12:48:20.089-0300 INFO Tracker-->guardarArchivoBuffer: byteread al recibir JSON: 10656
+2020-02-24T12:48:21.005-0300 INFO Nuevo archivo: jdk-12.0.2_windows-x64_bin.exe
+2020-02-24T12:48:21.402-0300 INFO Nuevo Seed: (190.244.130.205:2000)
+2020-02-24T12:59:12.415-0300 INFO Conexión establecida con: (localhost:52077)
+2020-02-24T12:59:12.790-0300 INFO Consulta archivos ofrecidos por: (190.244.130.205:2000)
+2020-02-24T13:04:36.151-0300 INFO Conexión establecida con: (localhost:52090)
+2020-02-24T13:04:36.904-0300 INFO Consulta archivos por nombre
+2020-02-24T13:04:47.161-0300 INFO Conexión establecida con: (localhost:52091)
+2020-02-24T13:04:47.278-0300 INFO enviarArchivoBuffer desde primario
+2020-02-24T13:25:12.251-0300 INFO Conexión establecida con: (localhost:52106)
+2020-02-24T13:25:12.621-0300 INFO Nuevo Leecher: (190.244.130.205:2001)
+2020-02-24T13:25:12.943-0300 INFO Consulta por Swarm
+2020-02-24T13:25:13.001-0300 INFO Conexión establecida con: (localhost:52107)
+2020-02-24T13:25:13.441-0300 INFO Consulta por Swarm
+2020-02-24T13:26:04.735-0300 INFO Conexión establecida con: (localhost:52112)
+2020-02-24T13:26:05.240-0300 INFO Nuevo Seed: (190.244.130.205:2001)

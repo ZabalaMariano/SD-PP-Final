@@ -1,4 +1,4 @@
-	package TP_Final_SDyPP.Peer;
+package TP_Final_SDyPP.Peer;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -51,6 +51,7 @@ public class ThreadCliente implements Runnable {
 	private Integer[] misPartes;
 	private int leechersUtilizados = 0;//Cantidad de leechers utilizados por el threadCliente (del total que posee el cliente)
 	private boolean threadClienteSinLeecher;
+	private PartesDisponibles partesDisponibles;
 	public Logger logger;
 	
 	private ConexionTCP conexionTCP = null;
@@ -199,6 +200,7 @@ public class ThreadCliente implements Runnable {
 		this.descargaPendienteFileName = descargaPendienteFileName;
 		this.descargado = descargado;
 		this.logger = this.cliente.logger;
+		this.partesDisponibles = new PartesDisponibles(this);
 	}
 	
 	public enum TipoError{
@@ -206,14 +208,14 @@ public class ThreadCliente implements Runnable {
 		TIEMPO,
 		HASH
 	}
-	
-	public void getNewSwarm() {
-		PartesDisponibles tpd = new PartesDisponibles(this);
-		tpd.start();
-	}
 
 	@Override
-	public void run() {
+	public void run() {		
+		//Si cambiamos NroThreads desde GUI dejar de modificar leechersDisponibles
+		if(this.cliente.getLeechersDisponibles() > this.cliente.getNroThreads()) {
+			this.cliente.setLeechersDisponibles(this.cliente.getNroThreads());
+		}
+		
 		boolean exito = this.getPartesPendientes();
 		long startTime = System.currentTimeMillis();
 		
@@ -222,8 +224,11 @@ public class ThreadCliente implements Runnable {
 			logger.info(log);
 			System.out.println(log);
 			
-			//Inicio thread que pide swarm
-			this.getNewSwarm();
+			//Consulto % del archivo disponible en swarm
+			this.partesDisponibles.getPorcentajeDisponible();
+			
+			//Para no repetir mensaje
+			boolean mostreMensajeNoHayLeechers = false;
 			
 			//Mientras falte recuperar partes del archivo y no se haya pausado la descarga
 			while(!this.getStop() && this.getPartesArchivo().size()>0) {
@@ -234,6 +239,8 @@ public class ThreadCliente implements Runnable {
 				if((!threadClienteSinLeecher || this.leechersUtilizados==0) && this.cliente.getLeechersDisponibles()>0) {
 					//Si no hay otro threadCliente que necesite leechers y hay leechers disponibles --> creo leecher
 					//Si no tengo leechers y hay leechers disponibles --> creo leecher
+					mostreMensajeNoHayLeechers = false;
+					
 					synchronized(this.cliente.getLockLeechersDisponibles()) {
 						this.cliente.reducirLeechersDisponibles();
 						this.aumentarCantidadLeechersUtilizados();
@@ -267,18 +274,22 @@ public class ThreadCliente implements Runnable {
 							this.cliente.aumentarLeechersDisponibles();
 							this.decrementarCantidadLeechersUtilizados();
 						}
-						this.actualizarPeersDisponibles();			
+						if(!this.getStop())
+							this.actualizarPeersDisponibles();			
 					}	
 				} else {//No hay leechers disponibles o existen otros ThreadClientes sin leechers que 
 						//necesitan uno y yo ya tengo al menos 1
-					try {
-						log = "No hay leechers disponibles (se estan usando los 3 del cliente). Espero 5 seg.";
-						logger.error(log);
-						System.out.println(log);
-
-						Thread.sleep(5000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+					if(!mostreMensajeNoHayLeechers) {
+						mostreMensajeNoHayLeechers = true;
+						try {
+							log = "No hay leechers disponibles, se estan usando todos ("+this.cliente.getNroThreads()+").";
+							logger.error(log);
+							System.out.println(log);
+	
+							Thread.sleep(5000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 					}
 				}
 			}
@@ -351,19 +362,15 @@ public class ThreadCliente implements Runnable {
 	private void actualizarPeersDisponibles() {
 		if(this.getSwarm().size()>0) {
 			
-			//synchronized(this.getLockPeersDisponibles()) {
-				synchronized(this.getLockSwarm()) {
-					this.setPeersDisponibles(this.getSwarm());
-				}
-			//}
+			synchronized(this.getLockSwarm()) {
+				this.setPeersDisponibles(this.getSwarm());
+			}
 			
 			log = "ThreadCliente - Actualizacion de peers disponibles con swarm";
 			this.logger.info(log);
 			System.out.println(log);
 		}else{//swarm vacio, esperar a que sea renovado por threadPartesDisponibles
-				//if(!this.getLockPedirSwarm()) {
-					this.getNewSwarm();
-				//}
+			this.partesDisponibles.getNewSwarm();
 		}
 	}
 	

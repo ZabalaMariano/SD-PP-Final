@@ -74,7 +74,7 @@ public class ThreadLeecher implements Runnable {
 		}else {//Si falla envío de la parte no tengo que envíar loaddown
 			this.threadCliente.RemovePeerDeSwarm(seed, ip, port);
 		}
-		
+
 		synchronized(this.threadCliente.getCliente().getLockLeechersDisponibles()) {
 			this.threadCliente.getCliente().aumentarLeechersDisponibles();
 			this.threadCliente.decrementarCantidadLeechersUtilizados();
@@ -84,6 +84,8 @@ public class ThreadLeecher implements Runnable {
 	private boolean descargarPartes() {
 		boolean encontre = true;//parte a descargar
 		boolean fallo = false;
+		boolean esperar = true;//Si estoy conectado a un leecher (peer que no tiene el archivo completo), y descargué todas
+								//las partes que tenía para ofrecerme, espero 5seg antes de desconectarme en caso de que descargue más partes dicho peer
 		
 		//Si no encuentro una parte que me falte descargar en el peer salgo del while para buscar otro peer
 		while(!this.threadCliente.getStop() && encontre && this.threadCliente.getPartesArchivo().size()>0
@@ -96,6 +98,8 @@ public class ThreadLeecher implements Runnable {
 			encontre = this.getParteFaltante();
 			
 			if(!this.threadCliente.getStop() && encontre) {//Pido parte a peer 
+				//Si encontre, esperar vuelve a ser true
+				esperar = true;
 				
 				//Creo mensaje que pide parte
 				String pathAParte;
@@ -231,11 +235,22 @@ public class ThreadLeecher implements Runnable {
 					}
 				}
 			}else if(!encontre){//El peer al que me conecte no tiene ninguna parte que me falte
-				log = "ThreadLeecher - peer "+ip+":"+port+" No posee ninguna parte que nos falte descargar.";
-				this.threadCliente.logger.info(log);
-				System.out.println(log);
 				
-				this.threadCliente.RemovePeerDeSwarm(seed, ip, port);
+				if(esperar) {
+					esperar = false;
+					encontre = true;
+					try {
+						Thread.sleep(5000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				} else {
+					log = "ThreadLeecher - peer "+ip+":"+port+" No posee ninguna parte que nos falte descargar.";
+					this.threadCliente.logger.info(log);
+					System.out.println(log);
+					
+					this.threadCliente.RemovePeerDeSwarm(seed, ip, port);					
+				}
 			}
 		}
 		return fallo;

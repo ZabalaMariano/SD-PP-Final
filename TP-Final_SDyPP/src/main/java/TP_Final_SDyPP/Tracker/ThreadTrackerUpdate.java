@@ -73,11 +73,10 @@ public class ThreadTrackerUpdate implements Runnable{
 					}
 				} catch (Exception e) {
 					fallo = true;
-					this.tracker.logger.error("ThreadTrackerUpdate - Falló recuperación de json de primario.");
+					this.tracker.logger.error("ThreadTrackerUpdate - Fallo recuperacion de json de primario.");
 					e.printStackTrace();
 				}
 			}
-			this.tracker.logger.error("ThreadTrackerUpdate - Sale del while despues de fallo recuperacion de json?.");
 			if(!fallo) {
 				//Obtengo tuplas de seedTable faltantes
 				m = new Mensaje(Mensaje.Tipo.GET_DB);
@@ -95,7 +94,7 @@ public class ThreadTrackerUpdate implements Runnable{
 		} catch (Exception e1) {
 			fallo = true;
 			falloPrimario = true;
-			this.tracker.logger.error("Falló conexión con primario.");
+			this.tracker.logger.error("Fallo conexion con primario.");
 			e1.printStackTrace();
 		}
 		
@@ -103,7 +102,7 @@ public class ThreadTrackerUpdate implements Runnable{
 			try {
 				this.tracker.getNuevoPrimario();
 			} catch (Exception e) {
-				this.tracker.logger.error("Falló obtener nuevo primario.");
+				this.tracker.logger.error("Fallo obtener nuevo primario.");
 				e.printStackTrace();
 			}
 		}

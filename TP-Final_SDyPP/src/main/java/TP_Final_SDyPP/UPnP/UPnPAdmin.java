@@ -8,7 +8,7 @@ public class UPnPAdmin {
     	String msg = "";
     	if (UPnP.isUPnPAvailable()) { //UPnP disponible?
             if (UPnP.isMappedTCP(port)) { //el puerto ya está mapeado?
-                msg = "-No se puedo configurar UPnP port forwarding:\nel puerto ya está mapeado.";
+                msg = "-El puerto "+port+" está siendo utilizado.";
             } else if (UPnP.openPortTCP(port)) { //intenta mapear port
             	msg = "ok";
             } else {

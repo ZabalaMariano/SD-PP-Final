@@ -9,8 +9,7 @@ public class ParteArchivo {
 	
 	public enum Estado{
 		PENDIENTE,
-		DESCARGANDO,
-		DESCARGADO
+		DESCARGANDO
 	}
 	
 	public ParteArchivo(int parte, String hash, Estado estado, int size){

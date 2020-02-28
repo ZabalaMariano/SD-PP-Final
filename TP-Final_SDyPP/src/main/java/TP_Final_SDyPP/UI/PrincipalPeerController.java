@@ -107,7 +107,7 @@ public class PrincipalPeerController implements Observer, Initializable {
 
         loggerServidor.textProperty().bind(updateLogServidor.messageProperty());
         new Thread(updateLogServidor).start();
-        
+                
         //inicializar tabla descargas
 		this.startStop.setCellValueFactory(new PropertyValueFactory<DatosDescarga, Button>("startStop"));
 		this.nombre.setCellValueFactory(new PropertyValueFactory<DatosDescarga, String>("nombre"));
@@ -148,14 +148,14 @@ public class PrincipalPeerController implements Observer, Initializable {
 		}
 	}
 
-	private void start(Button b, String hash) {
+	private void start(String hash) {
 		this.cliente.reanudarDescarga(hash);
 	}
 
 	private void stop(Button b, String hash) {
 		this.cliente.pausarDescarga(hash);
 		b.setOnAction(e -> {try {
-			this.start(b, hash);
+			this.start(hash);
 		} catch (Exception exp) {
 			exp.printStackTrace();
 		}});		
@@ -440,7 +440,7 @@ public class PrincipalPeerController implements Observer, Initializable {
 			} else {
 				Button start = new Button("Start");
 				start.setOnAction(e -> {try {
-					this.start(start, hash);
+					this.start(hash);
 				} catch (Exception exp) {
 					exp.printStackTrace();
 				}});
@@ -543,14 +543,36 @@ public class PrincipalPeerController implements Observer, Initializable {
 	
 	public void actualizarTrackers(ActionEvent event) throws Exception {
 		Task<Void> task = new Task<Void>() {
-		  @Override
-		  protected Void call() throws Exception {  
-			  cliente.actualizarTrackers();
-			  return null;
-		  }
+			@Override
+			protected Void call() throws Exception {  
+				cliente.actualizarTrackers();
+				return null;
+			}
 		};
 		new Thread(task).start();
 	}
+	
+	public void cambiarNroThreads(ActionEvent event) throws IOException {
+		int nroThreads = this.cliente.getNroThreads();
+		
+		//Cargar scene de cambiarNroThreads
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("cambiarNroThreads.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+         
+        //Get controller de la scene cambiarNroThreads
+        CambiarNroThreadsController controller = loader.getController();
+        //Paso el nro de threads que posee el cliente
+        controller.setTextNroThreads(nroThreads);
+        controller.setCliente(this.cliente);
+        controller.setBotones(this.data);
+        
+		Stage stage = new Stage();
+		stage.setTitle("Cambiar Nro. Threads");
+		stage.setResizable(false);
+		stage.setScene(scene);
+		stage.show();
+	}	
 	
 	public void salir(ActionEvent event) throws Exception {
 		Stage stage = (Stage) btnSalir.getScene().getWindow();
@@ -559,7 +581,7 @@ public class PrincipalPeerController implements Observer, Initializable {
 	
 	public void cerrarClienteYServidor() throws Exception {
 		PeerMain.getInstance().salir();//Detiene thread servidor
-		cliente.salir();//Detiene descargas activas
+		cliente.pausarDescargas();
 	}
 
 }

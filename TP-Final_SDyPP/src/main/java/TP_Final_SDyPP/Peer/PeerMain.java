@@ -2,6 +2,8 @@ package TP_Final_SDyPP.Peer;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -54,13 +56,22 @@ public class PeerMain implements Observable {
 		try {
     		puertoEscucha = Integer.parseInt(port);
         	if(puertoEscucha>1024 && puertoEscucha<65535) {
-    			error = admin.setPortForwarding(puertoEscucha);//Si no hay error devuelve "".
-    			if(error == "ok") {
-    				portRouter = admin.getPortRouter(puertoEscucha);
-    		    	portExterno = Integer.parseInt(portRouter);
-    		    	ipExterna = admin.getIPRouter();
-    			}
-    		} else 	
+        		if(puertoEscucha>=2000 && puertoEscucha<3000) {//Puerto entre 2000 y 2999, pruebas locales (LAN)
+    		    	portExterno = puertoEscucha;
+    		    	
+    		    	try(final DatagramSocket socket = new DatagramSocket()){
+    		    		  socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+    		    		  ipExterna = socket.getLocalAddress().getHostAddress();
+    		    	}      			
+        		} else {//Prueba WAN, con UPnP.
+	    			error = admin.setPortForwarding(puertoEscucha);//Si no hay error devuelve "".
+	    			if(error == "ok") {
+	    				portRouter = admin.getPortRouter(puertoEscucha);
+	    		    	portExterno = Integer.parseInt(portRouter);
+	    		    	ipExterna = admin.getIPRouter();
+	    			}
+        		}
+    		} else
     			error = "-El puerto del peer debe ser un numero positivo entre 1024 y 65535.";
     	}catch(NumberFormatException  e){
     		error = "-El puerto del peer debe ser un numero positivo entre 1024 y 65535.";
@@ -106,12 +117,12 @@ public class PeerMain implements Observable {
     		Logger loggerServidor = LogManager.getLogger(Servidor.class.getName());
         	
     		//Creacion peer servidor
-    		this.servidor = new Servidor(puertoEscucha,portExterno,ipExterna,ppg.publicKey,ppg.privateKey,loggerServidor);
+    		this.servidor = new Servidor(puertoEscucha,portExterno,ipExterna,ppg.publicKey,ppg.privateKey,loggerServidor,admin);
     		Thread tServidor = new Thread (this.servidor);
     		tServidor.start();
     		
     		//Creacion peer cliente		
-    		this.cliente = new Cliente(pathJSONs,puertoEscucha,portExterno,ipExterna,admin,ppg.publicKey,ppg.privateKey,loggerCliente);
+    		this.cliente = new Cliente(pathJSONs,portExterno,ipExterna,ppg.publicKey,ppg.privateKey,loggerCliente);
     		this.notifyObserver(1, null);//set cliente a PeerController
     	} else {
     		this.notifyObserver(2, null);//mensaje de error
