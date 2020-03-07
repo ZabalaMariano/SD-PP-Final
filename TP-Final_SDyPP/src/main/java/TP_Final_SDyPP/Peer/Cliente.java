@@ -666,13 +666,22 @@ public class Cliente implements Observable{//, Runnable {
 				String hash = this.metaArchivosEncontrados.get(pos-1).getHash();
 				m = new Mensaje (Mensaje.Tipo.REQUEST, hash);
 				m.enviarMensaje(conexionTCP,m, kg);//Envio el hash del archivo a descargar
-				String name = this.metaArchivosEncontrados.get(pos-1).getName();
-				String nameSinExt = name.substring(0, name.lastIndexOf('.'));
-				this.guardarArchivoBuffer(nameSinExt);
 				
-				log = "JSON descargado exitosamente.";
-				this.logger.info(log);
-				System.out.println(log);
+				byte[] datosDesencriptados = m.recibirMensaje(conexionTCP, kg);
+				Mensaje response = (Mensaje) conexionTCP.convertFromBytes(datosDesencriptados);
+				if(response.tipo == Mensaje.Tipo.ACK) {
+					String name = this.metaArchivosEncontrados.get(pos-1).getName();
+					String nameSinExt = name.substring(0, name.lastIndexOf('.'));
+					if(this.guardarArchivoBuffer(nameSinExt)) {
+						log = "JSON descargado exitosamente.";
+						this.logger.info(log);
+						System.out.println(log);
+					}
+				} else {//Si no, es de tipo ERROR porque no tiene el JSON fisicamente
+					log = "Tracker no posee el JSON fisicamente. Fallo la descarga.";
+					this.logger.info(log);
+					System.out.println(log);
+				}
     		}else {
 				log = "No hay trackers disponibles en este momento.";
 				this.logger.error(log);

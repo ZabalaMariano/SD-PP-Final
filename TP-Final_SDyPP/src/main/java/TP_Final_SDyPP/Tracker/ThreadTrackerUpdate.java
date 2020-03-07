@@ -57,25 +57,27 @@ public class ThreadTrackerUpdate implements Runnable{
 			this.tracker.logger.info("ThreadTrackerUpdate conexion con primario");
 			//Recibo archivos que me falten
 			int i = 0;
-			while(!hashes.isEmpty()) {
-				this.tracker.logger.info("Cantidad jsons por recuperar: "+hashes.size());
-				String hash = hashes.get(i);
-				m = new Mensaje(Mensaje.Tipo.GET_FILE, hash); 
-				try {				
-					m.enviarMensaje(conexionTCP, m, kg);
-			        byte[] msgDesencriptado = m.recibirMensaje(conexionTCP, kg);
-			        Mensaje response = (Mensaje) conexionTCP.convertFromBytes(msgDesencriptado);
-					
-					if(response.tipo == Mensaje.Tipo.ACK) {
-						String path = this.getTracker().getPath() + "/" + hash + ".json"; 
-						this.getTracker().guardarArchivoBuffer(conexionTCP, path);
-						hashes.remove(hash);
+			if(hashes != null) {
+				while(!hashes.isEmpty()) {
+					this.tracker.logger.info("Cantidad jsons por recuperar: "+hashes.size());
+					String hash = hashes.get(i);
+					m = new Mensaje(Mensaje.Tipo.GET_FILE, hash); 
+					try {				
+						m.enviarMensaje(conexionTCP, m, kg);
+				        byte[] msgDesencriptado = m.recibirMensaje(conexionTCP, kg);
+				        Mensaje response = (Mensaje) conexionTCP.convertFromBytes(msgDesencriptado);
+						
+						if(response.tipo == Mensaje.Tipo.ACK) {
+							String path = this.getTracker().getPath() + "/" + hash + ".json"; 
+							this.getTracker().guardarArchivoBuffer(conexionTCP, path);
+							hashes.remove(hash);
+						}
+					} catch (Exception e) {
+						fallo = true;
+						this.tracker.logger.error("ThreadTrackerUpdate - Fallo recuperacion de json de primario.");
+						e.printStackTrace();
 					}
-				} catch (Exception e) {
-					fallo = true;
-					this.tracker.logger.error("ThreadTrackerUpdate - Fallo recuperacion de json de primario.");
-					e.printStackTrace();
-				}
+				}				
 			}
 			if(!fallo) {
 				//Obtengo tuplas de seedTable faltantes

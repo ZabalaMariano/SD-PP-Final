@@ -54,6 +54,11 @@ public class Tracker {
 	private Database db4o;
 	private String path;
 	private final Object lock = new Object();
+	
+	//Usado por metodos que comprueban que primario este vivo. DOWNLOAD, NEW_SEED, QUIT_SWARM, COMPLETE, FREE y GET_PRIMARIO. 
+	//Si el primario se cayó, el lock evita que el Tracker busca muchas veces el nuevo primario. 
+	//Solo el primer mensaje que detecto que el priario se cayó obtendrá un nuevo primario. Los demás se conectarán al nuevo.
+	private final Object lockConexionPrimario = new Object();
 	private final Object lockdb = new Object();
 	private PrivateKey kPriv;
 	private PublicKey kPub;
@@ -180,6 +185,10 @@ public class Tracker {
 	
 	public Object getLock() {
 		return this.lock;
+	}
+	
+	public Object getLockConexionPrimario() {
+		return this.lockConexionPrimario;
 	}
 	
     //---------------------------------------------------------------------//
@@ -337,13 +346,12 @@ public class Tracker {
 			//Actualizo JSON de trackers
 			this.actualizarJSONTrackers();
 			
-			if(respuesta.hashes!=null) {
-				//Inicio thread que pide todos los jsons faltantes al primario. Mientras, el tracker inicia un serversocket para 
-				//igualmente ir recibiendo actualizaciones de nuevos json enviados por el primario.
-				ThreadTrackerUpdate ttu = new ThreadTrackerUpdate(respuesta.hashes, this, primarioActual.getIp(), primarioActual.getPort());
-				Thread t = new Thread (ttu);
-				t.start(); //inicio el thread
-			}
+			//Inicio thread que pide todos los jsons faltantes al primario. Mientras, el tracker inicia un serversocket para 
+			//igualmente ir recibiendo actualizaciones de nuevos json enviados por el primario.
+			//Aunque no falten jsons, llamo igual a metodo ya que pide BD y actualizo nuevos seeds y leechers.
+			ThreadTrackerUpdate ttu = new ThreadTrackerUpdate(respuesta.hashes, this, primarioActual.getIp(), primarioActual.getPort());
+			Thread t = new Thread (ttu);
+			t.start(); //inicio el thread
 			
 			logger.info("ME REGISTRE Y ACTUALICE CON EXITO");
 		}else { //Si se recibe otro mensaje de respuesta, cierro la conexión
@@ -528,29 +536,27 @@ public class Tracker {
 		}
 	}
 	
-	//Primero verifico que este levantado el primario. Sino tengo que buscar otro.
+	//Primero verifico que este levantado el primario. Si no, tengo que buscar otro.
 	//Si está levantado, le paso la ip:port del primario al peer
 	public void devolverPrimario(ConexionTCP conexTCP) throws IOException, Exception {
-		synchronized(this) {
-			String ipPrimario = this.getTrackerPrimario().getIp();
-			int portPrimario = this.getTrackerPrimario().getPort();
-			int idPrimario = this.getTrackerPrimario().getId();
-			if(this.getId() == idPrimario) {//Si soy el primario
-				Mensaje m = new Mensaje(Mensaje.Tipo.TRACKER_PRIMARIO, ipPrimario, portPrimario);//Envio a peer socket del primario para que le envie en json  
-				m.enviarMensaje(conexTCP, m, kg);
-				
-			}else if (this.nodeAvailable(ipPrimario, portPrimario)) {//No soy el primario, pregunto si el primario está vivo
-				Mensaje m = new Mensaje(Mensaje.Tipo.TRACKER_PRIMARIO, ipPrimario, portPrimario);//Envio a peer socket del primario para que le envie en json  
-				m.enviarMensaje(conexTCP, m, kg);
-				
-			}else {
-				//Si se cayo el primario, elegir uno nuevo
-				this.getNuevoPrimario();
-				this.devolverPrimario(conexTCP);
-			}	
-		}			
+		String ipPrimario = this.getTrackerPrimario().getIp();
+		int portPrimario = this.getTrackerPrimario().getPort();
+		int idPrimario = this.getTrackerPrimario().getId();
+		if(this.getId() == idPrimario) {//Si soy el primario
+			Mensaje m = new Mensaje(Mensaje.Tipo.TRACKER_PRIMARIO, ipPrimario, portPrimario);//Envio a peer socket del primario para que le envie en json  
+			m.enviarMensaje(conexTCP, m, kg);
+			
+		}else if (this.nodeAvailable(ipPrimario, portPrimario)) {//No soy el primario, pregunto si el primario está vivo
+			Mensaje m = new Mensaje(Mensaje.Tipo.TRACKER_PRIMARIO, ipPrimario, portPrimario);//Envio a peer socket del primario para que le envie en json  
+			m.enviarMensaje(conexTCP, m, kg);
+			
+		}else {
+			//Si se cayo el primario, elegir uno nuevo
+			this.getNuevoPrimario();
+			this.devolverPrimario(conexTCP);
+		}		
 	}
-	
+		
 	public void getNuevoPrimario() throws Exception {
 		synchronized(this) {
 			this.pingTrackers(null); //Actualizo mi lista de trackers (si alguno no contesta lo elimino de la lista)
@@ -647,7 +653,7 @@ public class Tracker {
 					Mensaje msg = null;
 					
 					switch(tipo) {
-						case "replicar":
+						case "replicar"://Peer comienza descarga de file y pasa a ser leecher del mismo
 						msg = new Mensaje(Mensaje.Tipo.SEND_SEED, m.hash, m.path, m.ip, m.port);
 						break;
 						
@@ -660,10 +666,10 @@ public class Tracker {
 						break;
 						
 						case "replicarHabilitar":
-						msg = new Mensaje(Mensaje.Tipo.SEND_COMPLETE, m.ip, m.port);
+						msg = new Mensaje(Mensaje.Tipo.SEND_FREE, m.ip, m.port);
 						break;
 						
-						case "replicarNuevo":
+						case "replicarNuevo"://Peer termina descarga de file y pasa a set seed del mismo
 						msg = new Mensaje(Mensaje.Tipo.SEND_NEW_SEED, m.ip, m.port, m.hash);
 						break;
 					}

@@ -89,7 +89,7 @@ public class ThreadLeecher implements Runnable {
 		
 		//Si no encuentro una parte que me falte descargar en el peer salgo del while para buscar otro peer
 		while(!this.threadCliente.getStop() && encontre && this.threadCliente.getPartesArchivo().size()>0
-				&& (!this.threadCliente.getThreadClienteSinLeecher() || this.threadCliente.getLeechersUtilizados()<2)) {
+				&& (!this.threadCliente.getThreadClienteSinLeecher() || this.threadCliente.getLeechersUtilizados()==1)) {
 			//Si no se pauso la descarga, encontre una parte que necesitaba en la última buscada en el peer,
 			//todavía necesito más partes y no existe otro threadCliente que tenga 0 leechers (yo teniendo >1) 
 			//--> busco otra parte en peer

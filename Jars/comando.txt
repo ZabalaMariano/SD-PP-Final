@@ -1,0 +1,3 @@
+java -Dlog4j.configurationFile=log4j2.xml -jar MainTracker.jar
+java -Dlog4j.configurationFile=log4j2.xml -jar MainPeer.jar
+java -Dlog4j.configurationFile=log4j2.xml -jar ConsultaBD.jar

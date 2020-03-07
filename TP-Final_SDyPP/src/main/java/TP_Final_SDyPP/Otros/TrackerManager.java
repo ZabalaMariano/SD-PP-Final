@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.crypto.SecretKey;
 
@@ -119,6 +120,9 @@ public class TrackerManager {
     	synchronized(this) {
     		ConexionTCP c = null;
     		listaTrackers = readtrackerJSON(listaTrackers);//Lleno la listatracker antes de buscar un tracker
+    		//mezclar trackers para que no se devuelva siempre el primero a los peers.
+	    	Collections.shuffle(listaTrackers);
+    		
 			int i = 0;
 	    	while(i<listaTrackers.size() && !trackerDisponible) {
 	    		int port = listaTrackers.get(i).getPort();

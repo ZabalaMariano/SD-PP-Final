@@ -12,7 +12,18 @@ public class consultasDB {
 
 	public static void main(String[] args) {		
 		//CONSULTA TODOS LOS SEED Y FILES guardados
-		ObjectContainer o = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(),"database0.db4o");
+		File file = new File("database0.db4o");
+		String string = "database0.db4o";
+		if(!file.exists()) {
+			file = new File("database1.db4o");
+			string = "database1.db4o";
+			if(!file.exists()) {
+				file = new File("database2.db4o");
+				string = "database2.db4o";
+			}
+		}
+			
+		ObjectContainer o = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(),string);
 		Query query = o.query();
         query.constrain(FileTable.class);
         ObjectSet<FileTable> files = query.execute();

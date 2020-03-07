@@ -255,11 +255,16 @@ public class PrincipalPeerController implements Observer, Initializable {
 			    		dd.setDisponibleEnSwarm("-");
 		    		});*/
 		    		
+		    		//Termino descarga
+		    		dd.setTerminoDescarga(true);
+		    		
 		    		//Set Velocidad de descarga
 		    		dd.setVelDescarga("-");
 		    		
 		    		//Set porcentaje del archivo disponible en el swarm
 		    		dd.setDisponibleEnSwarm("-");
+		    		
+		    		data.set(data.indexOf(dd), dd);
 		    		
 		    		Button b = dd.getStartStop();
 		    		this.setFuncionalidadBotonBorrar(b, hash, dd);
@@ -420,6 +425,8 @@ public class PrincipalPeerController implements Observer, Initializable {
 		
 		//Set botones start/stop o Borrar y gráficos
 		if(descargado.equals("100%")) {//Si ya se descargó, pongo botón Borrar y Ver de gráficos
+			dd.setTerminoDescarga(true);
+			
 			Button b = new Button();
 			this.setFuncionalidadBotonBorrar(b, hash, dd);
 			dd.setStartStop(b);
@@ -428,6 +435,8 @@ public class PrincipalPeerController implements Observer, Initializable {
 			this.setFuncionalidadBotonVer(graficos, hash);
 			dd.setGraficos(graficos);			
 		} else {
+			dd.setTerminoDescarga(false);
+			
 			//Si no se descargó el 100% pongo botón de Start/Stop.
 			if(nuevaDescarga) {
 				Button stop = new Button("Stop");

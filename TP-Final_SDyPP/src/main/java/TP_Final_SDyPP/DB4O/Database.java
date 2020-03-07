@@ -152,18 +152,19 @@ public class Database {
        
         boolean tieneSeed = false;
         int i = 0;
-        while(i<25 && i<resultado.size()) {
+        //while(i<25 && i<resultado.size()) {
+        while(i<resultado.size()) {
         	SeedTable s = (SeedTable) resultado.get(i);
         	if(!s.getIpPeer().equals(ip) || s.getPortPeer()!=port) {//Si no es el peer que pidio el swarm
-        		if(s.isSeed())
-            		tieneSeed = true;
+        		//if(s.isSeed())
+            		//tieneSeed = true;
             	
             	array.add(s);	
         	}
         	i++;        	
         }
         
-        if(!tieneSeed) {
+        /*if(!tieneSeed) {
         	if(array.size() == 25) {//Si se lleno está la posibilidad de que haya un seed que se quedo afuera. Si no llega a 25, no hay seed. 
         		st = new SeedTable(hash, true, true);//busco solo según hash, isSeed y disponible=true
         		resultado = this.db.queryByExample(st);
@@ -171,7 +172,7 @@ public class Database {
         		array.remove(0);
         		array.add(st);
         	}    		
-        }
+        }*/
 		
 		this.db.close();
 		logger.info("Consulta por Swarm");

@@ -51,14 +51,16 @@ public class CambiarNroThreadsController {
 					cliente.pausarDescargas();
 					
 				    for (DatosDescarga dd : data) {
-			    		Button b = dd.getStartStop();
-			    		b.setOnAction(e -> {try {
-							cliente.reanudarDescarga(dd.getHash());
-						} catch (Exception exp) {
-							exp.printStackTrace();
-						}});
-						//Cambia texto
-						Platform.runLater(()->b.setText("Start"));
+				    	if(!dd.isTerminoDescarga()) {
+				    		Button b = dd.getStartStop();
+				    		b.setOnAction(e -> {try {
+								cliente.reanudarDescarga(dd.getHash());
+							} catch (Exception exp) {
+								exp.printStackTrace();
+							}});
+							//Cambia texto
+							Platform.runLater(()->b.setText("Start"));				    		
+				    	}
 				    }
 				    
 					cliente.setNroThreads(nuevoNroThreads);					

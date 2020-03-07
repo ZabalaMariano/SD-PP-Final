@@ -12,7 +12,8 @@ public class DatosDescarga {
 	private String velDescarga;
 	private String disponibleEnSwarm;
 	private Button graficos;
-	
+	private boolean terminoDescarga;
+
 	public DatosDescarga() {}
 	
 	public String getHash() {
@@ -77,6 +78,14 @@ public class DatosDescarga {
 
 	public void setGraficos(Button graficos) {
 		this.graficos = graficos;
+	}
+	
+	public boolean isTerminoDescarga() {
+		return terminoDescarga;
+	}
+
+	public void setTerminoDescarga(boolean terminoDescarga) {
+		this.terminoDescarga = terminoDescarga;
 	}
 	
 }

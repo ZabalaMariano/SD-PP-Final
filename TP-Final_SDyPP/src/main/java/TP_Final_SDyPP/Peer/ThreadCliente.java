@@ -224,8 +224,10 @@ public class ThreadCliente implements Runnable {
 			logger.info(log);
 			System.out.println(log);
 			
-			//Consulto % del archivo disponible en swarm
-			this.partesDisponibles.getPorcentajeDisponible();
+			if(this.getPartesArchivo().size()>0) {//En caso que la descarga se reanude y ya haya descargado el 100%
+				//Consulto % del archivo disponible en swarm
+				this.partesDisponibles.getPorcentajeDisponible();
+			}
 			
 			//Para no repetir mensaje
 			boolean mostreMensajeNoHayLeechers = false;
@@ -345,6 +347,13 @@ public class ThreadCliente implements Runnable {
 			}else {//Si se pauso la descarga 
 				this.detenerDescargaPendiente(time);
 			}
+		} else {
+			//Saco a threadCliente del array
+			this.cliente.eliminarThreadCliente(this);
+			
+			//Retiro a Descarga pendiente de array
+			this.eliminarDescargaPendiente(0, "0 Bits");
+			this.cliente.notifyObserver(6, hash);
 		}
 	}
 	
@@ -434,7 +443,6 @@ public class ThreadCliente implements Runnable {
 				
 				//Guardar error y cuál peer es el involucrado (en archivo de carpeta Graficos)
 				this.almacenarErrorDescargaParte(TipoError.CONEXION, ip, port);
-
 			}
 			log = "ThreadCliente - Retirar al peer ("+ip+":"+port+") de peers disponibles";
 			this.logger.info(log);
@@ -480,7 +488,7 @@ public class ThreadCliente implements Runnable {
 	    	Collections.shuffle(partesArchivo);
 	    	return true;
 		} catch (IOException | ParseException e) {
-			log = "Fallo lectura json con partes faltantes.";
+			log = "Fallo lectura json con partes faltantes. Se cancela descarga.";
 			logger.error(log);
 			System.out.println(log);
 			
@@ -528,10 +536,10 @@ public class ThreadCliente implements Runnable {
 	}
 
 	private void eliminarDescargaPendiente(long time, String velocidadPromedio) {
-		int i=0;
 		synchronized(this.cliente.getListaDescargasPendientes()) {
-			while(i<this.cliente.getListaDescargasPendientes().size()){
-				if(this.cliente.getListaDescargasPendientes().get(i).getHash().equals(this.hash)) {
+			for(DescargaPendiente dp : this.cliente.getListaDescargasPendientes()) {
+				if(dp.getHash().equals(this.hash)) {
+					dp.setActivo(false);
 					
 					Object obj;
 					try {
@@ -606,7 +614,6 @@ public class ThreadCliente implements Runnable {
 						e.printStackTrace();
 					}
 				}
-				i++;
 			}
 		}
 	}

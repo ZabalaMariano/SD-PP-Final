@@ -1,6 +1,5 @@
 package TP_Final_SDyPP.UI;
 
-import TP_Final_SDyPP.Peer.PeerMain;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

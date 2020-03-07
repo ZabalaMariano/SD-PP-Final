@@ -126,7 +126,7 @@ public class ThreadTracker implements Runnable {
 				Object obj = new Object();
 				byte[] datosAEncriptar;
 				byte[] mensajeEncriptado;
-				TrackerInfo yo;
+				TrackerInfo yo = null;
 				
 				Mensaje m = new Mensaje();
 		        byte[] msgDesencriptado = m.recibirMensaje(conexionTCP, kg);
@@ -144,9 +144,11 @@ public class ThreadTracker implements Runnable {
 							salir = true;
 							break;
 							
-						case GET_DB:							
-							String pathDB = "database"+this.tracker.getId()+".db4o";
-							this.enviarArchivoBuffer(pathDB);
+						case GET_DB://Solo llega al primario
+							synchronized(this.getTracker().getLock()) {//Si estoy guardando nuevo file (llego SEND_FILE de peer) no enviar BD hasta que sea guardado
+								String pathDB = "database"+this.tracker.getId()+".db4o";
+								this.enviarArchivoBuffer(pathDB);
+							}
 							break;
 							
 						case GET_FILE:
@@ -155,7 +157,7 @@ public class ThreadTracker implements Runnable {
 							this.enviarArchivoBuffer(pathJSON);
 							break;
 							
-						case GET_FILES_OFFERED:
+						case GET_FILES_OFFERED://Busca archivos ofrecidos por peer
 							ArrayList<FileTable> archivos = this.tracker.getArchivosOfrecidos(m.ip,m.port);
 							obj = archivos;
 							response = new Mensaje(Mensaje.Tipo.GET_FILES_OFFERED, obj);
@@ -165,7 +167,9 @@ public class ThreadTracker implements Runnable {
 							break;		
 					
 						case GET_PRIMARIO:
-							this.getTracker().devolverPrimario(conexionTCP);
+							synchronized(this.getTracker().getLockConexionPrimario()) {
+								this.getTracker().devolverPrimario(conexionTCP);
+							}
 							conexionTCP.getSocket().close(); //Cierro la conexion
 							salir = true;
 							break;
@@ -224,13 +228,13 @@ public class ThreadTracker implements Runnable {
 							break;
 							
 						case FIND_FILE:
-							this.buscarArchivo(m);//busca archivos con nombre similar al buscado
+							this.buscarArchivo(m);//busca archivos con nombre similar al buscado. usado al buscar jsons a descargar
 							conexionTCP.getSocket().close(); //Cierro la conexion
 							salir = true;
 							break;
 							
 						case DOWNLOAD:
-							//Almaceno el nuevo seed
+							//Almaceno el nuevo leecher
 							this.getTracker().almacenarSeed(m.hash, false, m.path, m.ip, m.port);
 							
 							//envio swarm a peer
@@ -242,14 +246,23 @@ public class ThreadTracker implements Runnable {
 							
 							if(this.getTracker().getTrackerPrimario().getId() == this.getTracker().getId())
 								this.getTracker().replicarSeed(m, "replicar");
-							else {
-								//envio seed a primario
-								yo = new TrackerInfo(this.getTracker().getId(),this.getTracker().getIp(),this.getTracker().getPort()); 
-								conexionTCP = new ConexionTCP(this.getTracker().getTrackerPrimario().getIp(), this.getTracker().getTrackerPrimario().getPort());
-								tm.getSecretKey(conexionTCP, true, this.tracker.getkPub(), this.tracker.getkPriv(), kg, this.tracker.logger);//Obtengo clave simetrica
+							else {//No soy el primario, pregunto si el primario está vivo
+								String ipPrimario = this.getTracker().getTrackerPrimario().getIp();
+								int portPrimario = this.getTracker().getTrackerPrimario().getPort();
+								
+								//Sincronizado: si muchos peers envian download, me fijo solo con el primero si el primario esta vivo.
+								//Para evitar, si el primario se cayo, que muchos threadTracker busquen el nuevo Tracker primario.
 								response = new Mensaje(Mensaje.Tipo.SEND_SEED, m.hash, m.path, m.ip, m.port, yo);
-								response.enviarMensaje(conexionTCP, response, kg);							
-								conexionTCP.getSocket().close();	
+								synchronized(this.getTracker().getLockConexionPrimario()) {
+									if (this.getTracker().nodeAvailable(ipPrimario, portPrimario)) {
+										//envio seed a primario
+										this.send(yo, m, response, ipPrimario, portPrimario);
+									} else {
+										this.getTracker().getNuevoPrimario();
+										//envio seed a primario
+										this.send(yo, m, response, ipPrimario, portPrimario);
+									}									
+								}
 							}
 							
 							salir = true;
@@ -258,7 +271,7 @@ public class ThreadTracker implements Runnable {
 						case SEND_SEED:
 							conexionTCP.getSocket().close();
 							
-							//Almaceno el nuevo seed
+							//Almaceno el nuevo leecher
 							this.getTracker().almacenarSeed(m.hash, false, m.path, m.ip, m.port);
 							//Replico el seed al resto si soy el primario
 							if(this.getTracker().getTrackerPrimario().getId() == this.getTracker().getId())
@@ -293,16 +306,23 @@ public class ThreadTracker implements Runnable {
 							
 							if(this.getTracker().getTrackerPrimario().getId() == this.getTracker().getId())
 								this.getTracker().replicarSeed(m, "replicarDelete");
-							else {
-								//Pido a primario secret key
-								conexionTCP = new ConexionTCP(this.getTracker().getTrackerPrimario().getIp(), this.getTracker().getTrackerPrimario().getPort());
-								tm.getSecretKey(conexionTCP, true, this.tracker.getkPub(), this.tracker.getkPriv(), kg, this.tracker.logger);//Obtengo clave simetrica
+							else {//No soy el primario, pregunto si el primario está vivo
+								String ipPrimario = this.getTracker().getTrackerPrimario().getIp();
+								int portPrimario = this.getTracker().getTrackerPrimario().getPort();
 								
-								//envio al primario el seed que debemos quitar
-								yo = new TrackerInfo(this.getTracker().getId(),this.getTracker().getIp(),this.getTracker().getPort()); 
+								//Sincronizado: si muchos peers envian quit_swarm, me fijo solo con el primero si el primario esta vivo.
+								//Para evitar, si el primario se cayo, que muchos threadTracker busquen el nuevo Tracker primario.
 								response = new Mensaje(Mensaje.Tipo.SEND_QUIT_SWARM, m.ip, m.port, m.hash, yo);
-								response.enviarMensaje(conexionTCP, response, kg);
-								conexionTCP.getSocket().close();	
+								synchronized(this.getTracker().getLockConexionPrimario()) {
+									if (this.getTracker().nodeAvailable(ipPrimario, portPrimario)) {
+										//envio seed a primario
+										this.send(yo, m, response, ipPrimario, portPrimario);
+									} else {
+										this.getTracker().getNuevoPrimario();
+										//envio seed a primario
+										this.send(yo, m, response, ipPrimario, portPrimario);
+									}									
+								}
 							}
 							salir = true;
 						
@@ -336,18 +356,25 @@ public class ThreadTracker implements Runnable {
 							
 							if(this.getTracker().getTrackerPrimario().getId() == this.getTracker().getId())
 								this.getTracker().replicarSeed(m, "replicarDeshabilitar");
-							else {
-								//Indicar a primario que deshabilite peer.
-								//Pido a primario secret key
-								conexionTCP = new ConexionTCP(this.getTracker().getTrackerPrimario().getIp(), this.getTracker().getTrackerPrimario().getPort());
-								tm.getSecretKey(conexionTCP, true, this.tracker.getkPub(), this.tracker.getkPriv(), kg, this.tracker.logger);//Obtengo clave simetrica
+							else {//No soy el primario, pregunto si el primario está vivo
+								String ipPrimario = this.getTracker().getTrackerPrimario().getIp();
+								int portPrimario = this.getTracker().getTrackerPrimario().getPort();
 								
-								//envio seed que debemos quitar a primario
-								yo = new TrackerInfo(this.getTracker().getId(),this.getTracker().getIp(),this.getTracker().getPort()); 
+								//Sincronizado: si muchos peers envian complete, me fijo solo con el primero si el primario esta vivo.
+								//Para evitar, si el primario se cayo, que muchos threadTracker busquen el nuevo Tracker primario.
 								response = new Mensaje(Mensaje.Tipo.SEND_COMPLETE, m.ip, m.port, yo);
-								response.enviarMensaje(conexionTCP, response, kg);
-								conexionTCP.getSocket().close();	
+								synchronized(this.getTracker().getLockConexionPrimario()) {
+									if (this.getTracker().nodeAvailable(ipPrimario, portPrimario)) {
+										//envio seed a primario
+										this.send(yo, m, response, ipPrimario, portPrimario);
+									} else {
+										this.getTracker().getNuevoPrimario();
+										//envio seed a primario
+										this.send(yo, m, response, ipPrimario, portPrimario);
+									}									
+								}
 							}
+							
 							salir = true;
 			
 							break;
@@ -371,18 +398,25 @@ public class ThreadTracker implements Runnable {
 							//Replico el peer disponible al resto, si soy el primario
 							if(this.getTracker().getTrackerPrimario().getId() == this.getTracker().getId())
 								this.getTracker().replicarSeed(m, "replicarHabilitar");
-							else {
-								//Indicar a primario que habilite peer.
-								//Pido a primario secret key
-								conexionTCP = new ConexionTCP(this.getTracker().getTrackerPrimario().getIp(), this.getTracker().getTrackerPrimario().getPort());
-								tm.getSecretKey(conexionTCP, true, this.tracker.getkPub(), this.tracker.getkPriv(), kg, this.tracker.logger);//Obtengo clave simetrica
+							else {//No soy el primario, pregunto si el primario está vivo
+								String ipPrimario = this.getTracker().getTrackerPrimario().getIp();
+								int portPrimario = this.getTracker().getTrackerPrimario().getPort();
 								
-								//envio seed que debemos quitar a primario
-								yo = new TrackerInfo(this.getTracker().getId(),this.getTracker().getIp(),this.getTracker().getPort()); 
+								//Sincronizado: si muchos peers envian free, me fijo solo con el primero si el primario esta vivo.
+								//Para evitar, si el primario se cayo, que muchos threadTracker busquen el nuevo Tracker primario.
 								response = new Mensaje(Mensaje.Tipo.SEND_FREE, m.ip, m.port, yo);
-								response.enviarMensaje(conexionTCP, response, kg);
-								conexionTCP.getSocket().close();
+								synchronized(this.getTracker().getLockConexionPrimario()) {
+									if (this.getTracker().nodeAvailable(ipPrimario, portPrimario)) {
+										//envio seed a primario
+										this.send(yo, m, response, ipPrimario, portPrimario);
+									} else {
+										this.getTracker().getNuevoPrimario();
+										//envio seed a primario
+										this.send(yo, m, response, ipPrimario, portPrimario);
+									}									
+								}
 							}
+
 							salir = true;
 							break;
 							
@@ -405,17 +439,23 @@ public class ThreadTracker implements Runnable {
 							//Replico el nuevo seed al resto, si soy el primario
 							if(this.getTracker().getTrackerPrimario().getId() == this.getTracker().getId())
 								this.getTracker().replicarSeed(m, "replicarNuevo");
-							else {
-								//Indicar a primario que habilite peer como seed.
-								//Pido a primario secret key
-								conexionTCP = new ConexionTCP(this.getTracker().getTrackerPrimario().getIp(), this.getTracker().getTrackerPrimario().getPort());
-								tm.getSecretKey(conexionTCP, true, this.tracker.getkPub(), this.tracker.getkPriv(), kg, this.tracker.logger);//Obtengo clave simetrica
+							else {//No soy el primario, pregunto si el primario está vivo
+								String ipPrimario = this.getTracker().getTrackerPrimario().getIp();
+								int portPrimario = this.getTracker().getTrackerPrimario().getPort();
 								
-								//envio peer que debemos establece como seed a primario
-								yo = new TrackerInfo(this.getTracker().getId(),this.getTracker().getIp(),this.getTracker().getPort()); 
+								//Sincronizado: si muchos peers envian new_seed, me fijo solo con el primero si el primario esta vivo.
+								//Para evitar, si el primario se cayo, que muchos threadTracker busquen el nuevo Tracker primario.
 								response = new Mensaje(Mensaje.Tipo.SEND_NEW_SEED, m.ip, m.port, m.string, yo);
-								response.enviarMensaje(conexionTCP, response, kg);
-								conexionTCP.getSocket().close();
+								synchronized(this.getTracker().getLockConexionPrimario()) {
+									if (this.getTracker().nodeAvailable(ipPrimario, portPrimario)) {
+										//envio seed a primario
+										this.send(yo, m, response, ipPrimario, portPrimario);
+									} else {
+										this.getTracker().getNuevoPrimario();
+										//envio seed a primario
+										this.send(yo, m, response, ipPrimario, portPrimario);
+									}									
+								}
 							}
 							
 							salir = true;
@@ -438,7 +478,18 @@ public class ThreadTracker implements Runnable {
 							//El peer envío el hash del archivo JSON que desea descargar
 							String hash = m.string; //hash
 							pathJSON = this.getTracker().getPath()+ "/" + hash + ".json";
-							this.enviarArchivoBuffer(pathJSON);
+							//Compruebo que lo tengo fisicamente
+							File file = new File(pathJSON);
+							if(file.exists()) {
+								response = new Mensaje(Mensaje.Tipo.ACK);
+								response.enviarMensaje(conexionTCP, response, kg);
+								this.tracker.logger.info("Envie ACK desde tracker para indicar que poseo el JSON pedido. Envio JSON.");
+								this.enviarArchivoBuffer(pathJSON);
+							} else {
+								response = new Mensaje(Mensaje.Tipo.ERROR);
+								response.enviarMensaje(conexionTCP, response, kg);
+								this.tracker.logger.info("Envie ERROR desde tracker para indicar que no poseo el JSON pedido.");
+							}								
 							
 							salir = true;
 							
@@ -453,6 +504,15 @@ public class ThreadTracker implements Runnable {
 				e.printStackTrace();
 			}
 		}	
+	}
+
+	private void send(TrackerInfo yo, Mensaje m, Mensaje response, String ipPrimario, int portPrimario) throws Exception {
+		//Indicar a primario que habilite peer.		
+		yo = new TrackerInfo(this.getTracker().getId(),this.getTracker().getIp(),this.getTracker().getPort());
+		conexionTCP = new ConexionTCP(this.getTracker().getTrackerPrimario().getIp(), this.getTracker().getTrackerPrimario().getPort());
+		tm.getSecretKey(conexionTCP, true, this.tracker.getkPub(), this.tracker.getkPriv(), kg, this.tracker.logger);//Obtengo clave simetrica
+		response.enviarMensaje(conexionTCP, response, kg);
+		conexionTCP.getSocket().close();
 	}
 
 	private void getSocketPeer(String hash, Mensaje response) throws IOException, InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
@@ -645,8 +705,8 @@ public class ThreadTracker implements Runnable {
 		    	e.printStackTrace();
 		    	
 		    	try {
-					Thread.sleep(1000);//Si falló es porque otro proceso tiene bloqueado el archivo. Espero 1 seg
-				} catch (InterruptedException e1) {
+					Thread.sleep(1000);//Si falló es porque otro proceso tiene bloqueado el archivo. Ocurre si se levantan dos trackers al mismo tiempo y debo pasarles el mismo archivo json
+				} catch (InterruptedException e1) {//O porque no tengo el json pero si aparece en BD
 					e1.printStackTrace();
 				}
 		    }
